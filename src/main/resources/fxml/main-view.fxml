@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.app.controllers.MainController"
+      spacing="10" alignment="CENTER">
+    <Label text="Danh sách người dùng"/>
+    <TableView fx:id="userTable">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn"/>
+            <TableColumn text="Name" fx:id="nameColumn"/>
+            <TableColumn text="Email" fx:id="emailColumn"/>
+        </columns>
+    </TableView>
+</VBox>

@@ -1,4 +1,4 @@
-package com.app;
+package com.app.views;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,19 +9,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application {
+public class SignUp extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/sign-in.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/sign-up.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/styles/sign-in-sign-up.css").toExternalForm());
+        scene.getStylesheets().add(SignUp.class.getResource("/styles/sign-in-sign-up.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         // Thiết lập cửa sổ chính
-        //        primaryStage.initStyle(StageStyle.TRANSPARENT); // Không khung viền
-        primaryStage.setResizable(false); // Không resize
         primaryStage.setScene(scene);
         primaryStage.show();
     }

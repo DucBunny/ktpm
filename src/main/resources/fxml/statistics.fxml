@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="165.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="THỐNG KÊ CÁC KHOẢN ĐÃ ĐÓNG GÓP" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="277.375" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Text>
+      <TableView layoutX="276.0" layoutY="161.0" prefHeight="426.0" prefWidth="518.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Đầu mục" />
+          <TableColumn prefWidth="75.0" text="Trạng thái" />
+            <TableColumn prefWidth="75.0" text="Mô tả" />
+            <TableColumn prefWidth="75.0" text="Số người đã đóng" />
+            <TableColumn prefWidth="75.0" text="C3" />
+            <TableColumn prefWidth="75.0" text="C3" />
+            <TableColumn prefWidth="75.0" text="C3" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

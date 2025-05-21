@@ -23,6 +23,7 @@
     -fx-font-weight: 700;
 }
 
+/******************************************************** Btn Header ********************************************************/
 #buttonActive {
     -fx-background-color: #E9B880;
     -fx-text-fill: #424f70;
@@ -47,9 +48,79 @@
     -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
 }
 
-.btnFooter {
+/* Do MenuButton không đổi màu chữ như Button bình thường*/
+#btnHeaderMenu .label {
+    -fx-text-fill: #ffffff;
+}
+
+#btnHeaderMenu .label:hover {
+    -fx-text-fill: #424f70;
+}
+
+/* Ẩn phần chứa mũi tên */
+#btnHeaderMenu > .arrow-button {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-shape: "";
+    -fx-pref-width: 0;
+    -fx-min-width: 0;
+    -fx-max-width: 0;
+}
+
+/* Ẩn mũi tên */
+#btnHeaderMenu > .arrow-button > .arrow {
+    -fx-shape: "";
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-pref-width: 0;
+    -fx-min-width: 0;
+    -fx-max-width: 0;
+}
+
+/* Menu Context (pop up) đổ xuống */
+.context-menu {
+    -fx-background-color: #586995;
+    -fx-background-radius: 0 0 15 15;
+    -fx-padding: 10 6 6 6;
+}
+
+.menu-item {
     -fx-font-family: "Raleway Bold";
     -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+    -fx-padding: 16 7 0 16;
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+}
+
+.menu-item:hover {
+    -fx-background-radius: 10;
+    -fx-background-color: #E9B880;
+    -fx-text-fill: #424f70;
+}
+
+/******************************************************** Body ********************************************************/
+.btnLabel {
+    -fx-font-family: "Raleway Medium";
+    -fx-font-weight: 500;
+    -fx-font-size: 18px;
+}
+
+.btnLabel:hover {
+    -fx-font-family: "Raleway SemiBold";
+    -fx-font-weight: 600;
+}
+
+.btnLabel:pressed {
+    -fx-translate-y: 1px;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
+}
+
+/******************************************************** Btn Footer ********************************************************/
+.btnFooter {
+    -fx-font-family: "Raleway SemiBold";
+    -fx-font-weight: 600;
     -fx-font-size: 20px;
     -fx-background-color: #516089;
 }

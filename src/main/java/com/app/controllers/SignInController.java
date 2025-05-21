@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,11 +56,6 @@ public class SignInController {
             e.printStackTrace();
             errorLabel.setText("Lỗi kết nối Database!");
         }
-    }
-
-    public void changeToSignUp(MouseEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-up.fxml", "/styles/sign-in-sign-up.css",
-                event, true, false);
     }
 
     public void changeToHomePage(ActionEvent event) throws Exception {

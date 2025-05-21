@@ -18,6 +18,16 @@ public class HomePageController {
         }
     }
 
+    public void changeToCollectFees(ActionEvent event) throws Exception {
+        try {
+            Stage owner = StageManager.getPrimaryStage();
+            SceneNavigator.showPopupScene("/fxml/collect-fees.fxml",
+                    "/styles/collect-fees.css", false, owner);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void changeToSignIn(ActionEvent event) throws Exception {
         SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-sign-up.css",
                 event, false, false);

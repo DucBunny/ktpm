@@ -150,7 +150,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
                 </Button>
-                <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Thu phí" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToCollectFees" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Thu phí" textFill="WHITE">
                     <font>
                         <Font size="18.0" />
                     </font>

@@ -22,4 +22,9 @@ public class HomePageController {
         SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-sign-up.css",
                 event, false, false);
     }
+
+    public void changeToRevenues(ActionEvent event) throws Exception {
+        SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
+                event, false, false);
+    }
 }

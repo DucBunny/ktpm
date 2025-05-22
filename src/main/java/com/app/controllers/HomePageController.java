@@ -8,13 +8,18 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class HomePageController {
     @FXML
     private Label roleLabel;
 
     public void setRoleLabel(String role) {
-        roleLabel.setText(role);
+        if (Objects.equals(role, "admin")) {
+            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
+        } else if (Objects.equals(role, "cashier")) {
+            roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
+        }
     }
 
     public void changeToSignUp(ActionEvent event) throws Exception {

@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SceneNavigator {
-    // Mouse Event
-    public static void switchScene(String fxmlPath, String cssPath, Event event, boolean transparent, boolean maximized) throws IOException {
+    public static FXMLLoader switchScene(String fxmlPath, String cssPath, Event event,
+                                         boolean transparent, boolean maximized) throws IOException {
         Stage stage;
         Object source = event.getSource();
 
@@ -45,6 +45,8 @@ public class SceneNavigator {
         if (!maximized) {
             stage.sizeToScene();
         }
+
+        return loader;
     }
 
     // Hiển thị scene trong một cửa sổ mới (Stage mới), dạng popup

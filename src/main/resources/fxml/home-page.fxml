@@ -20,7 +20,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.HomePageController">
     <children>
-      <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="400.0" text="Bạn đang đăng nhập với quyền Quản trị viên" textAlignment="CENTER">
+      <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="400.0" text="Bạn đang đăng nhập với quyền Quản trị" textAlignment="CENTER">
          <VBox.margin>
             <Insets left="505.0" />
          </VBox.margin>

@@ -5,6 +5,7 @@ import com.app.utils.HashPassword;
 import com.app.utils.SceneNavigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -43,7 +44,7 @@ public class SignInController {
                 if (HashPassword.checkPassword(password, hashedPassword)) {
                     String role = rs.getString("role");
                     try {
-                        changeToHomePage(event);
+                        changeToHomePage(event, role);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -60,8 +61,11 @@ public class SignInController {
         }
     }
 
-    public void changeToHomePage(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/home-page.fxml", "/styles/home-page.css",
-                event, true, true);
+    public void changeToHomePage(ActionEvent event, String role) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
+                , "/styles/home-page.css", event, true, true);
+
+        HomePageController controller = loader.getController();
+        controller.setRoleLabel(role);
     }
 }

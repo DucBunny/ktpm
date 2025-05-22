@@ -41,8 +41,10 @@ public class SignInController {
             if (rs.next()) {
                 String hashedPassword = rs.getString("password");
                 if (HashPassword.checkPassword(password, hashedPassword)) {
+                    String role = rs.getString("role");
                     try {
                         changeToHomePage(event);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

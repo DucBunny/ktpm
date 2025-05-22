@@ -3,11 +3,20 @@ package com.app.controllers;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class HomePageController {
+    @FXML
+    private Label roleLabel;
+
+    public void setRoleLabel(String role) {
+        roleLabel.setText(role);
+    }
+
     public void changeToSignUp(ActionEvent event) throws Exception {
         try {
             Stage owner = StageManager.getPrimaryStage();

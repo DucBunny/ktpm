@@ -109,6 +109,6 @@ public class SceneNavigator {
             popupStage.initOwner(owner);
         }
 
-        popupStage.show(); // hoặc .showAndWait() nếu muốn chặn cửa sổ cha
+        popupStage.showAndWait(); // hoặc .showAndWait() nếu muốn chặn cửa sổ cha
     }
 }

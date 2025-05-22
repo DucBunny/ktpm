@@ -25,6 +25,6 @@ public class HomePageController {
 
     public void changeToRevenues(ActionEvent event) throws Exception {
         SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
-                event, false, false);
+                event, false, true);
     }
 }

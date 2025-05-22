@@ -77,8 +77,8 @@
             </Button>
             <MenuButton id="btnHeaderMenu" alignment="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cài đặt" textAlignment="CENTER" textFill="WHITE">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Tạo tài khoản" />
-                  <MenuItem mnemonicParsing="false" text="Đăng xuất" />
+                  <MenuItem onAction="#changeToSignUp" mnemonicParsing="false" text="Tạo tài khoản" />
+                  <MenuItem onAction="#changeToSignIn" mnemonicParsing="false" text="Đăng xuất" />
                </items>
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -171,10 +171,10 @@
               <columns>
                 <TableColumn fx:id="idRevenues" prefWidth="143.2000093460083" styleClass="column" text="Mã" />
                 <TableColumn fx:id="nameRevenues" prefWidth="246.3999481201172" styleClass="column" text="Tên khoản thu" />
-                  <TableColumn fx:id="createAtRevenues" prefWidth="212.80007934570312" styleClass="column" text="Ngày tạo" />
-                  <TableColumn fx:id="statusRevenues" prefWidth="195.2000732421875" styleClass="column" text="Trạng thái" />
                   <TableColumn fx:id="valueRevenues" prefWidth="198.4000244140625" styleClass="column" text="Số tiền" />
                   <TableColumn fx:id="descriptionRevenues" prefWidth="250.39996337890625" styleClass="column" text="Mô tả" />
+                 <TableColumn fx:id="categoryRevenues" prefWidth="140" styleClass="column" text="Loại"/>
+                 <TableColumn fx:id="statusRevenues" prefWidth="195.2000732421875" styleClass="column" text="Trạng thái" />
                   <TableColumn fx:id="actionRevenues" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="138.4000244140625" styleClass="column" text="Sửa/Xóa" />
               </columns>
             </TableView>

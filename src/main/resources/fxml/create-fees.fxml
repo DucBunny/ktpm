@@ -6,48 +6,46 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1120.0" style="-fx-background-color: ffffff; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Tạo khoản thu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1043.5" AnchorPane.topAnchor="50.0" />
-      <Text layoutX="410.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tạo khoản thu" textAlignment="CENTER" wrappingWidth="278.936767578125" AnchorPane.leftAnchor="420.0" AnchorPane.topAnchor="45.0">
+      <Label alignment="CENTER" prefWidth="300.0" styleClass="boldText" text="Tạo khoản thu" AnchorPane.leftAnchor="410.0" AnchorPane.rightAnchor="410.0" AnchorPane.topAnchor="45.0">
          <font>
             <Font name="System Bold" size="40.0" />
-         </font>
-      </Text>
-      <Text layoutX="177.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã khoản thu" wrappingWidth="159.73675537109375" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="150.0">
+         </font></Label>
+      <Label layoutX="141.0" layoutY="158.0" prefHeight="40.0" styleClass="boldText" text="Tên khoản thu" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="155.0">
          <font>
             <Font name="System Bold" size="24.0" />
-         </font>
-      </Text>
-      <Text layoutX="176.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm khoản thu" wrappingWidth="190.13677978515625" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="230.0">
+         </font></Label>
+      <Label layoutX="142.0" layoutY="238.0" prefHeight="40.0" styleClass="boldText" text="Mô tả" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="235.0">
          <font>
             <Font name="System Bold" size="24.0" />
-         </font>
-      </Text>
-      <Text layoutX="176.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loại khoản thu" wrappingWidth="190.13677978515625" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="310.0">
+         </font></Label>
+      <Label layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="boldText" text="Loại khoản thu" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="315.0">
          <font>
             <Font name="System Bold" size="24.0" />
-         </font>
-      </Text>
-      <Text layoutX="177.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số tiền" wrappingWidth="159.73675537109375" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="390.0">
+         </font></Label>
+      <Label layoutX="10.0" layoutY="10.0" styleClass="boldText" text="Số tiền" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="395.0">
          <font>
             <Font name="System Bold" size="24.0" />
-         </font>
-      </Text>
-      <TextField layoutX="438.0" layoutY="146.0" prefHeight="48.0" prefWidth="544.0" style="-fx-background-color: ffffff; -fx-border-color: B3B3B3; -fx-border-radius: 10;" AnchorPane.leftAnchor="435.0" AnchorPane.topAnchor="145.0" />
-      <TextField layoutX="435.0" layoutY="222.0" prefHeight="48.0" prefWidth="544.0" style="-fx-background-color: ffffff; -fx-border-color: B3B3B3; -fx-border-radius: 10;" AnchorPane.leftAnchor="435.0" />
-      <TextField layoutX="427.0" layoutY="384.0" prefHeight="48.0" prefWidth="544.0" style="-fx-background-color: ffffff; -fx-border-color: B3B3B3; -fx-border-radius: 10;" AnchorPane.leftAnchor="435.0" AnchorPane.topAnchor="384.0" />
-      <Button layoutX="431.0" layoutY="481.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="544.0" style="-fx-background-color: #516089; -fx-border-color: B3B3B3; -fx-border-radius: 10; -fx-background-radius: 10;" text="Tạo mới" textFill="WHITE">
+         </font></Label>
+      <TextField layoutX="438.0" layoutY="146.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="145.0">
+         <font>
+            <Font size="20.0" />
+         </font></TextField>
+      <TextField layoutX="435.0" layoutY="222.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="225.0">
+         <font>
+            <Font size="20.0" />
+         </font></TextField>
+      <TextField layoutX="427.0" layoutY="384.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="385.0">
+         <font>
+            <Font size="20.0" />
+         </font></TextField>
+      <ComboBox layoutX="435.0" layoutY="299.0" prefHeight="60.0" prefWidth="545.0" promptText="Chọn loại khoản thu" style="-fx-background-color: #FFFFFF; -fx-border-radius: 10; -fx-border-color: #B3B3B3;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="305.0" />
+      <Button layoutX="431.0" layoutY="481.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="545.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Tạo mới" textFill="WHITE" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="480.0">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <ComboBox layoutX="435.0" layoutY="299.0" prefHeight="48.0" prefWidth="544.0" promptText="Chọn loại khoản thu" style="-fx-background-color: ffffff; -fx-border-radius: 10; -fx-border-color: B3B3B3;" AnchorPane.leftAnchor="435.0" />
-      <Label layoutX="10.0" layoutY="10.0" text="Mã khoản thu" />
-      <Label layoutX="10.0" layoutY="10.0" text="Thêm khoản thu" />
-      <Label layoutX="10.0" layoutY="10.0" text="Loại khoản thu" />
-      <Label layoutX="10.0" layoutY="10.0" text="Số tiền" />
    </children>
 </AnchorPane>

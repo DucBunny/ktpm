@@ -43,8 +43,9 @@ public class SignInController {
                 String hashedPassword = rs.getString("password");
                 if (HashPassword.checkPassword(password, hashedPassword)) {
                     String role = rs.getString("role");
+                    String username = rs.getString("username");
                     try {
-                        changeToHomePage(event, role);
+                        changeToHomePage(event, role, username);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -61,11 +62,12 @@ public class SignInController {
         }
     }
 
-    public void changeToHomePage(ActionEvent event, String role) throws Exception {
+    public void changeToHomePage(ActionEvent event, String role,
+                                 String username) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true, true);
 
         HomePageController controller = loader.getController();
-        controller.setRoleLabel(role);
+        controller.initialize(role, username);
     }
 }

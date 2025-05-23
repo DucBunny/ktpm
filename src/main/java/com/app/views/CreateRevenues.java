@@ -9,14 +9,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CreateFees extends Application {
+public class CreateRevenues extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/create-fees.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/create-revenues.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(SignUp.class.getResource("/styles/create-fees.css").toExternalForm());
+        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/create-revenues.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

@@ -2,19 +2,17 @@ package com.app.controllers;
 
 import com.app.utils.DatabaseConnection;
 import com.app.utils.HashPassword;
-import com.app.utils.SceneNavigator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-public class SignUpController {
+public class CreateAccountController {
     @FXML
     private TextField emailField;
     @FXML
@@ -66,11 +64,6 @@ public class SignUpController {
             e.printStackTrace();
             errorLabel.setText("Lỗi kết nối Database!");
         }
-    }
-
-    public void changeToSignIn(MouseEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-sign-up.css",
-                event, true, false);
     }
 
     private void clear() {

@@ -16,7 +16,7 @@ public class Main extends Application {
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/styles/sign-in-sign-up.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/styles/sign-in-create-account.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         // Thiết lập cửa sổ chính

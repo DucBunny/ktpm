@@ -3,6 +3,7 @@ module com.app {
     requires javafx.fxml;
     requires java.sql;
     requires jbcrypt;
+    requires java.desktop;
 
     exports com.app;
     exports com.app.controllers;

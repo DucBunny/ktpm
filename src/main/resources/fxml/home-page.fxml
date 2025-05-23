@@ -19,14 +19,18 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.HomePageController">
     <children>
-      <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="400.0" text="Bạn đang đăng nhập với quyền ..." textAlignment="CENTER">
+      <AnchorPane>
+         <children>
+            <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Bạn đang đăng nhập với quyền ..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
          <VBox.margin>
-            <Insets left="505.0" />
+            <Insets />
          </VBox.margin>
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
+      </AnchorPane>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="40.0" style="-fx-background-color: #586995; -fx-background-radius: 20;">
             <children>
                 <Button id="buttonActive" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Trang chủ" textAlignment="CENTER" textFill="#424f70">

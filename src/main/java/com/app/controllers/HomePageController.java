@@ -29,22 +29,21 @@ public class HomePageController {
         }
 
         nameLabel.setText("Xin chào, " + username);
-
     }
 
     //  Pop-up Cài đặt ---------------------------------------------------------
     public void changeToSignUp(ActionEvent event) throws Exception {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/sign-up.fxml",
-                    "/styles/sign-in-sign-up.css", false, owner);
+            SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+                    "/styles/sign-in-create-account.css", false, owner);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-sign-up.css",
+        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
                 event, false, false);
     }
 
@@ -52,8 +51,8 @@ public class HomePageController {
     public void changeToCollectFees(ActionEvent event) throws Exception {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/collect-fees.fxml",
-                    "/styles/collect-fees.css", false, owner);
+            SceneNavigator.showPopupScene("/fxml/create-payment.fxml",
+                    "/styles/create-payment.css", false, owner);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,8 +61,8 @@ public class HomePageController {
     public void changeToCreateFees(ActionEvent event) throws Exception {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-fees.fxml",
-                    "/styles/create-fees.css", false, owner);
+            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
+                    "/styles/create-revenues.css", false, owner);
         } catch (IOException e) {
             e.printStackTrace();
         }

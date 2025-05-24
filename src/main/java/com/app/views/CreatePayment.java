@@ -9,20 +9,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HomePage extends Application {
+public class CreatePayment extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/home-page.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/create-payment.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/home-page.css").toExternalForm());
+        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/create-payment.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
-        //        primaryStage.initStyle(StageStyle.TRANSPARENT); // Không khung viền
         primaryStage.setScene(scene);
-        primaryStage.setMaximized(true);
-        //        primaryStage.setResizable(false); // Khóa kích thước cửa sổ
         primaryStage.show();
     }
 

@@ -6,21 +6,32 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900.0" style="-fx-background-color: #F5F5F5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.HomePageController">
-    <top>
-        <HBox alignment="CENTER" prefHeight="70.0" spacing="24.0" style="-fx-background-color: #586995; -fx-background-radius: 20;" BorderPane.alignment="CENTER">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.HomePageController">
+    <children>
+      <AnchorPane>
+         <children>
+            <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Bạn đang đăng nhập với quyền ..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </AnchorPane>
+        <HBox alignment="CENTER" prefHeight="70.0" spacing="40.0" style="-fx-background-color: #586995; -fx-background-radius: 20;">
             <children>
                 <Button id="buttonActive" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Trang chủ" textAlignment="CENTER" textFill="#424f70">
                     <HBox.margin>
@@ -29,9 +40,9 @@
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
                 </Button>
                 <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Căn hộ" textAlignment="CENTER" textFill="WHITE">
                     <font>
@@ -40,9 +51,9 @@
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
                 </Button>
                 <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cư dân" textAlignment="CENTER" textFill="WHITE">
                     <font>
@@ -51,9 +62,9 @@
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
                 </Button>
                 <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" onAction="#changeToRevenues" text="Khoản thu" textAlignment="CENTER" textFill="WHITE">
                     <font>
@@ -62,9 +73,9 @@
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
                 </Button>
                 <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Thống kê" textAlignment="CENTER" textFill="WHITE">
                     <font>
@@ -73,58 +84,47 @@
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
                 </Button>
-            <MenuButton id="btnHeaderMenu" alignment="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cài đặt" textAlignment="CENTER" textFill="WHITE">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#changeToSignUp" text="Tạo tài khoản" />
-                <MenuItem mnemonicParsing="false" onAction="#changeToSignIn" text="Đăng xuất" />
-              </items>
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </MenuButton>
-                <HBox maxWidth="1.7976931348623157E308" prefHeight="50.0" style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 15;" HBox.hgrow="ALWAYS">
+                <MenuButton id="btnHeaderMenu" alignment="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cài đặt" textAlignment="CENTER" textFill="WHITE">
+                    <items>
+                        <MenuItem fx:id="MenuItem_SignUp" mnemonicParsing="false" onAction="#changeToSignUp" text="Tạo tài khoản" visible="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#changeToSignIn" text="Đăng xuất" />
+                    </items>
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </MenuButton>
+                <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="50.0" style="-fx-background-color: #C2C9DB; -fx-background-radius: 12 0 0 12; -fx-border-radius: 12 0 0 12;">
-                            <graphic>
-                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/LeadingIcon.png" />
-                                    </image>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor>
-                                </ImageView>
-                            </graphic>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                        </Button>
-                        <TextField maxWidth="1.7976931348623157E308" prefHeight="50.0" style="-fx-background-color: #C2C9DB;" HBox.hgrow="ALWAYS">
+                  <Label fx:id="nameLabel" prefHeight="50.0" prefWidth="170.0" text="Xin chào, username">
                      <font>
-                        <Font size="20.0" />
-                     </font></TextField>
-                        <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="50.0" style="-fx-background-color: #C2C9DB; -fx-border-radius: 0 12 12 0; -fx-background-radius: 0 12 12 0;">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                            <graphic>
-                                <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/Close.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                        </Button>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <AnchorPane prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 100%;">
+                     <children>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.5">
+                           <image>
+                              <Image url="@../images/avatar.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="10.0" top="5.0" />
+                     </HBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </AnchorPane>
                     </children>
                     <HBox.margin>
                         <Insets />
@@ -134,46 +134,11 @@
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
-            <BorderPane.margin>
-                <Insets left="10.0" right="10.0" />
-            </BorderPane.margin>
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" top="3.0" />
+            </VBox.margin>
         </HBox>
-    </top>
-    <bottom>
-        <HBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
-            <children>
-                <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Tạo khoản thu" textFill="WHITE">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </Button>
-                <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Thu phí" textFill="WHITE">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </Button>
-                <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Xuất báo cáo" textFill="WHITE">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </Button>
-            </children>
-        </HBox>
-    </bottom>
-    <center>
-        <AnchorPane BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-                <Insets bottom="19.0" top="45.0" />
-            </BorderPane.margin>
+        <AnchorPane VBox.vgrow="ALWAYS">
             <children>
                 <GridPane hgap="15.0" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
@@ -188,146 +153,177 @@
                     </rowConstraints>
                     <children>
                         <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <children>
-                        <Label layoutX="60.0" layoutY="15.0" text="50" textAlignment="JUSTIFY" textFill="#516089">
-                           <font>
-                              <Font name="System Bold" size="96.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="70.0" layoutY="150.0" text="Căn hộ" textFill="#516089">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="320.0" layoutY="152.0" styleClass="btnLabel" text="Xem tất cả">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Label>
-                        <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="322.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/house.png" />
-                           </image>
-                        </ImageView>
-                     </children></Pane>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <children>
+                                <Label layoutX="60.0" layoutY="15.0" text="50" textAlignment="JUSTIFY" textFill="#516089">
+                                    <font>
+                                        <Font name="System Bold" size="96.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="70.0" layoutY="150.0" text="Căn hộ" textFill="#516089">
+                                    <font>
+                                        <Font size="20.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="320.0" layoutY="152.0" styleClass="btnLabel" text="Xem tất cả">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Label>
+                                <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="322.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/house.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </Pane>
                         <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="1">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <children>
-                        <Label layoutX="60.0" layoutY="15.0" text="100" textAlignment="JUSTIFY" textFill="#516089">
-                           <font>
-                              <Font name="System Bold" size="96.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="320.0" layoutY="152.0" styleClass="btnLabel" text="Xem tất cả">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Label>
-                        <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="322.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/user.png" />
-                           </image>
-                        </ImageView>
-                        <Label layoutX="70.0" layoutY="150.0" text="Dân cư" textFill="#516089">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                     </children></Pane>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <children>
+                                <Label layoutX="60.0" layoutY="15.0" text="100" textAlignment="JUSTIFY" textFill="#516089">
+                                    <font>
+                                        <Font name="System Bold" size="96.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="320.0" layoutY="152.0" styleClass="btnLabel" text="Xem tất cả">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Label>
+                                <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="322.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/user.png" />
+                                    </image>
+                                </ImageView>
+                                <Label layoutX="70.0" layoutY="150.0" text="Dân cư" textFill="#516089">
+                                    <font>
+                                        <Font size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </Pane>
                         <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <children>
-                        <Label layoutX="70.0" layoutY="150.0" text="Tổng thu" textFill="#516089">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="50.0" layoutY="34.0" text="10.000 k" textAlignment="JUSTIFY" textFill="#516089">
-                           <font>
-                              <Font name="System Bold" size="72.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="320.0" layoutY="152.0" styleClass="btnLabel" text="Xem tất cả">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Label>
-                        <Label layoutX="345.0" layoutY="35.0" text="VND" textFill="#516089">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children></Pane>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <children>
+                                <Label layoutX="70.0" layoutY="150.0" text="Tổng thu" textFill="#516089">
+                                    <font>
+                                        <Font size="20.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="50.0" layoutY="34.0" text="10.000 k" textAlignment="JUSTIFY" textFill="#516089">
+                                    <font>
+                                        <Font name="System Bold" size="72.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="320.0" layoutY="152.0" styleClass="btnLabel" text="Xem tất cả">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Label>
+                                <Label layoutX="345.0" layoutY="35.0" text="VND" textFill="#516089">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </Pane>
                         <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                             <GridPane.margin>
                                 <Insets right="9.0" />
                             </GridPane.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <children>
-                        <Label layoutX="25.0" layoutY="15.0" text="Biến động dân cư">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <children>
+                                <Label layoutX="25.0" layoutY="15.0" text="Biến động dân cư">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
                         </Pane>
                         <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets left="20.0" right="10.0" />
                             </GridPane.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <children>
-                        <Label layoutX="25.0" layoutY="15.0" text="Các khoản thu mới cập nhật">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <children>
+                                <Label layoutX="25.0" layoutY="15.0" text="Các khoản thu mới cập nhật">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
                         </Pane>
                         <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2" GridPane.rowIndex="2">
                             <GridPane.margin>
                                 <Insets left="20.0" right="10.0" />
                             </GridPane.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <children>
-                        <Label layoutX="25.0" layoutY="15.0" text="Biến động dân cư">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <children>
+                                <Label layoutX="25.0" layoutY="15.0" text="Biến động dân cư">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
                         </Pane>
                     </children>
                 </GridPane>
             </children>
+            <VBox.margin>
+                <Insets bottom="19.0" top="45.0" />
+            </VBox.margin>
         </AnchorPane>
-    </center>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-   <padding>
-      <Insets bottom="10.0" left="15.0" right="15.0" top="30.0" />
-   </padding>
-</BorderPane>
+        <HBox alignment="CENTER" spacing="30.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#changeToCreateFees" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Tạo khoản thu" textFill="WHITE">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#changeToCollectFees" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Thu phí" textFill="WHITE">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="450.0" style="-fx-background-radius: 15;" styleClass="btnFooter" text="Xuất báo cáo" textFill="WHITE">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="15.0" right="15.0" />
+    </padding>
+</VBox>

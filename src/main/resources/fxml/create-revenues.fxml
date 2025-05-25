@@ -7,42 +7,45 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1120.0" style="-fx-background-color: ffffff; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1120.0" style="-fx-background-color: ffffff; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.CreateRevenuesController">
    <children>
       <Label alignment="CENTER" prefWidth="300.0" styleClass="boldText" text="Tạo khoản thu" AnchorPane.leftAnchor="410.0" AnchorPane.rightAnchor="410.0" AnchorPane.topAnchor="45.0">
          <font>
             <Font name="System Bold" size="40.0" />
-         </font></Label>
-      <TextField layoutX="438.0" layoutY="146.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="145.0">
-         <font>
-            <Font size="20.0" />
-         </font></TextField>
+         </font>
+      </Label>
       <Label layoutX="141.0" layoutY="158.0" prefHeight="40.0" styleClass="boldText" text="Tên khoản thu" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="155.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>
-      <TextField layoutX="435.0" layoutY="222.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="225.0">
+      <TextField fx:id="nameRevenueField" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="145.0">
          <font>
             <Font size="20.0" />
-         </font></TextField>
+         </font>
+      </TextField>
       <Label layoutX="142.0" layoutY="238.0" prefHeight="40.0" styleClass="boldText" text="Mô tả" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="235.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>
+      <TextField fx:id="descriptionField" layoutX="435.0" layoutY="222.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="225.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
       <Label layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="boldText" text="Loại khoản thu" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="315.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>
-      <ComboBox layoutX="435.0" layoutY="299.0" prefHeight="60.0" prefWidth="545.0" promptText="Chọn loại khoản thu" style="-fx-background-color: #FFFFFF; -fx-border-radius: 10; -fx-border-color: #B3B3B3;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="305.0" />
+      <ComboBox fx:id="categoryField" layoutX="435.0" layoutY="299.0" prefHeight="60.0" prefWidth="545.0" promptText="Chọn loại khoản thu" style="-fx-background-color: #FFFFFF; -fx-border-radius: 10; -fx-border-color: #B3B3B3;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="305.0" />
       <Label layoutX="10.0" layoutY="10.0" styleClass="boldText" text="Số tiền" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="395.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>
-      <TextField layoutX="427.0" layoutY="384.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="385.0">
+      <TextField fx:id="unitPriceField" layoutX="427.0" layoutY="384.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="385.0">
          <font>
             <Font size="20.0" />
          </font></TextField>
-      <Button layoutX="431.0" layoutY="481.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="545.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Tạo mới" textFill="WHITE" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="480.0">
+      <Button fx:id="createButton" layoutX="431.0" layoutY="481.0" mnemonicParsing="false" onAction="#handleCreateRevenues" prefHeight="70.0" prefWidth="545.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Tạo mới" textFill="WHITE" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="480.0">
          <font>
             <Font size="20.0" />
          </font>

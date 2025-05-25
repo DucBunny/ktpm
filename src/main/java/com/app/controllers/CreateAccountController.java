@@ -2,11 +2,16 @@ package com.app.controllers;
 
 import com.app.utils.DatabaseConnection;
 import com.app.utils.HashPassword;
+import com.app.utils.StageManager;
+import com.app.utils.SuccessPopup;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,6 +28,8 @@ public class CreateAccountController {
     private PasswordField confirmPasswordField;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Button createButton;
 
     @FXML
     private void handleSignUp() {
@@ -53,24 +60,23 @@ public class CreateAccountController {
             stmt.setString(2, username);
             stmt.setString(3, hashedPassword);
 
-            int rowsInserted = stmt.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Tạo tài khoản thành công!");
-                clear();
+            if (stmt.executeUpdate() > 0) {
+                SuccessPopup.showSuccessPopup(StageManager.getPrimaryStage(), "Đã thêm tài khoản thành công!");
+                handleSave();
             }
         } catch (SQLIntegrityConstraintViolationException e) {
             errorLabel.setText("Email đã tồn tại!");
         } catch (SQLException e) {
             e.printStackTrace();
             errorLabel.setText("Lỗi kết nối Database!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void clear() {
-        emailField.clear();
-        userNameField.clear();
-        passwordField.clear();
-        confirmPasswordField.clear();
-        errorLabel.setText("");
+    @FXML
+    private void handleSave() {
+        Stage stage = (Stage) createButton.getScene().getWindow();
+        stage.close();
     }
 }

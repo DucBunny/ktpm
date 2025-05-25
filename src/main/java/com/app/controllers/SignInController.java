@@ -46,7 +46,6 @@ public class SignInController {
                     String username = rs.getString("username");
                     try {
                         changeToHomePage(event, role, username);
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

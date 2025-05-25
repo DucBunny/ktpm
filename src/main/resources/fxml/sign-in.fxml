@@ -67,14 +67,6 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Label layoutX="5.0" layoutY="542.0" prefHeight="36.0" prefWidth="180.0" styleClass="btnLabel" text="Quên mật khẩu" textFill="#1e1e1e" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="555.0">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Label>
             <Label fx:id="errorLabel" alignment="CENTER" layoutX="123.0" layoutY="426.0" prefWidth="300.0" textFill="RED" AnchorPane.topAnchor="425.0">
                <font>
                   <Font size="16.0" />

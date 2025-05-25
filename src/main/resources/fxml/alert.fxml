@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER" prefHeight="100.0" prefWidth="500.0" spacing="10.0" style="-fx-border-color: #71CC2E; -fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-border-radius: 15;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.AlertController">
+   <children>
+      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/check.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="messageLabel" alignment="CENTER" text="Thành công">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</HBox>

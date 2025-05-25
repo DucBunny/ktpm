@@ -153,9 +153,14 @@ public class RevenuesController {
 
     private void handleDelete(Revenues revenues) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Xác nhận xóa");
+        alert.setTitle("Xác nhận xóa khoản thu");
         alert.setHeaderText("Bạn có chắc chắn muốn xóa khoản thu này?");
         alert.setContentText(revenues.getName());
+
+        // Áp dụng CSS tùy chỉnh
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("/styles/delete-revenue.css").toExternalForm());
+        dialogPane.getStyleClass().add("dialog-pane");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -178,6 +183,7 @@ public class RevenuesController {
         }
     }
 
+
     public void changeToSignIn(ActionEvent event) throws Exception {
         SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-sign-up.css",
                 event, false, false);
@@ -189,6 +195,20 @@ public class RevenuesController {
             SceneNavigator.showPopupScene("/fxml/sign-up.fxml",
                     "/styles/sign-in-sign-up.css", false, owner);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleAdd(ActionEvent event) throws Exception {
+        try {
+            Stage owner = StageManager.getPrimaryStage();
+            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
+                    "/styles/create-revenues.css", false, owner);
+
+        //  Reload lại bảng
+            revenuesList.clear();
+            loadRevenuesFromDatabase();
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }

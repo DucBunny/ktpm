@@ -67,7 +67,6 @@ public class SceneNavigator {
         popupStage.setScene(scene);
         popupStage.setResizable(false);
 
-
         if (owner != null) {
             popupStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             popupStage.initOwner(owner);

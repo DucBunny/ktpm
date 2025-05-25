@@ -154,7 +154,7 @@
                         <Insets right="200.0" />
                      </HBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="247.0" styleClass="btn-create-revenues" onAction="#changeToCreateFees" text="Tạo khoản thu" textFill="WHITE">
+                  <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="247.0" styleClass="btn-create-revenues" onAction="#handleAdd" text="Tạo khoản thu" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>

@@ -16,7 +16,6 @@ public class HomePageController {
     private Label roleLabel;
     @FXML
     private Label nameLabel;
-
     @FXML
     private MenuItem MenuItem_SignUp;
 
@@ -32,7 +31,7 @@ public class HomePageController {
     }
 
     //  Pop-up Cài đặt ---------------------------------------------------------
-    public void changeToSignUp(ActionEvent event) throws Exception {
+    public void changeToSignUp() {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-account.fxml",
@@ -53,7 +52,7 @@ public class HomePageController {
     }
 
     // Footer ------------------------------------------------------------------
-    public void changeToCollectFees(ActionEvent event) throws Exception {
+    public void changeToCollectFees() {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-payment.fxml",
@@ -63,7 +62,7 @@ public class HomePageController {
         }
     }
 
-    public void changeToCreateFees(ActionEvent event) throws Exception {
+    public void changeToCreateFees() {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",

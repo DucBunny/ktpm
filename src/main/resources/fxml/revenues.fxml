@@ -148,7 +148,7 @@
                         <Insets right="260.0" />
                      </HBox.margin>
                   </Label>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAdd" prefHeight="60.0" prefWidth="200.0" styleClass="btn-create-revenues" text="Tạo khoản thu" textFill="WHITE">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCreateRevenue" prefHeight="60.0" prefWidth="200.0" styleClass="btn-create-revenues" text="Tạo khoản thu" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -163,7 +163,6 @@
             </HBox>
             <TableView fx:id="tableRevenues" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="idRevenues" prefWidth="143.2000093460083" styleClass="column" text="Mã" />
                   <TableColumn fx:id="nameRevenues" prefWidth="246.3999481201172" styleClass="column" text="Tên khoản thu" />
                   <TableColumn fx:id="valueRevenues" prefWidth="198.4000244140625" styleClass="column" text="Số tiền" />
                   <TableColumn fx:id="descriptionRevenues" prefWidth="250.39996337890625" styleClass="column" text="Mô tả" />

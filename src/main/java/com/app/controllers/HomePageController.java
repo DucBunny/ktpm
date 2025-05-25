@@ -63,7 +63,7 @@ public class HomePageController {
     }
 
     // Footer Button -----------------------------------------------------------
-    public void changeToCollectFees() {
+    public void changeToCreatePayments() {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-payment.fxml",
@@ -73,7 +73,7 @@ public class HomePageController {
         }
     }
 
-    public void changeToCreateFees() {
+    public void changeToCreateRevenues() {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",

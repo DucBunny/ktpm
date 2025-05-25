@@ -9,10 +9,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -34,8 +36,6 @@ public class RevenuesController {
     private MenuItem MenuItem_SignUp;
     @FXML
     private TableView<Revenues> tableRevenues;
-    @FXML
-    private TableColumn<Revenues, Integer> idRevenues;
     @FXML
     private TableColumn<Revenues, String> nameRevenues;
     @FXML
@@ -69,14 +69,12 @@ public class RevenuesController {
         double padding = 17; // hoặc 0 nếu không cần
         tableRevenues.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        idRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.05));
         nameRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.2));
         statusRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.15));
         valueRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
         descriptionRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.3));
         categoryRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
 
-        idRevenues.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameRevenues.setCellValueFactory(new PropertyValueFactory<>("name"));
         statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
         valueRevenues.setCellValueFactory(new PropertyValueFactory<>("value"));
@@ -102,11 +100,26 @@ public class RevenuesController {
                 event, false);
     }
 
-    public void changeToSignUp(ActionEvent event) throws Exception {
+    public void changeToSignUp() throws Exception {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/sign-up.fxml",
                     "/styles/sign-in-sign-up.css", owner);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //    Body -----------------------------------------------------------------
+    public void handleCreateRevenue() {
+        try {
+            Stage owner = StageManager.getPrimaryStage();
+            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
+                    "/styles/create-revenues.css", owner);
+
+            //  Reload lại bảng
+            revenuesList.clear();
+            loadRevenuesFromDatabase();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,7 +143,6 @@ public class RevenuesController {
             }
 
             tableRevenues.setItems(revenuesList);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,18 +153,17 @@ public class RevenuesController {
             @Override
             public TableCell<Revenues, Void> call(final TableColumn<Revenues, Void> param) {
                 return new TableCell<>() {
-
                     private final Button btnEdit = new Button("Sửa");
                     private final Button btnDelete = new Button("Xóa");
 
                     {
-                        btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;");
+                        btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
                         btnEdit.setOnAction((ActionEvent event) -> {
                             Revenues data = getTableView().getItems().get(getIndex());
                             handleEdit(data);
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 5;");
+                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Revenues data = getTableView().getItems().get(getIndex());
                             handleDelete(data);
@@ -160,6 +171,10 @@ public class RevenuesController {
                     }
 
                     private final HBox pane = new HBox(10, btnEdit, btnDelete);
+
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                    }
 
                     @Override
                     public void updateItem(Void item, boolean empty) {
@@ -185,7 +200,7 @@ public class RevenuesController {
             // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
             EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
 
-            SceneNavigator.showPopupScene("/fxml/formUpdateRevenue.fxml", "/styles/form-update-revenue.css", owner);
+            SceneNavigator.showPopupScene("/fxml/form-update-revenue.fxml", "/styles/form-update-revenue.css", owner);
 
             // Sau khi sửa, làm mới lại bảng dữ liệu:
             revenuesList.clear();
@@ -199,7 +214,8 @@ public class RevenuesController {
 
     private void handleDelete(Revenues revenues) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Xác nhận xóa khoản thu");
+        //        alert.setTitle("Xác nhận xóa khoản thu");
+        alert.initStyle(StageStyle.TRANSPARENT);
         alert.setHeaderText("Bạn có chắc chắn muốn xóa khoản thu này?");
         alert.setContentText(revenues.getName());
 
@@ -222,34 +238,9 @@ public class RevenuesController {
                 } else {
                     System.out.println("Không tìm thấy khoản thu để xóa.");
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void handleAdd(ActionEvent event) throws Exception {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", owner);
-
-            //  Reload lại bảng
-            revenuesList.clear();
-            loadRevenuesFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void changeToCreateFees(ActionEvent event) throws Exception {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

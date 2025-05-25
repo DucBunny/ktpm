@@ -192,4 +192,14 @@ public class RevenuesController {
             e.printStackTrace();
         }
     }
+
+    public void changeToCreateFees(ActionEvent event) throws Exception {
+        try {
+            Stage owner = StageManager.getPrimaryStage();
+            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
+                    "/styles/create-revenues.css", false, owner);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

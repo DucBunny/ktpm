@@ -26,7 +26,9 @@ public class EditRevenueController {
     public void initialize() {
         // Khởi tạo lựa chọn cho status
         MenuItem openItem = new MenuItem("Mở");
+        openItem.setStyle("-fx-font-size: 16px;");
         MenuItem closeItem = new MenuItem("Đóng");
+        closeItem.setStyle("-fx-font-size: 16px;");
 
         openItem.setOnAction(e -> statusBox.setText("Mở"));
         closeItem.setOnAction(e -> statusBox.setText("Đóng"));
@@ -35,7 +37,9 @@ public class EditRevenueController {
 
         // Khởi tạo lựa chọn cho category
         MenuItem requiredItem = new MenuItem("Bắt buộc");
+        requiredItem.setStyle("-fx-font-size: 16px;");
         MenuItem optionalItem = new MenuItem("Tự nguyện");
+        optionalItem.setStyle("-fx-font-size: 16px;");
 
         requiredItem.setOnAction(e -> categoryBox.setText("Bắt buộc"));
         optionalItem.setOnAction(e -> categoryBox.setText("Tự nguyện"));

@@ -1,7 +1,6 @@
 package com.app.controllers;
 
 import com.app.models.Revenues;
-import com.app.models.User;
 import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
@@ -9,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -19,9 +19,19 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Objects;
 import java.util.Optional;
 
 public class RevenuesController {
+    private String role;
+    private String username;
+
+    @FXML
+    private Label roleLabel;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private MenuItem MenuItem_SignUp;
     @FXML
     private TableView<Revenues> tableRevenues;
     @FXML
@@ -36,14 +46,25 @@ public class RevenuesController {
     private TableColumn<Revenues, String> descriptionRevenues;
     @FXML
     private TableColumn<Revenues, String> categoryRevenues;
-
     @FXML
     private TableColumn<Revenues, Void> actionRevenues;
 
     private ObservableList<Revenues> revenuesList = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize() {
+    public void initialize(String role, String username) {
+        this.role = role;
+        this.username = username;
+
+        if (Objects.equals(role, "admin")) {
+            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
+            MenuItem_SignUp.setVisible(true);
+        } else if (Objects.equals(role, "cashier")) {
+            roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
+        }
+
+        nameLabel.setText("Xin chào, " + username);
+
         // Trừ khoảng scroll bar 17px hoặc padding nếu cần
         double padding = 17; // hoặc 0 nếu không cần
         tableRevenues.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -64,6 +85,31 @@ public class RevenuesController {
 
         loadRevenuesFromDatabase();
         addActionButtonsToTable();
+    }
+
+    //    Header Buton ---------------------------------------------------------
+    public void changeToHomePage(ActionEvent event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
+                , "/styles/home-page.css", event, true);
+
+        HomePageController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
+    //  Pop-up Button Cài đặt --------------------------------------------------
+    public void changeToSignIn(ActionEvent event) throws Exception {
+        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-sign-up.css",
+                event, false);
+    }
+
+    public void changeToSignUp(ActionEvent event) throws Exception {
+        try {
+            Stage owner = StageManager.getPrimaryStage();
+            SceneNavigator.showPopupScene("/fxml/sign-up.fxml",
+                    "/styles/sign-in-sign-up.css", owner);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadRevenuesFromDatabase() {
@@ -139,7 +185,7 @@ public class RevenuesController {
             // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
             EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
 
-            SceneNavigator.showPopupScene("/fxml/formUpdateRevenue.fxml", "/styles/form-update-revenue.css", false, owner);
+            SceneNavigator.showPopupScene("/fxml/formUpdateRevenue.fxml", "/styles/form-update-revenue.css", owner);
 
             // Sau khi sửa, làm mới lại bảng dữ liệu:
             revenuesList.clear();
@@ -183,32 +229,16 @@ public class RevenuesController {
         }
     }
 
-
-    public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-sign-up.css",
-                event, false, false);
-    }
-
-    public void changeToSignUp(ActionEvent event) throws Exception {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/sign-up.fxml",
-                    "/styles/sign-in-sign-up.css", false, owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void handleAdd(ActionEvent event) throws Exception {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", false, owner);
+                    "/styles/create-revenues.css", owner);
 
-        //  Reload lại bảng
+            //  Reload lại bảng
             revenuesList.clear();
             loadRevenuesFromDatabase();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -217,7 +247,7 @@ public class RevenuesController {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", false, owner);
+                    "/styles/create-revenues.css", owner);
         } catch (IOException e) {
             e.printStackTrace();
         }

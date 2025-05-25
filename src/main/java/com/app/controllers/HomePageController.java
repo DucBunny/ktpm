@@ -4,6 +4,7 @@ import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
@@ -12,6 +13,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class HomePageController {
+    private String role;
+    private String username;
+
     @FXML
     private Label roleLabel;
     @FXML
@@ -20,6 +24,9 @@ public class HomePageController {
     private MenuItem MenuItem_SignUp;
 
     public void initialize(String role, String username) {
+        this.role = role;
+        this.username = username;
+
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
@@ -30,12 +37,21 @@ public class HomePageController {
         nameLabel.setText("Xin chào, " + username);
     }
 
-    //  Pop-up Cài đặt ---------------------------------------------------------
+    //    Header Buton ---------------------------------------------------------
+    public void changeToRevenues(ActionEvent event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
+                event, true);
+
+        RevenuesController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
+    //  Pop-up Button Cài đặt --------------------------------------------------
     public void changeToSignUp() {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                    "/styles/sign-in-create-account.css", false, owner);
+                    "/styles/sign-in-create-account.css", owner);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,20 +59,15 @@ public class HomePageController {
 
     public void changeToSignIn(ActionEvent event) throws Exception {
         SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
-                event, false, false);
+                event, false);
     }
 
-    public void changeToRevenues(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
-                event, false, true);
-    }
-
-    // Footer ------------------------------------------------------------------
+    // Footer Button -----------------------------------------------------------
     public void changeToCollectFees() {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-payment.fxml",
-                    "/styles/create-payment.css", false, owner);
+                    "/styles/create-payment.css", owner);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,7 +77,7 @@ public class HomePageController {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", false, owner);
+                    "/styles/create-revenues.css", owner);
         } catch (IOException e) {
             e.printStackTrace();
         }

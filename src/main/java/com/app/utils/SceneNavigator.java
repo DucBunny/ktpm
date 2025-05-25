@@ -2,17 +2,18 @@ package com.app.utils;
 
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class SceneNavigator {
-    public static FXMLLoader switchScene(String fxmlPath, String cssPath, Event event,
-                                         boolean transparent, boolean maximized) throws IOException {
+    public static FXMLLoader switchScene(String fxmlPath, String cssPath, Event event
+            , boolean maximized) throws IOException {
         Stage stage;
         Object source = event.getSource();
 
@@ -33,34 +34,34 @@ public class SceneNavigator {
             scene.getStylesheets().add(SceneNavigator.class.getResource(cssPath).toExternalForm());
         }
 
-        // Bo viền
-        if (transparent) {
-            scene.setFill(Color.TRANSPARENT);
-        }
-
         stage.setScene(scene);
-        stage.setMaximized(maximized);
 
-        // Cập nhật kích thước mặc định nếu không maximize
-        if (!maximized) {
+        if (maximized) {
+            // Lấy kích thước màn hình khả dụng (không bị taskbar che)
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+            // Set kích thước và vị trí stage theo màn hình
+            stage.setX(screenBounds.getMinX());
+            stage.setY(screenBounds.getMinY());
+            stage.setWidth(screenBounds.getWidth());
+            stage.setHeight(screenBounds.getHeight());
+            stage.setMaximized(false); // Tắt maximize nếu có
+        } else {
             stage.sizeToScene();
+            stage.setMaximized(false);
         }
 
         return loader;
     }
 
     // Hiển thị scene trong một cửa sổ mới (Stage mới), dạng popup
-    public static void showPopupScene(String fxmlPath, String cssPath, boolean transparent, Stage owner) throws IOException {
+    public static void showPopupScene(String fxmlPath, String cssPath, Stage owner) throws IOException {
         FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(fxmlPath));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
         if (cssPath != null) {
             scene.getStylesheets().add(SceneNavigator.class.getResource(cssPath).toExternalForm());
-        }
-
-        if (transparent) {
-            scene.setFill(Color.TRANSPARENT);
         }
 
         Stage popupStage = new Stage();

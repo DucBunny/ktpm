@@ -45,7 +45,6 @@
 
 .btnHeader:pressed {
     -fx-translate-y: 1px;
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
 }
 
 /* Do MenuButton không đổi màu chữ như Button bình thường*/
@@ -114,7 +113,6 @@
 
 .btnLabel:pressed {
     -fx-translate-y: 1px;
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
 }
 
 /******************************************************** Btn Footer ********************************************************/
@@ -132,5 +130,4 @@
 
 .btnFooter:pressed {
     -fx-translate-y: 1px;
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
 }

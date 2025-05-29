@@ -33,3 +33,17 @@
 #buttonChoose:hover {
     -fx-background-color: #EFAD5BFF;
 }
+
+.combo-box .text, .date-picker .text-field {
+    -fx-cursor: hand;
+    -fx-font-size: 20px;
+}
+
+.combo-box .list-cell {
+    -fx-cursor: hand;
+    -fx-font-size: 20px;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #516089;
+}

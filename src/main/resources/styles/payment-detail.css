@@ -145,6 +145,22 @@
     -fx-pref-height: 40px;
 }
 
+.table-row-cell {
+    -fx-cursor: hand;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #586995CC;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #ffffff;
+}
+
 .table-row-cell:hover {
     -fx-background-color: #51608926;
+}
+
+.table-row-cell:hover .table-cell {
+    -fx-text-fill: #516089;
 }

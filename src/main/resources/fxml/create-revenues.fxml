@@ -37,7 +37,10 @@
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>
-      <ComboBox fx:id="categoryField" layoutX="435.0" layoutY="299.0" prefHeight="60.0" prefWidth="545.0" promptText="Chọn loại khoản thu" style="-fx-background-color: #FFFFFF; -fx-border-radius: 10; -fx-border-color: #B3B3B3;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="305.0" />
+      <ComboBox fx:id="categoryField" layoutX="435.0" layoutY="299.0" prefHeight="60.0" prefWidth="545.0" promptText="Chọn loại khoản thu" style="-fx-background-color: #FFFFFF; -fx-border-radius: 10; -fx-border-color: #B3B3B3;" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="305.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ComboBox>
       <Label layoutX="10.0" layoutY="10.0" styleClass="boldText" text="Số tiền" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="395.0">
          <font>
             <Font name="System Bold" size="24.0" />

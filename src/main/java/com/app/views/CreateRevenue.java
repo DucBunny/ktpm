@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CreateRevenues extends Application {
+public class CreateRevenue extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/create-revenues.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/create-revenue.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);

@@ -101,7 +101,7 @@ public class HomePageController {
     public void changeToCreateRevenues() {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
+            SceneNavigator.showPopupScene("/fxml/create-revenue.fxml",
                     "/styles/create-revenue.css", owner);
         } catch (IOException e) {
             e.printStackTrace();

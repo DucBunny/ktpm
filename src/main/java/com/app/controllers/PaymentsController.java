@@ -151,7 +151,7 @@ public class PaymentsController {
 
     //    Body -----------------------------------------------------------------
     private void openPaymentDetailScene(String revenueItemName) throws IOException {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payment-details.fxml", "/styles/payment-detail.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payment-detail.fxml", "/styles/payment-detail.css",
                 tablePaymentStatistics);
 
         PaymentDetailController controller = loader.getController();

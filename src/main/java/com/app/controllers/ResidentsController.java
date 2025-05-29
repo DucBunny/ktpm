@@ -165,8 +165,8 @@ public class ResidentsController {
     public void handleCreateResident() {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-residents.fxml",
-                    "/styles/create-residents.css", owner);
+            SceneNavigator.showPopupScene("/fxml/create-resident.fxml",
+                    "/styles/create-resident.css", owner);
 
             //  Reload lại bảng
             ResidentsList.clear();
@@ -286,7 +286,7 @@ public class ResidentsController {
                 stmt.setInt(1, residents.getId());
 
                 int rowsAffected = stmt.executeUpdate(deleteQuery);
-                
+
                 if (rowsAffected > 0) {
                     tableResidents.getItems().remove(residents);
                     System.out.println("Đã xóa: " + residents.getName());

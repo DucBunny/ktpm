@@ -113,7 +113,7 @@ public class RoomsController {
     public void handleCreateRevenue() {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
+            SceneNavigator.showPopupScene("/fxml/create-revenue.fxml",
                     "/styles/create-revenue.css", owner);
 
             //  Reload lại bảng

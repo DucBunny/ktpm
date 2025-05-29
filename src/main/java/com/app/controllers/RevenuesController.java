@@ -140,7 +140,7 @@ public class RevenuesController {
     public void handleCreateRevenue() {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
+            SceneNavigator.showPopupScene("/fxml/create-revenue.fxml",
                     "/styles/create-revenue.css", owner);
 
             //  Reload lại bảng
@@ -248,7 +248,7 @@ public class RevenuesController {
                 String deleteQuery = "DELETE FROM revenue_items WHERE id = ?";
                 PreparedStatement stmt = connection.prepareStatement(deleteQuery);
                 stmt.setInt(1, revenues.getId());
-                
+
                 int rowsAffected = stmt.executeUpdate(deleteQuery);
 
                 if (rowsAffected > 0) {

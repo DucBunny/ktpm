@@ -1,6 +1,6 @@
-# Hotel-Managerment-System
+# Hotel Managerment System
 
-BTL môn KTPM - IT4082, 2024.2, Soict
+BTL môn KTPM - IT4082 - 156724, 2024.2, SoICT
 
 # Nhóm 25
 
@@ -12,9 +12,13 @@ BTL môn KTPM - IT4082, 2024.2, Soict
 
 # Cấu trúc thư mục
 
-- `database/`: chứa mã nguồn cơ sở dữ liệu
-- `utils/`: chứa các hàm hỗ trợ
-- `docs/`: chứa các tệp tin tài liệu cho phần mềm
-- `test/`: chứa các dữ liệu và tệp script cho kiểm thử
-- `config/`: chứa cấu hình cho ứng dụng
-- `script/`: chứa tập lệnh script
+- `src/main/java/com/app/`: chứa các thư mục mã nguồn
+    - `controllers/`: chứa các file controller
+    - `models/`: chứa các mô hình dữ liệu
+    - `utils/`: chứa các hàm chức năng tái sử dụng
+    - `views/`: chứa các file chạy riêng từng màn hình ứng dụng
+
+- `src/main/resources/`: chứa các thư mục tài nguyên
+    - `fxml/`: chứa các file UI
+    - `images/`: chứa các file ảnh
+    - `styles/`: chứa các file CSS và thư mục chứa fonts sử dụng

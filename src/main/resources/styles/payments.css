@@ -86,24 +86,6 @@
 }
 
 /************************************************************ Body ************************************************************/
-.btn-create-revenues {
-    -fx-font-family: "Raleway Bold";
-    -fx-font-weight: 700;
-    -fx-font-size: 20px;
-    -fx-background-color: #516089;
-    -fx-background-radius: 15;
-}
-
-.btn-create-revenues:hover {
-    -fx-translate-y: -0.5px;
-    -fx-background-color: #424f70;
-    -fx-cursor: hand;
-}
-
-.btn-create-revenues:pressed {
-    -fx-translate-y: 1px;
-}
-
 /********************************* Table *********************************/
 /* Định dạng chung cho toàn bảng */
 .table-view {

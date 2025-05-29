@@ -16,7 +16,7 @@ public class CreateRevenues extends Application {
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/create-revenues.css").toExternalForm());
+        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/create-revenue.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

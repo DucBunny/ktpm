@@ -19,8 +19,8 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Objects;
 
 public class RevenuesController {
@@ -141,7 +141,7 @@ public class RevenuesController {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", owner);
+                    "/styles/create-revenue.css", owner);
 
             //  Reload lại bảng
             revenuesList.clear();
@@ -154,8 +154,9 @@ public class RevenuesController {
     public void loadRevenuesFromDatabase() {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM revenue_items ORDER BY unit_price DESC");
+            String query = "SELECT * FROM revenue_items ORDER BY unit_price DESC";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
                 revenuesList.add(new Revenues(
@@ -244,9 +245,10 @@ public class RevenuesController {
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
-                Statement stmt = connection.createStatement();
-
-                String deleteQuery = "DELETE FROM revenue_items WHERE id = " + revenues.getId();
+                String deleteQuery = "DELETE FROM revenue_items WHERE id = ?";
+                PreparedStatement stmt = connection.prepareStatement(deleteQuery);
+                stmt.setInt(1, revenues.getId());
+                
                 int rowsAffected = stmt.executeUpdate(deleteQuery);
 
                 if (rowsAffected > 0) {

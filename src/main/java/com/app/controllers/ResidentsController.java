@@ -19,8 +19,8 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -179,10 +179,20 @@ public class ResidentsController {
     public void loadResidentsFromDatabase() {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM residents ORDER BY room_number ASC");
+            String query = "SELECT * FROM residents ORDER BY room_number ASC";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
+                String relationshipRaw = resultSet.getString("relationship_to_owner");
+                String relationshipDisplay = switch (relationshipRaw) {
+                    case "owner" -> "Chủ hộ";
+                    case "spouse" -> "Vợ/Chồng";
+                    case "parent" -> "Cha/Mẹ";
+                    case "child" -> "Con cái";
+                    default -> "Khác";
+                };
+
                 ResidentsList.add(new Residents(
                         resultSet.getInt("id"),
                         resultSet.getString("full_name"),
@@ -191,7 +201,7 @@ public class ResidentsController {
                         resultSet.getString("phone"),
                         resultSet.getString("citizen_id"),
                         resultSet.getString("room_number"),
-                        resultSet.getString("relationship_to_owner").equals("owner") ? "Chủ hộ" : " "
+                        relationshipDisplay
                 ));
             }
 
@@ -261,7 +271,6 @@ public class ResidentsController {
             // Sau khi sửa, làm mới lại bảng dữ liệu:
             ResidentsList.clear();
             loadResidentsFromDatabase();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -272,11 +281,12 @@ public class ResidentsController {
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
-                Statement stmt = connection.createStatement();
+                String deleteQuery = "DELETE FROM residents WHERE id = ?";
+                PreparedStatement stmt = connection.prepareStatement(deleteQuery);
+                stmt.setInt(1, residents.getId());
 
-                String deleteQuery = "DELETE FROM residents WHERE id = " + residents.getId();
                 int rowsAffected = stmt.executeUpdate(deleteQuery);
-
+                
                 if (rowsAffected > 0) {
                     tableResidents.getItems().remove(residents);
                     System.out.println("Đã xóa: " + residents.getName());

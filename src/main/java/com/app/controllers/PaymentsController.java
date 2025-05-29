@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Objects;
 
 public class PaymentsController {
@@ -159,22 +159,26 @@ public class PaymentsController {
     }
 
     public void loadPaymentStatisticsFromDatabase() {
+        String query = """
+                    SELECT
+                        ri.name,
+                        COALESCE(SUM(p.amount), 0) AS total_amount,
+                        ri.description,
+                        ri.category,
+                        ri.status,
+                        COUNT(DISTINCT p.resident_id) AS number_of_payers
+                    FROM revenue_items ri
+                    LEFT JOIN payments p ON ri.id = p.revenue_item_id
+                    GROUP BY ri.id
+                    ORDER BY total_amount DESC, ri.name ASC
+                """;
+
         try {
             Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("""
-                        SELECT
-                            ri.name,
-                            COALESCE(SUM(p.amount), 0) AS total_amount,
-                            ri.description,
-                            ri.category,
-                            ri.status,
-                            COUNT(DISTINCT p.resident_id) AS number_of_payers
-                        FROM revenue_items ri
-                        LEFT JOIN payments p ON ri.id = p.revenue_item_id
-                        GROUP BY ri.id, ri.name, ri.description, ri.category, ri.status
-                        ORDER BY total_amount DESC, ri.name ASC
-                    """);
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+
+            PaymentStatisticsList.clear();
 
             while (resultSet.next()) {
                 PaymentStatisticsList.add(new PaymentStatistics(

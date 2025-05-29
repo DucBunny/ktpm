@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 public class EditRevenueController {
     @FXML
@@ -74,8 +74,7 @@ public class EditRevenueController {
     @FXML
     private void handleSave() {
         try {
-            Connection conn = DatabaseConnection.getConnection();
-            Statement stmt = conn.createStatement();
+            Connection connection = DatabaseConnection.getConnection();
 
             String name = nameField.getText();
             String value = valueField.getText();
@@ -83,12 +82,16 @@ public class EditRevenueController {
             String statusValue = statusBox.getValue().getValue();
             String categoryValue = categoryBox.getValue().getValue();
 
-            String query = String.format(
-                    "UPDATE revenue_items SET name='%s', unit_price='%s', description='%s', status='%s', category='%s' WHERE id=%d",
-                    name, value, description, statusValue, categoryValue, revenueToEdit.getId()
-            );
+            String sql = "UPDATE revenue_items SET name=?, unit_price=?, description=?, status=?, category=? WHERE id=?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, name);
+            stmt.setString(2, value);
+            stmt.setString(3, description);
+            stmt.setString(4, statusValue);
+            stmt.setString(5, categoryValue);
+            stmt.setInt(6, revenueToEdit.getId());
 
-            stmt.executeUpdate(query);
+            stmt.executeUpdate();
 
             // Đóng cửa sổ
             Stage stage = (Stage) saveButton.getScene().getWindow();

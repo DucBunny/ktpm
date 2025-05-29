@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -279,11 +278,12 @@ public class PaymentDetailController {
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
-                Statement stmt = connection.createStatement();
 
-                String deleteQuery = "DELETE FROM payments WHERE id = " + paymentDetail.getId();
-                int rowsAffected = stmt.executeUpdate(deleteQuery);
+                String deleteQuery = "DELETE FROM payments WHERE id = ?";
+                PreparedStatement stmt = connection.prepareStatement(deleteQuery);
+                stmt.setInt(1, paymentDetail.getId());
 
+                int rowsAffected = stmt.executeUpdate();
                 if (rowsAffected > 0) {
                     tablePaymentDetail.getItems().remove(paymentDetail);
                     System.out.println("Đã xóa: " + paymentDetail.getResidentName());

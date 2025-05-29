@@ -102,7 +102,7 @@ public class HomePageController {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", owner);
+                    "/styles/create-revenue.css", owner);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-public class CreateRevenuesController {
+public class CreateRevenueController {
     @FXML
     private TextField nameRevenueField;
     @FXML

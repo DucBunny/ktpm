@@ -170,16 +170,16 @@ public class EditPaymentController {
                         SET resident_id = ?, room_number = ?, revenue_item_id = ?, amount = ?, payment_date = ?, note = ?
                         WHERE id = ?
                     """;
-            PreparedStatement pstmtUpdate = conn.prepareStatement(updateSql);
-            pstmtUpdate.setInt(1, residentId);
-            pstmtUpdate.setString(2, roomNumber);
-            pstmtUpdate.setInt(3, revenueItemId);
-            pstmtUpdate.setBigDecimal(4, new java.math.BigDecimal(amount));
-            pstmtUpdate.setDate(5, Date.valueOf(payDate));
-            pstmtUpdate.setString(6, note);
-            pstmtUpdate.setInt(7, paymentToEdit.getId());
+            PreparedStatement stmtUpdate = conn.prepareStatement(updateSql);
+            stmtUpdate.setInt(1, residentId);
+            stmtUpdate.setString(2, roomNumber);
+            stmtUpdate.setInt(3, revenueItemId);
+            stmtUpdate.setBigDecimal(4, new java.math.BigDecimal(amount));
+            stmtUpdate.setDate(5, Date.valueOf(payDate));
+            stmtUpdate.setString(6, note);
+            stmtUpdate.setInt(7, paymentToEdit.getId());
 
-            pstmtUpdate.executeUpdate();
+            stmtUpdate.executeUpdate();
 
             // Đóng cửa sổ
             Stage stage = (Stage) saveButton.getScene().getWindow();

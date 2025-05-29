@@ -1,9 +1,8 @@
 package com.app.controllers;
 
+import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import com.app.utils.HashPassword;
-import com.app.utils.StageManager;
-import com.app.utils.SuccessPopup;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -61,7 +60,7 @@ public class CreateAccountController {
             stmt.setString(3, hashedPassword);
 
             if (stmt.executeUpdate() > 0) {
-                SuccessPopup.showSuccessPopup(StageManager.getPrimaryStage(), "Đã thêm tài khoản thành công!");
+                CustomAlert.showSuccessAlert("Tạo tài khoản thành công!", true, 2);
                 handleSave();
             }
         } catch (SQLIntegrityConstraintViolationException e) {

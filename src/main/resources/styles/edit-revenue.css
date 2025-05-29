@@ -1,9 +1,4 @@
 @font-face {
-    font-family: "Raleway Medium";
-    src: url("fonts/Raleway-Medium.ttf");
-}
-
-@font-face {
     font-family: "Raleway Bold";
     src: url("fonts/Raleway-Bold.ttf");
 }
@@ -29,7 +24,14 @@
 }
 
 .combo-box .text {
-    -fx-font-family: "Raleway Medium";
-    -fx-font-weight: 500;
     -fx-font-size: 20px;
+}
+
+.combo-box .list-cell {
+    -fx-cursor: hand;
+    -fx-font-size: 20px;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #516089;
 }

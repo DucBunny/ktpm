@@ -3,6 +3,7 @@ package com.app.controllers;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -38,11 +39,35 @@ public class HomePageController {
     }
 
     //    Header Buton ---------------------------------------------------------
-    public void changeToRevenues(ActionEvent event) throws Exception {
+    public void changeToRooms(Event event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/rooms.fxml", "/styles/rooms.css",
+                event, true);
+
+        RoomsController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
+    public void changeToResidents(Event event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/residents.fxml", "/styles/residents.css",
+                event, true);
+
+        ResidentsController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
+    public void changeToRevenues(Event event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
                 event, true);
 
         RevenuesController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
+    public void changeToPayments(Event event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payments.fxml", "/styles/payments.css",
+                event, true);
+
+        PaymentsController controller = loader.getController();
         controller.initialize(role, username);
     }
 

@@ -11,7 +11,7 @@
       minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
       prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.app.controllers.RevenuesController">
+      fx:controller="com.app.controllers.PaymentsController">
     <children>
         <AnchorPane>
             <children>
@@ -77,11 +77,11 @@
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </Button>
-                <Button id="buttonActive" mnemonicParsing="false"
+                <Button mnemonicParsing="false" onAction="#changeToRevenues"
                         prefHeight="50.0" prefWidth="130.0"
                         style="-fx-background-radius: 20;"
                         styleClass="btnHeader" text="Khoản thu"
-                        textAlignment="CENTER" textFill="#424f70">
+                        textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0"/>
                     </font>
@@ -92,11 +92,11 @@
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </Button>
-                <Button mnemonicParsing="false" onAction="#changeToPayments"
+                <Button id="buttonActive" mnemonicParsing="false"
                         prefHeight="50.0" prefWidth="130.0"
                         style="-fx-background-radius: 20;"
                         styleClass="btnHeader" text="Thống kê"
-                        textAlignment="CENTER" textFill="WHITE">
+                        textAlignment="CENTER" textFill="#424f70">
                     <font>
                         <Font name="System Bold" size="18.0"/>
                     </font>
@@ -175,58 +175,40 @@
         </HBox>
         <VBox VBox.vgrow="ALWAYS">
             <children>
-                <HBox alignment="TOP_RIGHT" prefHeight="77.0">
+                <HBox alignment="TOP_CENTER" prefHeight="77.0">
                     <children>
                         <Label alignment="TOP_CENTER" contentDisplay="CENTER"
-                               prefWidth="430.0" styleClass="boldText"
-                               text="DANH SÁCH KHOẢN THU"
+                               prefWidth="600.0" styleClass="boldText"
+                               text="THỐNG KÊ CÁC KHOẢN ĐÃ ĐÓNG"
                                textAlignment="CENTER">
                             <font>
                                 <Font size="32.0"/>
                             </font>
                             <HBox.margin>
-                                <Insets right="260.0"/>
+                                <Insets/>
                             </HBox.margin>
                         </Label>
-                        <Button alignment="CENTER" contentDisplay="CENTER"
-                                mnemonicParsing="false"
-                                onAction="#handleCreateRevenue"
-                                prefHeight="55.0" prefWidth="200.0"
-                                styleClass="btn-create-revenues"
-                                text="Tạo khoản thu" textFill="WHITE">
-                            <font>
-                                <Font size="24.0"/>
-                            </font>
-                            <HBox.margin>
-                                <Insets right="30.0"/>
-                            </HBox.margin>
-                            <cursor>
-                                <Cursor fx:constant="HAND"/>
-                            </cursor>
-                        </Button>
                     </children>
                 </HBox>
-                <TableView fx:id="tableRevenues" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tablePaymentStatistics" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="nameRevenues"
+                        <TableColumn fx:id="nameRevenue"
                                      prefWidth="246.3999481201172"
-                                     text="Tên khoản thu"/>
-                        <TableColumn fx:id="valueRevenues"
+                                     text="Đầu mục"/>
+                        <TableColumn fx:id="totalAmount"
                                      prefWidth="198.4000244140625"
-                                     text="Số tiền"/>
-                        <TableColumn fx:id="descriptionRevenues"
+                                     text="Tổng số tiền"/>
+                        <TableColumn fx:id="description"
                                      prefWidth="250.39996337890625"
                                      text="Mô tả"/>
-                        <TableColumn fx:id="categoryRevenues" prefWidth="140"
+                        <TableColumn fx:id="category" prefWidth="140"
                                      text="Loại"/>
-                        <TableColumn fx:id="statusRevenues"
+                        <TableColumn fx:id="status"
                                      prefWidth="195.2000732421875"
                                      text="Trạng thái"/>
-                        <TableColumn fx:id="actionRevenues"
-                                     maxWidth="1.7976931348623157E308"
-                                     minWidth="-Infinity"
-                                     prefWidth="138.4000244140625"
-                                     text="Sửa/Xóa"/>
+                        <TableColumn fx:id="numberOfPayers"
+                                     prefWidth="195.2000732421875"
+                                     text="Số người đã đóng"/>
                     </columns>
                     <VBox.margin>
                         <Insets/>

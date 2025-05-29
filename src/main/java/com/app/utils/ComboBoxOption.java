@@ -19,7 +19,7 @@ public class ComboBoxOption {
 
     @Override
     public String toString() {
-        return label; // để ComboBox hiển thị đúng tên tiếng Việt
+        return label;
     }
 }
 

@@ -86,7 +86,7 @@
 }
 
 /************************************************************ Body ************************************************************/
-.btn-create-revenues {
+.btn-create-residents {
     -fx-font-family: "Raleway Bold";
     -fx-font-weight: 700;
     -fx-font-size: 20px;
@@ -94,13 +94,13 @@
     -fx-background-radius: 15;
 }
 
-.btn-create-revenues:hover {
+.btn-create-residents:hover {
     -fx-translate-y: -0.5px;
     -fx-background-color: #424f70;
     -fx-cursor: hand;
 }
 
-.btn-create-revenues:pressed {
+.btn-create-residents:pressed {
     -fx-translate-y: 1px;
 }
 

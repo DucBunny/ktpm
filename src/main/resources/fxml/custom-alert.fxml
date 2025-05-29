@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane fx:id="Pane_Alert" prefHeight="150.0" prefWidth="500.0"
+            style="-fx-background-color: transparent; -fx-background-radius: 15;"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.app.controllers.CustomAlertController">
+    <children>
+        <Label fx:id="titleLabel" alignment="BOTTOM_CENTER" prefHeight="50.0"
+               style="-fx-background-color: #586995; -fx-background-radius: 15 15 0 0;"
+               text="Bạn có chắc chắn muốn xóa khoản thu này?" textFill="WHITE"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+            <padding>
+                <Insets bottom="5.0"/>
+            </padding>
+        </Label>
+        <Label fx:id="titleSuccessLabel" alignment="CENTER"
+               style="-fx-background-radius: 15;"
+               text="Thêm khoản thu thành công" visible="false"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+            <graphic>
+                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../images/check.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Label>
+        <Label fx:id="messageLabel" alignment="CENTER" layoutX="20" layoutY="60"
+               text="Tiền điện" wrapText="true" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <HBox alignment="CENTER" prefHeight="30.0" spacing="100.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="100.0">
+            <children>
+                <Button fx:id="yesButton" alignment="CENTER" prefHeight="30.0"
+                        prefWidth="80" style="-fx-background-color: #586995;"
+                        text="Có" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </Button>
+                <Button fx:id="noButton" alignment="CENTER" prefHeight="30.0"
+                        prefWidth="80" style="-fx-background-color: #586995;"
+                        text="Không" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

@@ -1,6 +1,6 @@
 package com.app.controllers;
 
-import com.app.models.Revenues;
+import com.app.models.Residents;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;
@@ -21,9 +21,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class RevenuesController {
+public class ResidentsController {
     private String role;
     private String username;
 
@@ -37,21 +39,25 @@ public class RevenuesController {
 
     //    Body
     @FXML
-    private TableView<Revenues> tableRevenues;
+    private TableView<Residents> tableResidents;
     @FXML
-    private TableColumn<Revenues, String> nameRevenues;
+    private TableColumn<Residents, String> nameResidents;
     @FXML
-    private TableColumn<Revenues, String> valueRevenues;
+    private TableColumn<Residents, LocalDate> dateOfBirthResidents;
     @FXML
-    private TableColumn<Revenues, String> descriptionRevenues;
+    private TableColumn<Residents, String> genderResidents;
     @FXML
-    private TableColumn<Revenues, String> categoryRevenues;
+    private TableColumn<Residents, String> phoneResidents;
     @FXML
-    private TableColumn<Revenues, String> statusRevenues;
+    private TableColumn<Residents, String> citizenIDResidents;
     @FXML
-    private TableColumn<Revenues, Void> actionRevenues;
+    private TableColumn<Residents, String> roomResidents;
+    @FXML
+    private TableColumn<Residents, String> relationshipResidents;
+    @FXML
+    private TableColumn<Residents, Void> actionResidents;
 
-    private final ObservableList<Revenues> revenuesList = FXCollections.observableArrayList();
+    private final ObservableList<Residents> ResidentsList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(String role, String username) {
@@ -69,21 +75,40 @@ public class RevenuesController {
 
         // Trừ khoảng scroll bar 17px hoặc padding nếu cần
         double padding = 17; // hoặc 0 nếu không cần
-        tableRevenues.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableResidents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        nameRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.2));
-        valueRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.15));
-        descriptionRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.3));
-        categoryRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
-        statusRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
+        nameResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.2));
+        dateOfBirthResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.15));
+        genderResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
+        phoneResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.12));
+        citizenIDResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.12));
+        roomResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
+        relationshipResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
 
-        nameRevenues.setCellValueFactory(new PropertyValueFactory<>("name"));
-        valueRevenues.setCellValueFactory(new PropertyValueFactory<>("value"));
-        descriptionRevenues.setCellValueFactory(new PropertyValueFactory<>("description"));
-        categoryRevenues.setCellValueFactory(new PropertyValueFactory<>("category"));
-        statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
+        nameResidents.setCellValueFactory(new PropertyValueFactory<>("name"));
+        dateOfBirthResidents.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+        genderResidents.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        phoneResidents.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        citizenIDResidents.setCellValueFactory(new PropertyValueFactory<>("citizenId"));
+        roomResidents.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+        relationshipResidents.setCellValueFactory(new PropertyValueFactory<>("relationshipToOwner"));
 
-        loadRevenuesFromDatabase();
+        // Định dạng lại ngày sinh
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        dateOfBirthResidents.setCellFactory(column -> new TableCell<Residents, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.format(formatter));
+                }
+            }
+        });
+
+        loadResidentsFromDatabase();
         addActionButtonsToTable();
     }
 
@@ -104,11 +129,11 @@ public class RevenuesController {
         controller.initialize(role, username);
     }
 
-    public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/residents.fxml", "/styles/residents.css",
+    public void changeToRevenues(ActionEvent event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
                 event, true);
 
-        ResidentsController controller = loader.getController();
+        RevenuesController controller = loader.getController();
         controller.initialize(role, username);
     }
 
@@ -137,47 +162,49 @@ public class RevenuesController {
     }
 
     //    Body -----------------------------------------------------------------
-    public void handleCreateRevenue() {
+    public void handleCreateResident() {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", owner);
+            SceneNavigator.showPopupScene("/fxml/create-residents.fxml",
+                    "/styles/create-residents.css", owner);
 
             //  Reload lại bảng
-            revenuesList.clear();
-            loadRevenuesFromDatabase();
+            ResidentsList.clear();
+            loadResidentsFromDatabase();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadRevenuesFromDatabase() {
+    public void loadResidentsFromDatabase() {
         try {
             Connection connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM revenue_items ORDER BY unit_price DESC");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM residents ORDER BY room_number ASC");
 
             while (resultSet.next()) {
-                revenuesList.add(new Revenues(
+                ResidentsList.add(new Residents(
                         resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("unit_price"),
-                        resultSet.getString("description"),
-                        resultSet.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện",
-                        resultSet.getString("status").equals("active") ? "Mở" : "Đóng"
+                        resultSet.getString("full_name"),
+                        resultSet.getDate("date_of_birth").toLocalDate(),
+                        resultSet.getString("gender").equals("male") ? "Nam" : "Nữ",
+                        resultSet.getString("phone"),
+                        resultSet.getString("citizen_id"),
+                        resultSet.getString("room_number"),
+                        resultSet.getString("relationship_to_owner").equals("owner") ? "Chủ hộ" : " "
                 ));
             }
 
-            tableRevenues.setItems(revenuesList);
+            tableResidents.setItems(ResidentsList);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void addActionButtonsToTable() {
-        Callback<TableColumn<Revenues, Void>, TableCell<Revenues, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<Residents, Void>, TableCell<Residents, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Revenues, Void> call(final TableColumn<Revenues, Void> param) {
+            public TableCell<Residents, Void> call(final TableColumn<Residents, Void> param) {
                 return new TableCell<>() {
                     private final Button btnEdit = new Button("Sửa");
                     private final Button btnDelete = new Button("Xóa");
@@ -185,13 +212,13 @@ public class RevenuesController {
                     {
                         btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnEdit.setOnAction((ActionEvent event) -> {
-                            Revenues data = getTableView().getItems().get(getIndex());
+                            Residents data = getTableView().getItems().get(getIndex());
                             handleEdit(data);
                         });
 
                         btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnDelete.setOnAction((ActionEvent event) -> {
-                            Revenues data = getTableView().getItems().get(getIndex());
+                            Residents data = getTableView().getItems().get(getIndex());
                             try {
                                 handleDelete(data);
                             } catch (IOException e) {
@@ -219,41 +246,42 @@ public class RevenuesController {
             }
         };
 
-        actionRevenues.setCellFactory(cellFactory);
+        actionResidents.setCellFactory(cellFactory);
     }
 
-    private void handleEdit(Revenues revenues) {
+    private void handleEdit(Residents residents) {
         try {
             Stage owner = StageManager.getPrimaryStage();
 
             // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
-            EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
+            EditResidentController.setResidentToEdit(residents); // Hàm static để tạm giữ dữ liệu
 
-            SceneNavigator.showPopupScene("/fxml/edit-revenue.fxml", "/styles/edit-revenue.css", owner);
+            SceneNavigator.showPopupScene("/fxml/edit-resident.fxml", "/styles/edit-resident.css", owner);
 
             // Sau khi sửa, làm mới lại bảng dữ liệu:
-            revenuesList.clear();
-            loadRevenuesFromDatabase();
+            ResidentsList.clear();
+            loadResidentsFromDatabase();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void handleDelete(Revenues revenues) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa khoản thu này?", revenues.getName());
+    private void handleDelete(Residents residents) throws IOException {
+        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", residents.getName());
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
                 Statement stmt = connection.createStatement();
 
-                String deleteQuery = "DELETE FROM revenue_items WHERE id = " + revenues.getId();
+                String deleteQuery = "DELETE FROM residents WHERE id = " + residents.getId();
                 int rowsAffected = stmt.executeUpdate(deleteQuery);
 
                 if (rowsAffected > 0) {
-                    tableRevenues.getItems().remove(revenues);
-                    System.out.println("Đã xóa: " + revenues.getName());
+                    tableResidents.getItems().remove(residents);
+                    System.out.println("Đã xóa: " + residents.getName());
                 } else {
-                    System.out.println("Không tìm thấy khoản thu để xóa.");
+                    System.out.println("Không tìm thấy cư dân để xóa.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

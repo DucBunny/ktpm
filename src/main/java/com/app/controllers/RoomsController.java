@@ -23,23 +23,22 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Objects;
 
-public class RevenuesController {
+public class RoomsController {
     private String role;
     private String username;
 
-    //    Header
     @FXML
     private Label roleLabel;
     @FXML
     private Label nameLabel;
     @FXML
     private MenuItem MenuItem_SignUp;
-
-    //    Body
     @FXML
     private TableView<Revenues> tableRevenues;
     @FXML
     private TableColumn<Revenues, String> nameRevenues;
+    @FXML
+    private TableColumn<Revenues, String> statusRevenues;
     @FXML
     private TableColumn<Revenues, String> valueRevenues;
     @FXML
@@ -47,11 +46,9 @@ public class RevenuesController {
     @FXML
     private TableColumn<Revenues, String> categoryRevenues;
     @FXML
-    private TableColumn<Revenues, String> statusRevenues;
-    @FXML
     private TableColumn<Revenues, Void> actionRevenues;
 
-    private final ObservableList<Revenues> revenuesList = FXCollections.observableArrayList();
+    private ObservableList<Revenues> revenuesList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(String role, String username) {
@@ -72,16 +69,16 @@ public class RevenuesController {
         tableRevenues.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         nameRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.2));
-        valueRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.15));
+        statusRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.15));
+        valueRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
         descriptionRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.3));
         categoryRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
-        statusRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
 
         nameRevenues.setCellValueFactory(new PropertyValueFactory<>("name"));
+        statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
         valueRevenues.setCellValueFactory(new PropertyValueFactory<>("value"));
         descriptionRevenues.setCellValueFactory(new PropertyValueFactory<>("description"));
         categoryRevenues.setCellValueFactory(new PropertyValueFactory<>("category"));
-        statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         loadRevenuesFromDatabase();
         addActionButtonsToTable();
@@ -96,44 +93,20 @@ public class RevenuesController {
         controller.initialize(role, username);
     }
 
-    public void changeToRooms(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/rooms.fxml", "/styles/rooms.css",
-                event, true);
-
-        RoomsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/residents.fxml", "/styles/residents.css",
-                event, true);
-
-        ResidentsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToPayments(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payments.fxml", "/styles/payments.css",
-                event, true);
-
-        PaymentsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
     //  Pop-up Button Cài đặt --------------------------------------------------
+    public void changeToSignIn(ActionEvent event) throws Exception {
+        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
+                event, false);
+    }
+
     public void changeToSignUp() {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+            SceneNavigator.showPopupScene("/fxml/sign-up.fxml",
                     "/styles/sign-in-create-account.css", owner);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
-                event, false);
     }
 
     //    Body -----------------------------------------------------------------
@@ -155,16 +128,16 @@ public class RevenuesController {
         try {
             Connection connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM revenue_items ORDER BY unit_price DESC");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM revenue_items");
 
             while (resultSet.next()) {
                 revenuesList.add(new Revenues(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
+                        resultSet.getString("status").equals("active") ? "Mở" : "Đóng",
                         resultSet.getString("unit_price"),
                         resultSet.getString("description"),
-                        resultSet.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện",
-                        resultSet.getString("status").equals("active") ? "Mở" : "Đóng"
+                        resultSet.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện"
                 ));
             }
 
@@ -183,13 +156,13 @@ public class RevenuesController {
                     private final Button btnDelete = new Button("Xóa");
 
                     {
-                        btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand; -fx-pref-width: 70");
                         btnEdit.setOnAction((ActionEvent event) -> {
                             Revenues data = getTableView().getItems().get(getIndex());
                             handleEdit(data);
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand; -fx-pref-width: 70");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Revenues data = getTableView().getItems().get(getIndex());
                             try {
@@ -224,6 +197,7 @@ public class RevenuesController {
 
     private void handleEdit(Revenues revenues) {
         try {
+            // Tạo stage mới hoặc sử dụng SceneNavigator để mở form sửa
             Stage owner = StageManager.getPrimaryStage();
 
             // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
@@ -234,13 +208,14 @@ public class RevenuesController {
             // Sau khi sửa, làm mới lại bảng dữ liệu:
             revenuesList.clear();
             loadRevenuesFromDatabase();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void handleDelete(Revenues revenues) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa khoản thu này?", revenues.getName());
+        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa căn hộ này?", revenues.getName());
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();

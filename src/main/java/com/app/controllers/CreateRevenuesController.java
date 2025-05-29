@@ -1,9 +1,8 @@
 package com.app.controllers;
 
 import com.app.utils.ComboBoxOption;
+import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
-import com.app.utils.StageManager;
-import com.app.utils.SuccessPopup;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,7 +28,6 @@ public class CreateRevenuesController {
     @FXML
     private Button createButton;
 
-    @FXML
     public void initialize() {
         categoryField.setItems(FXCollections.observableArrayList(
                 new ComboBoxOption("Bắt buộc", "mandatory"),
@@ -52,7 +50,7 @@ public class CreateRevenuesController {
             return;
         }
 
-        int unitPrice;
+        long unitPrice;
         if (unitPriceString.isEmpty()) {
             if (category.equals("mandatory")) {
                 unitPriceField.setStyle("-fx-prompt-text-fill: red; -fx-border-color: red");
@@ -63,7 +61,7 @@ public class CreateRevenuesController {
             unitPrice = 1;
         } else {
             try {
-                unitPrice = Integer.parseInt(unitPriceString);
+                unitPrice = Long.parseLong(unitPriceString);
                 if (unitPrice < 0) {
                     unitPriceField.setStyle("-fx-prompt-text-fill: red; -fx-border-color: red");
                     unitPriceField.clear();
@@ -84,10 +82,10 @@ public class CreateRevenuesController {
             stmt.setString(1, nameRevenue);
             stmt.setString(2, description);
             stmt.setString(3, category);
-            stmt.setInt(4, unitPrice);
+            stmt.setLong(4, unitPrice);
 
             if (stmt.executeUpdate() > 0) {
-                SuccessPopup.showSuccessPopup(StageManager.getPrimaryStage(), "Đã thêm khoản thu thành công!");
+                CustomAlert.showSuccessAlert("Thêm khoản thu thành công!", true, 1);
                 handleSave();
             }
         } catch (SQLIntegrityConstraintViolationException e) {
@@ -101,7 +99,6 @@ public class CreateRevenuesController {
         }
     }
 
-    @FXML
     private void handleSave() {
         Stage stage = (Stage) createButton.getScene().getWindow();
         stage.close();

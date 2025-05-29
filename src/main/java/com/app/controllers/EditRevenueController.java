@@ -1,20 +1,31 @@
 package com.app.controllers;
 
 import com.app.models.Revenues;
+import com.app.utils.ComboBoxOption;
 import com.app.utils.DatabaseConnection;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.Statement;
 
 public class EditRevenueController {
-    @FXML private TextField nameField;
-    @FXML private TextField valueField;
-    @FXML private TextArea descriptionArea;
-    @FXML private MenuButton statusBox;
-    @FXML private MenuButton categoryBox;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField valueField;
+    @FXML
+    private TextField descriptionField;
+    @FXML
+    private ComboBox<ComboBoxOption> statusBox;
+    @FXML
+    private ComboBox<ComboBoxOption> categoryBox;
+    @FXML
+    private Button saveButton;
 
     private static Revenues revenueToEdit;
 
@@ -24,48 +35,53 @@ public class EditRevenueController {
 
     @FXML
     public void initialize() {
-        // Khởi tạo lựa chọn cho status
-        MenuItem openItem = new MenuItem("Mở");
-        openItem.setStyle("-fx-font-size: 16px;");
-        MenuItem closeItem = new MenuItem("Đóng");
-        closeItem.setStyle("-fx-font-size: 16px;");
-
-        openItem.setOnAction(e -> statusBox.setText("Mở"));
-        closeItem.setOnAction(e -> statusBox.setText("Đóng"));
-
-        statusBox.getItems().setAll(openItem, closeItem);
-
         // Khởi tạo lựa chọn cho category
-        MenuItem requiredItem = new MenuItem("Bắt buộc");
-        requiredItem.setStyle("-fx-font-size: 16px;");
-        MenuItem optionalItem = new MenuItem("Tự nguyện");
-        optionalItem.setStyle("-fx-font-size: 16px;");
+        categoryBox.setItems(FXCollections.observableArrayList(
+                new ComboBoxOption("Bắt buộc", "mandatory"),
+                new ComboBoxOption("Tự nguyện", "voluntary")
+        ));
 
-        requiredItem.setOnAction(e -> categoryBox.setText("Bắt buộc"));
-        optionalItem.setOnAction(e -> categoryBox.setText("Tự nguyện"));
-
-        categoryBox.getItems().setAll(requiredItem, optionalItem);
+        // Khởi tạo lựa chọn cho status
+        statusBox.setItems(FXCollections.observableArrayList(
+                new ComboBoxOption("Mở", "active"),
+                new ComboBoxOption("Đóng", "inactive")
+        ));
 
         // Hiển thị dữ liệu nếu có
         if (revenueToEdit != null) {
             nameField.setText(revenueToEdit.getName());
             valueField.setText(revenueToEdit.getValue());
-            descriptionArea.setText(revenueToEdit.getDescription());
-            statusBox.setText(revenueToEdit.getStatus());
-            categoryBox.setText(revenueToEdit.getCategory());
+            descriptionField.setText(revenueToEdit.getDescription());
+
+            String dbCategory = revenueToEdit.getCategory().trim();
+            for (ComboBoxOption option : categoryBox.getItems()) {
+                if (option.getLabel().equalsIgnoreCase(dbCategory)) {
+                    categoryBox.setValue(option);
+                    break;
+                }
+            }
+
+            String dbStatus = revenueToEdit.getStatus().trim();
+            for (ComboBoxOption option : statusBox.getItems()) {
+                if (option.getLabel().equalsIgnoreCase(dbStatus)) {
+                    statusBox.setValue(option);
+                    break;
+                }
+            }
         }
     }
 
     @FXML
     private void handleSave() {
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement()) {
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+            Statement stmt = conn.createStatement();
 
             String name = nameField.getText();
             String value = valueField.getText();
-            String description = descriptionArea.getText();
-            String statusValue = statusBox.getText().equals("Mở") ? "active" : "inactive";
-            String categoryValue = categoryBox.getText().equals("Bắt buộc") ? "mandatory" : "voluntary";
+            String description = descriptionField.getText();
+            String statusValue = statusBox.getValue().getValue();
+            String categoryValue = categoryBox.getValue().getValue();
 
             String query = String.format(
                     "UPDATE revenue_items SET name='%s', unit_price='%s', description='%s', status='%s', category='%s' WHERE id=%d",
@@ -75,9 +91,8 @@ public class EditRevenueController {
             stmt.executeUpdate(query);
 
             // Đóng cửa sổ
-            Stage stage = (Stage) nameField.getScene().getWindow();
+            Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

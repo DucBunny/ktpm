@@ -49,7 +49,32 @@ public class SceneNavigator {
         } else {
             stage.sizeToScene();
             stage.setMaximized(false);
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double centerX = screenBounds.getMinX() + (screenBounds.getWidth() - stage.getWidth()) / 2;
+            double centerY = screenBounds.getMinY() + (screenBounds.getHeight() - stage.getHeight()) / 2;
+
+            stage.setX(centerX);
+            stage.setY(centerY);
         }
+
+        return loader;
+    }
+
+    // Không dùng event
+    public static FXMLLoader switchScene(String fxmlPath, String cssPath, Node nodeInScene) throws IOException {
+        Stage stage = (Stage) nodeInScene.getScene().getWindow();  // Lấy stage từ node
+
+        FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(fxmlPath));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root);
+        if (cssPath != null) {
+            scene.getStylesheets().add(SceneNavigator.class.getResource(cssPath).toExternalForm());
+        }
+
+        stage.setScene(scene);
+        stage.show();
 
         return loader;
     }
@@ -75,4 +100,6 @@ public class SceneNavigator {
 
         popupStage.showAndWait(); // hoặc .showAndWait() nếu muốn chặn cửa sổ cha
     }
+
+
 }

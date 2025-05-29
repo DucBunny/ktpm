@@ -103,7 +103,7 @@ public class CreatePaymentController {
                 int revenueItemId = selectedRevenue.getId();
 
                 insertPayment(residentId, roomNumber, revenueItemId, amount, paymentDate, note);
-                CustomAlert.showSuccessAlert("Lưu thanh toán thành công!", true, 2);
+                CustomAlert.showSuccessAlert("Lưu thanh toán thành công!", true, 1);
 
                 handleSave();
             } catch (NumberFormatException ex) {

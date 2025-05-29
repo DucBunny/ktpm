@@ -19,18 +19,18 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.HomePageController">
     <children>
-      <AnchorPane>
-         <children>
-            <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Bạn đang đăng nhập với quyền ..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </AnchorPane>
+        <AnchorPane>
+            <children>
+                <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Bạn đang đăng nhập với quyền ..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            </children>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+        </AnchorPane>
         <HBox alignment="CENTER" prefHeight="70.0" spacing="40.0" style="-fx-background-color: #586995; -fx-background-radius: 20;">
             <children>
                 <Button id="buttonActive" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Trang chủ" textAlignment="CENTER" textFill="#424f70">
@@ -44,7 +44,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Căn hộ" textAlignment="CENTER" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToRooms" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Căn hộ" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -55,7 +55,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cư dân" textAlignment="CENTER" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToResidents" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cư dân" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -77,7 +77,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Thống kê" textAlignment="CENTER" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToPayments" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Thống kê" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -102,29 +102,29 @@
                 </MenuButton>
                 <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
                     <children>
-                  <Label fx:id="nameLabel" prefHeight="50.0" prefWidth="170.0" text="Xin chào, username">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <AnchorPane prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 100%;">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.5">
-                           <image>
-                              <Image url="@../images/avatar.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="5.0" right="10.0" top="5.0" />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </AnchorPane>
+                        <Label fx:id="nameLabel" prefHeight="50.0" prefWidth="170.0" text="Xin chào, username">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="20.0" />
+                            </HBox.margin>
+                        </Label>
+                        <AnchorPane prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 100%;">
+                            <children>
+                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.5">
+                                    <image>
+                                        <Image url="@../images/avatar.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                            <HBox.margin>
+                                <Insets bottom="5.0" right="10.0" top="5.0" />
+                            </HBox.margin>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                        </AnchorPane>
                     </children>
                     <HBox.margin>
                         <Insets />
@@ -182,7 +182,7 @@
                                 </ImageView>
                             </children>
                         </Pane>
-                        <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="1">
+                        <Pane onMouseClicked="#changeToResidents" style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="1">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
@@ -212,7 +212,7 @@
                                 </Label>
                             </children>
                         </Pane>
-                        <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2">
+                        <Pane onMouseClicked="#changeToPayments" style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
@@ -242,7 +242,7 @@
                                 </Label>
                             </children>
                         </Pane>
-                        <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                        <Pane onMouseClicked="#changeToResidents" style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                             <GridPane.margin>
                                 <Insets right="9.0" />
                             </GridPane.margin>
@@ -257,7 +257,7 @@
                                 </Label>
                             </children>
                         </Pane>
-                        <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Pane onMouseClicked="#changeToRevenues" style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets left="20.0" right="10.0" />
                             </GridPane.margin>
@@ -272,7 +272,7 @@
                                 </Label>
                             </children>
                         </Pane>
-                        <Pane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Pane onMouseClicked="#changeToResidents" style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);" styleClass="btnLabel" GridPane.columnIndex="2" GridPane.rowIndex="2">
                             <GridPane.margin>
                                 <Insets left="20.0" right="10.0" />
                             </GridPane.margin>

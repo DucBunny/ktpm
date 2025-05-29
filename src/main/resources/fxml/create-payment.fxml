@@ -3,36 +3,72 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1120.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1120.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.CreatePaymentController">
     <children>
-      <Label alignment="CENTER" layoutX="485.0" layoutY="49.0" prefWidth="150.0" styleClass="boldText" text="Thu phí" AnchorPane.leftAnchor="485.0" AnchorPane.rightAnchor="485.0" AnchorPane.topAnchor="50.0">
+      <Label alignment="CENTER" layoutX="485.0" layoutY="30.0" prefWidth="150.0" styleClass="boldText" text="Thu phí" AnchorPane.leftAnchor="485.0" AnchorPane.rightAnchor="485.0" AnchorPane.topAnchor="30.0">
          <font>
-            <Font size="40.0" />
+            <Font name="System Bold" size="40.0" />
          </font>
       </Label>
-      <Label layoutX="178.0" layoutY="158.0" prefWidth="170.0" styleClass="boldText" text="Tên khoản thu" AnchorPane.leftAnchor="90.0">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <ComboBox layoutX="155.0" layoutY="485.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="145.0" />
-      <Label layoutX="163.0" layoutY="258.0" prefWidth="170.0" styleClass="boldText" text="Tên người nộp" AnchorPane.leftAnchor="90.0">
+      <Label layoutX="90.0" layoutY="128.0" prefWidth="170.0" styleClass="boldText" text="Tên khoản thu" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="128.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ComboBox layoutX="155.0" layoutY="485.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="245.0" />
-      <Label layoutX="165.0" layoutY="358.0" prefWidth="120.0" styleClass="boldText" text="Ngày nộp" AnchorPane.leftAnchor="90.0">
+      <Button id="buttonChoose" fx:id="loadRevenueButton" layoutX="355.0" layoutY="145.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="95.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Chọn" textFill="WHITE" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="116.0">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <ComboBox fx:id="revenueNameComboBox" layoutX="485.0" layoutY="115.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="115.0" />
+      <Label layoutX="90.0" layoutY="208.0" prefWidth="170.0" styleClass="boldText" text="Tên người nộp" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="208.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ComboBox layoutX="145.0" layoutY="475.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="345.0" />
-        <Button layoutX="435.0" layoutY="400.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="545.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Ghi nhận" textFill="WHITE" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="460.0">
+      <Button id="buttonChoose" fx:id="loadResidentButton" layoutX="355.0" layoutY="246.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="95.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Chọn" textFill="WHITE" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="196.0">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <ComboBox fx:id="residentNameComboBox" layoutX="485.0" layoutY="195.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="195.0" />
+      <Label layoutX="90.0" layoutY="288.0" prefWidth="120.0" styleClass="boldText" text="Ngày nộp" AnchorPane.leftAnchor="90.0">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="paymentDatePicker" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10; -fx-background-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="275.0" />
+      <Label layoutX="90.0" layoutY="368.0" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Số tiền" AnchorPane.leftAnchor="90.0">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="amountField" layoutX="485.0" layoutY="355.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="355.0">
+         <font>
+            <Font size="20.0" />
+         </font></TextField>
+      <Label layoutX="85.0" layoutY="448.0" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Ghi chú" AnchorPane.leftAnchor="90.0">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="noteField" layoutX="485.0" layoutY="435.0" prefHeight="60.0" prefWidth="545.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="435.0">
+         <font>
+            <Font size="20.0" />
+         </font></TextField>
+        <Button fx:id="saveButton" layoutX="485.0" layoutY="530.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="545.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Ghi nhận" textFill="WHITE" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="530.0">
             <font>
                 <Font size="20.0" />
             </font>
@@ -40,21 +76,5 @@
             <Cursor fx:constant="HAND" />
          </cursor>
         </Button>
-      <Button id="buttonChoose" layoutX="355.0" layoutY="145.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="95.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Chọn" textFill="WHITE" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="146.0">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <Button id="buttonChoose" layoutX="355.0" layoutY="246.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="95.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Chọn" textFill="WHITE" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="246.0">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
     </children>
 </AnchorPane>

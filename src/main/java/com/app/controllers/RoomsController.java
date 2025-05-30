@@ -1,6 +1,6 @@
 package com.app.controllers;
 
-import com.app.models.Revenues;
+import com.app.models.Room;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;
@@ -10,16 +10,19 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
 
@@ -32,207 +35,276 @@ public class RoomsController {
     @FXML
     private Label nameLabel;
     @FXML
-    private MenuItem MenuItem_SignUp;
+    private GridPane roomsGrid;
     @FXML
-    private TableView<Revenues> tableRevenues;
+    private TextField roomNameField; // Field tìm kiếm theo ten phòng
     @FXML
-    private TableColumn<Revenues, String> nameRevenues;
+    private ComboBox<String> floorComboBox; // Option tìm kiếm theo tầng
     @FXML
-    private TableColumn<Revenues, String> statusRevenues;
+    private ComboBox<String> statusComboBox; // Option tìm kiếm theo trạng thái của phòng
     @FXML
-    private TableColumn<Revenues, String> valueRevenues;
-    @FXML
-    private TableColumn<Revenues, String> descriptionRevenues;
-    @FXML
-    private TableColumn<Revenues, String> categoryRevenues;
-    @FXML
-    private TableColumn<Revenues, Void> actionRevenues;
+    private ComboBox<String> ownerComboBox; // Option tìm kiếm theo tên chủ hộ
 
-    private ObservableList<Revenues> revenuesList = FXCollections.observableArrayList();
+    // Danh sách các room đang có
+    private ObservableList<Room> roomList = FXCollections.observableArrayList();
+    // Danh sách room khi lọc
+    private ObservableList<Room> filteredRoomList = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize(String role, String username) {
+    public void initialize(String role, String username) throws IOException {
         this.role = role;
         this.username = username;
 
-        if (Objects.equals(role, "admin")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
-            MenuItem_SignUp.setVisible(true);
-        } else if (Objects.equals(role, "cashier")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
-        }
-
+        // Hiển thị thông tin người dùng
+        roleLabel.setText("Bạn đang đăng nhập với quyền " + role);
         nameLabel.setText("Xin chào, " + username);
 
-        // Trừ khoảng scroll bar 17px hoặc padding nếu cần
-        double padding = 17; // hoặc 0 nếu không cần
-        tableRevenues.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // Khởi tạo ComboBox
+        initializeComboBoxes();
 
-        nameRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.2));
-        statusRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.15));
-        valueRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
-        descriptionRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.3));
-        categoryRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
+        // Tải dữ liệu phòng từ database
+        loadRoomsFromDatabase();
 
-        nameRevenues.setCellValueFactory(new PropertyValueFactory<>("name"));
-        statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
-        valueRevenues.setCellValueFactory(new PropertyValueFactory<>("value"));
-        descriptionRevenues.setCellValueFactory(new PropertyValueFactory<>("description"));
-        categoryRevenues.setCellValueFactory(new PropertyValueFactory<>("category"));
+        // Hiển thị danh sách phòng lên GridPane
+        filteredRoomList.addAll(roomList);
+        populateRoomsGrid();
 
-        loadRevenuesFromDatabase();
-        addActionButtonsToTable();
+        // Thêm sự kiện lọc khi người dùng nhập hoặc chọn giá trị
+        setupSearchAndFilter();
     }
 
-    //    Header Buton ---------------------------------------------------------
-    public void changeToHomePage(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
-                , "/styles/home-page.css", event, true);
+    private void initializeComboBoxes() throws IOException {
+        // Điền dữ liệu cho ComboBox số tầng (có thể lấy từ database)
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT DISTINCT floor FROM rooms")) {
+            ObservableList<String> floors = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                floors.add(resultSet.getString("floor"));
+            }
+            floors.add("Tất cả");
+            floorComboBox.setItems(floors);
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải danh sách tầng.");
+        }
+
+        // Điền dữ liệu cho ComboBox trạng thái
+        statusComboBox.setItems(FXCollections.observableArrayList("Đang ở", "Trống", "Đang sửa", "Tất cả"));
+
+        // Điền dữ liệu cho ComboBox chủ hộ (Lấy dữ liệu từ bảng residents)
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(
+                     "SELECT DISTINCT full_name FROM residents WHERE relationship_to_owner = 'owner'"
+             )) {
+            ObservableList<String> owners = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                owners.add(resultSet.getString("full_name"));
+            }
+            owners.add("Tất cả");
+            ownerComboBox.setItems(owners);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải danh sách chủ hộ.");
+        }
+
+    }
+
+//    Lấy ra danh sách các phòng hiện có
+    private void loadRoomsFromDatabase() throws IOException {
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM rooms")) {
+
+            roomList.clear();
+            while (resultSet.next()) {
+                Room room = new Room(
+                        resultSet.getInt("room_number"),
+                        resultSet.getString("floor"),
+                        resultSet.getString("area"),
+                        resultSet.getString("status")
+                );
+                roomList.add(room);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải dữ liệu phòng từ cơ sở dữ liệu.");
+        }
+    }
+
+    private void setupSearchAndFilter() {
+        // Lọc khi nhập tên phòng
+        roomNameField.textProperty().addListener((observable, oldValue, newValue) -> filterRooms());
+
+        // Lọc khi chọn tầng
+        floorComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> filterRooms());
+
+        // Lọc khi chọn trạng thái
+        statusComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> filterRooms());
+
+        // Lọc khi chọn chủ hộ
+        ownerComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> filterRooms());
+    }
+
+    private void filterRooms() {
+        String roomName = roomNameField.getText().trim().toLowerCase();
+        String selectedFloor = floorComboBox.getValue();
+        String selectedStatus = statusComboBox.getValue();
+        String selectedOwner = ownerComboBox.getValue();
+
+        filteredRoomList.clear();
+
+        for (Room room : roomList) {
+            boolean matches = true;
+
+            // Lọc theo tên phòng (số phòng)
+            if (!roomName.isEmpty() && !String.valueOf(room.getRoomNumber()).toLowerCase().contains(roomName)) {
+                matches = false;
+            }
+
+            // Lọc theo tầng - bỏ qua nếu chọn "Tất cả" hoặc chưa chọn gì
+            if (selectedFloor != null && !selectedFloor.equals("Tất cả") && !room.getFloor().equals(selectedFloor)) {
+                matches = false;
+            }
+
+            // Lọc theo trạng thái - bỏ qua nếu chọn "Tất cả" hoặc chưa chọn gì
+            if (selectedStatus != null && !selectedStatus.equals("Tất cả") && !room.getStatus().equals(selectedStatus)) {
+                matches = false;
+            }
+
+
+            // Lọc theo chủ hộ (giả sử cần join với bảng owners để lấy thông tin)
+            // Ở đây tôi giả định rằng Room không có thông tin chủ hộ, bạn có thể mở rộng nếu cần
+            if (selectedOwner != null && !selectedOwner.equals("Tất cả")) {
+                String roomOwner = getRoomOwner(room.getRoomNumber());
+                if (roomOwner == null || !roomOwner.equals(selectedOwner)) {
+                    matches = false;
+                }
+            }
+
+            if (matches) {
+                filteredRoomList.add(room);
+            }
+        }
+
+        // Cập nhật lại GridPane
+        populateRoomsGrid();
+    }
+
+    // Phương thức helper để lấy thông tin chủ hộ của phòng
+    private String getRoomOwner(int roomNumber) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(
+                     "SELECT r.full_name FROM residents r " +
+                             "WHERE r.room_number = " + roomNumber + " " +
+                             "AND r.relationship_to_owner = 'owner'"
+             )) {
+
+            if (resultSet.next()) {
+                return resultSet.getString("full_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Không có chủ hộ hoặc lỗi truy vấn
+    }
+
+//    Hiển thị grid child
+    private void populateRoomsGrid() {
+        roomsGrid.getChildren().clear(); // Xóa các phần tử hiện tại trong GridPane
+        int column = 0;
+        int row = 0;
+
+        for (Room room : filteredRoomList) {
+            // Tạo VBox cho mỗi phòng
+            VBox roomBox = new VBox(20);
+            roomBox.setAlignment(Pos.CENTER);
+            roomBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);");
+            roomBox.setPrefHeight(180.0);
+
+            // Tạo Label cho tên phòng
+            Label roomLabel = new Label("P" + room.getRoomNumber());
+            roomLabel.setAlignment(Pos.CENTER);
+            roomLabel.setPrefWidth(350.0);
+            roomLabel.setStyle("-fx-background-color: #586995; -fx-background-radius: 15;");
+            roomLabel.setTextFill(javafx.scene.paint.Color.WHITE);
+            roomLabel.setFont(new Font(48.0));
+
+            // Tạo HBox chứa trạng thái và nút chi tiết
+            HBox statusBox = new HBox(20);
+            statusBox.setAlignment(Pos.CENTER);
+            statusBox.setPrefHeight(40.0);
+            statusBox.setPrefWidth(410.0);
+
+            Label statusLabel = new Label("Trạng thái: " + room.getStatus());
+            statusLabel.setAlignment(Pos.CENTER);
+            statusLabel.setPrefHeight(40.0);
+            statusLabel.setPrefWidth(210.0);
+            statusLabel.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10;");
+            statusLabel.setFont(new Font(18.0));
+
+            Button detailButton = new Button("Chi tiết");
+            detailButton.setAlignment(Pos.CENTER);
+            detailButton.setPrefHeight(40.0);
+            detailButton.setPrefWidth(120.0);
+            detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10;");
+            detailButton.setFont(new Font(18.0));
+            detailButton.setOnAction(event -> {
+                try {
+                    showRoomDetails(room);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            statusBox.getChildren().addAll(statusLabel, detailButton);
+            roomBox.getChildren().addAll(roomLabel, statusBox);
+
+            // Thêm roomBox vào GridPane
+            roomsGrid.add(roomBox, column, row);
+            column++;
+            if (column == 3) { // 3 cột mỗi hàng
+                column = 0;
+                row++;
+            }
+        }
+    }
+
+    private void showRoomDetails(Room room) throws IOException {
+        // Hiển thị chi tiết phòng
+        CustomAlert.showAlert(Alert.AlertType.INFORMATION, "Chi tiết căn hộ",
+                "Số phòng: P" + room.getRoomNumber() +
+                        "\nTầng: " + room.getFloor() +
+                        "\nDiện tích: " + room.getArea() +
+                        "\nTrạng thái: " + room.getStatus());
+    }
+
+    // Các phương thức xử lý sự kiện nút header
+    public void changeToHomePage(ActionEvent event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml", "/styles/home-page.css", event, true);
         HomePageController controller = loader.getController();
         controller.initialize(role, username);
     }
 
-    //  Pop-up Button Cài đặt --------------------------------------------------
     public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
-                event, false);
+        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css", event, false);
     }
 
     public void changeToSignUp() {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/sign-up.fxml",
-                    "/styles/sign-in-create-account.css", owner);
+            SceneNavigator.showPopupScene("/fxml/sign-up.fxml", "/styles/sign-in-create-account.css", owner);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //    Body -----------------------------------------------------------------
-    public void handleCreateRevenue() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenues.fxml",
-                    "/styles/create-revenues.css", owner);
-
-            //  Reload lại bảng
-            revenuesList.clear();
-            loadRevenuesFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void loadRevenuesFromDatabase() {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM revenue_items");
-
-            while (resultSet.next()) {
-                revenuesList.add(new Revenues(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("status").equals("active") ? "Mở" : "Đóng",
-                        resultSet.getString("unit_price"),
-                        resultSet.getString("description"),
-                        resultSet.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện"
-                ));
-            }
-
-            tableRevenues.setItems(revenuesList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addActionButtonsToTable() {
-        Callback<TableColumn<Revenues, Void>, TableCell<Revenues, Void>> cellFactory = new Callback<>() {
-            @Override
-            public TableCell<Revenues, Void> call(final TableColumn<Revenues, Void> param) {
-                return new TableCell<>() {
-                    private final Button btnEdit = new Button("Sửa");
-                    private final Button btnDelete = new Button("Xóa");
-
-                    {
-                        btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand; -fx-pref-width: 70");
-                        btnEdit.setOnAction((ActionEvent event) -> {
-                            Revenues data = getTableView().getItems().get(getIndex());
-                            handleEdit(data);
-                        });
-
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand; -fx-pref-width: 70");
-                        btnDelete.setOnAction((ActionEvent event) -> {
-                            Revenues data = getTableView().getItems().get(getIndex());
-                            try {
-                                handleDelete(data);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                    }
-
-                    private final HBox pane = new HBox(10, btnEdit, btnDelete);
-
-                    {
-                        pane.setAlignment(Pos.CENTER);
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(pane);
-                        }
-                    }
-                };
-            }
-        };
-
-        actionRevenues.setCellFactory(cellFactory);
-    }
-
-    private void handleEdit(Revenues revenues) {
-        try {
-            // Tạo stage mới hoặc sử dụng SceneNavigator để mở form sửa
-            Stage owner = StageManager.getPrimaryStage();
-
-            // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
-            EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
-
-            SceneNavigator.showPopupScene("/fxml/edit-revenue.fxml", "/styles/edit-revenue.css", owner);
-
-            // Sau khi sửa, làm mới lại bảng dữ liệu:
-            revenuesList.clear();
-            loadRevenuesFromDatabase();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleDelete(Revenues revenues) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa căn hộ này?", revenues.getName());
-        if (result) {
-            try {
-                Connection connection = DatabaseConnection.getConnection();
-                Statement stmt = connection.createStatement();
-
-                String deleteQuery = "DELETE FROM revenue_items WHERE id = " + revenues.getId();
-                int rowsAffected = stmt.executeUpdate(deleteQuery);
-
-                if (rowsAffected > 0) {
-                    tableRevenues.getItems().remove(revenues);
-                    System.out.println("Đã xóa: " + revenues.getName());
-                } else {
-                    System.out.println("Không tìm thấy khoản thu để xóa.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public void changeToRevenues(ActionEvent event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css", event, true);
+        RevenuesController controller = loader.getController();
+        controller.initialize(role, username);
     }
 }

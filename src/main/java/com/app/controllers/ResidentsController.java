@@ -162,11 +162,11 @@ public class ResidentsController {
     }
 
     //    Body -----------------------------------------------------------------
-    public void handleCreateResident() {
+    public void handleCreateResident(ActionEvent event) throws Exception {
         try {
             Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-residents.fxml",
-                    "/styles/create-residents.css", owner);
+            SceneNavigator.showPopupScene("/fxml/create-resident.fxml",
+                    "/styles/create-resident.css", owner);
 
             //  Reload lại bảng
             ResidentsList.clear();

@@ -148,7 +148,7 @@
                                 <Insets right="260.0" />
                             </HBox.margin>
                         </Label>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCreateResident" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-residents" text="Thêm cư dân" textFill="WHITE">
+                        <Button fx:id="handleAddResidents" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCreateResident" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-residents" text="Thêm cư dân" textFill="WHITE">
                             <font>
                                 <Font size="24.0" />
                             </font>

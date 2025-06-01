@@ -5,7 +5,10 @@ import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -85,7 +88,11 @@ public class CreateResidentController {
                     phone == null || phone.isEmpty() ||
                     citizenId == null || citizenId.isEmpty() ||
                     dob == null || genderOption == null || roomOption == null || relationshipOption == null) {
-                showAlert("Thiếu thông tin", "Vui lòng nhập đầy đủ thông tin.");
+                try {
+                    CustomAlert.showErrorAlert("Vui lòng nhập đầy đủ thông tin.");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 return;
             }
 
@@ -110,19 +117,15 @@ public class CreateResidentController {
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                showAlert("Lỗi SQL", "Không thể lưu dữ liệu.");
+                try {
+                    CustomAlert.showErrorAlert("Lỗi SQL, Không thể lưu dữ liệu.");
+                } catch (IOException exc) {
+                    throw new RuntimeException(exc);
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void handleSave() {

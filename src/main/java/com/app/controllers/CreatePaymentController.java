@@ -5,7 +5,10 @@ import com.app.models.Revenues;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -91,7 +94,11 @@ public class CreatePaymentController {
             LocalDate paymentDate = paymentDatePicker.getValue();
 
             if (selectedResident == null || selectedRevenue == null || amountStr.isEmpty() || paymentDate == null) {
-                showAlert("Thiếu thông tin", "Vui lòng nhập đầy đủ thông tin.");
+                try {
+                    CustomAlert.showErrorAlert("Vui lòng nhập đầy đủ thông tin.");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 return;
             }
 
@@ -107,10 +114,18 @@ public class CreatePaymentController {
 
                 handleSave();
             } catch (NumberFormatException ex) {
-                showAlert("Lỗi", "Số tiền không hợp lệ.");
+                try {
+                    CustomAlert.showErrorAlert("Số tiền không hợp lệ.");
+                } catch (IOException exc) {
+                    throw new RuntimeException(exc);
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                showAlert("Lỗi SQL", "Không thể lưu dữ liệu.");
+                try {
+                    CustomAlert.showErrorAlert("Lỗi SQL, Không thể lưu dữ liệu.");
+                } catch (IOException exc) {
+                    throw new RuntimeException(exc);
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -132,14 +147,6 @@ public class CreatePaymentController {
 
             stmt.executeUpdate();
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void handleSave() {

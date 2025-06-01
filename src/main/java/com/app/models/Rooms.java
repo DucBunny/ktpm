@@ -1,12 +1,12 @@
 package com.app.models;
 
-public class Room {
+public class Rooms {
     private int roomNumber;
     private String floor;
     private String area;
     private String status;
 
-    public Room(int roomNumber, String floor, String area, String status) {
+    public Rooms(int roomNumber, String floor, String area, String status) {
         this.roomNumber = roomNumber;
         this.floor = floor;
         this.area = area;

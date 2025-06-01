@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +25,10 @@ public class HomePageController {
     private Label nameLabel;
     @FXML
     private MenuItem MenuItem_SignUp;
+    @FXML
+    private AnchorPane mainContentPane;
+    @FXML
+    private HBox footerBar;
 
     public void initialize(String role, String username) {
         this.role = role;
@@ -31,7 +37,10 @@ public class HomePageController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
-        } else if (Objects.equals(role, "cashier")) {
+            footerBar.setVisible(false);
+            footerBar.setManaged(false);
+            AnchorPane.setBottomAnchor(mainContentPane, 0.0);
+        } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
         }
 

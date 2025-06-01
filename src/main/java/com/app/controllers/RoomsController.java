@@ -1,6 +1,6 @@
 package com.app.controllers;
 
-import com.app.models.Room;
+import com.app.models.Rooms;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;
@@ -50,9 +50,9 @@ public class RoomsController {
     @FXML
     private ComboBox<String> ownerComboBox;
 
-    private final ObservableList<Room> roomList = FXCollections.observableArrayList();
+    private final ObservableList<Rooms> roomList = FXCollections.observableArrayList();
 
-    private final ObservableList<Room> filteredRoomList = FXCollections.observableArrayList();
+    private final ObservableList<Rooms> filteredRoomList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(String role, String username) throws IOException {
@@ -62,7 +62,7 @@ public class RoomsController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
-        } else if (Objects.equals(role, "cashier")) {
+        } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
         }
 
@@ -95,7 +95,7 @@ public class RoomsController {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            CustomAlert.showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải danh sách tầng.");
+            CustomAlert.showErrorAlert("Không thể tải danh sách tầng.");
         }
 
         // Điền dữ liệu cho ComboBox trạng thái
@@ -115,20 +115,20 @@ public class RoomsController {
             ownerComboBox.setItems(owners);
         } catch (SQLException e) {
             e.printStackTrace();
-            CustomAlert.showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải danh sách chủ hộ.");
+            CustomAlert.showErrorAlert("Không thể tải danh sách chủ hộ.");
         }
-
     }
 
     //    Lấy ra danh sách các phòng hiện có
-    private void loadRoomsFromDatabase() throws IOException {
-        try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM rooms")) {
+    private void loadRoomsFromDatabase() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM rooms");
 
             roomList.clear();
             while (resultSet.next()) {
-                Room room = new Room(
+                Rooms room = new Rooms(
                         resultSet.getInt("room_number"),
                         resultSet.getString("floor"),
                         resultSet.getString("area"),
@@ -136,9 +136,8 @@ public class RoomsController {
                 );
                 roomList.add(room);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            CustomAlert.showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải dữ liệu phòng từ cơ sở dữ liệu.");
         }
     }
 
@@ -164,7 +163,7 @@ public class RoomsController {
 
         filteredRoomList.clear();
 
-        for (Room room : roomList) {
+        for (Rooms room : roomList) {
             boolean matches = true;
 
             // Lọc theo tên phòng (số phòng)
@@ -226,7 +225,7 @@ public class RoomsController {
         int column = 0;
         int row = 0;
 
-        for (Room room : filteredRoomList) {
+        for (Rooms room : filteredRoomList) {
             // Tạo VBox cho mỗi phòng
             VBox roomBox = new VBox(20);
             roomBox.setAlignment(Pos.CENTER);
@@ -261,11 +260,11 @@ public class RoomsController {
             detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10;");
             detailButton.setFont(new Font(18.0));
             detailButton.setOnAction(event -> {
-                try {
-                    showRoomDetails(room);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                //                try {
+                //                    showRoomDetails(room);
+                //                } catch (IOException e) {
+                //                    throw new RuntimeException(e);
+                //                }
             });
 
             statusBox.getChildren().addAll(statusLabel, detailButton);
@@ -281,14 +280,14 @@ public class RoomsController {
         }
     }
 
-    private void showRoomDetails(Room room) throws IOException {
-        // Hiển thị chi tiết phòng
-        CustomAlert.showAlert(Alert.AlertType.INFORMATION, "Chi tiết căn hộ",
-                "Số phòng: P" + room.getRoomNumber() +
-                        "\nTầng: " + room.getFloor() +
-                        "\nDiện tích: " + room.getArea() +
-                        "\nTrạng thái: " + room.getStatus());
-    }
+    //    private void showRoomDetails(Room room) throws IOException {
+    //        // Hiển thị chi tiết phòng
+    //        CustomAlert.showAlert(Alert.AlertType.INFORMATION, "Chi tiết căn hộ",
+    //                "Số phòng: P" + room.getRoomNumber() +
+    //                        "\nTầng: " + room.getFloor() +
+    //                        "\nDiện tích: " + room.getArea() +
+    //                        "\nTrạng thái: " + room.getStatus());
+    //    }
 
     //    Header Buton ---------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {

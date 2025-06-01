@@ -6,14 +6,31 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class CustomAlertController {
     @FXML
     private AnchorPane Pane_Alert;
+
+    // Success
+    @FXML
+    private HBox Pane_Success;
     @FXML
     private Label titleSuccessLabel;
+
+    // Error
+    @FXML
+    private HBox Pane_Error;
+    @FXML
+    private Label titleErrorLabel;
+    @FXML
+    private Label btnClose;
+
+    // Confirm
+    @FXML
+    private AnchorPane Pane_Confirm;
     @FXML
     private Label titleLabel;
     @FXML
@@ -27,6 +44,8 @@ public class CustomAlertController {
     private boolean autoClose = false;
     private int autoCloseSeconds = 0;
     private boolean isConfirm = false;
+    private boolean isSuccess = false;
+    private boolean isError = false;
     private boolean userChoice = false; // true: Yes, false: No
 
     public void setAlertStage(Stage stage) {
@@ -35,6 +54,10 @@ public class CustomAlertController {
 
     public void setSuccessTitle(String title) {
         titleSuccessLabel.setText(title);
+    }
+
+    public void setErrorTitle(String title) {
+        titleErrorLabel.setText(title);
     }
 
     public void setTitle(String title) {
@@ -52,6 +75,14 @@ public class CustomAlertController {
 
     public void setConfirmMode(boolean confirmMode) {
         this.isConfirm = confirmMode;
+    }
+
+    public void setSuccessMode(boolean successMode) {
+        this.isSuccess = successMode;
+    }
+
+    public void setErrorMode(boolean errorMode) {
+        this.isError = errorMode;
     }
 
     public void startAutoClose() {
@@ -84,19 +115,26 @@ public class CustomAlertController {
 
     public void setupMode() {
         if (isConfirm) {
-            titleSuccessLabel.setVisible(false);
-            titleLabel.setVisible(true);
-            messageLabel.setVisible(true);
-            yesButton.setVisible(true);
-            noButton.setVisible(true);
+            Pane_Confirm.setVisible(true);
+            Pane_Success.setVisible(false);
+            Pane_Error.setVisible(false);
             Pane_Alert.setStyle("-fx-border-color: #586995; -fx-border-radius: 15; -fx-background-color: #FFFFFF; -fx-background-radius: 15");
-        } else {
-            titleSuccessLabel.setVisible(true);
-            titleLabel.setVisible(false);
-            messageLabel.setVisible(false);
-            yesButton.setVisible(false);
-            noButton.setVisible(false);
+        } else if (isSuccess) {
+            Pane_Success.setVisible(true);
+            Pane_Confirm.setVisible(false);
+            Pane_Error.setVisible(false);
             Pane_Alert.setStyle("-fx-border-color: #71CC2E; -fx-border-radius: 15; -fx-background-color: #FFFFFF; -fx-background-radius: 15");
+        } else if (isError) {
+            Pane_Error.setVisible(true);
+            Pane_Confirm.setVisible(false);
+            Pane_Success.setVisible(false);
+            Pane_Alert.setStyle("-fx-border-color: #FF4040; -fx-border-radius: 15; -fx-background-color: #FFFFFF; -fx-background-radius: 15");
+            btnClose.setStyle("-fx-text-fill: #00000066;");
+            btnClose.setOnMouseEntered(e -> btnClose.setStyle("-fx-text-fill: #fd5556;"));
+            btnClose.setOnMouseClicked(e -> {
+                Stage stage = (Stage) btnClose.getScene().getWindow();
+                stage.close();
+            });
         }
     }
 }

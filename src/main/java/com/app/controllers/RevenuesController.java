@@ -61,7 +61,7 @@ public class RevenuesController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
-        } else if (Objects.equals(role, "cashier")) {
+        } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
         }
 
@@ -245,11 +245,11 @@ public class RevenuesController {
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
-                String deleteQuery = "DELETE FROM revenue_items WHERE id = ?";
-                PreparedStatement stmt = connection.prepareStatement(deleteQuery);
+                String sql = "DELETE FROM revenue_items WHERE id = ?";
+                PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setInt(1, revenues.getId());
 
-                int rowsAffected = stmt.executeUpdate(deleteQuery);
+                int rowsAffected = stmt.executeUpdate();
 
                 if (rowsAffected > 0) {
                     tableRevenues.getItems().remove(revenues);

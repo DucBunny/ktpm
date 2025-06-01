@@ -145,10 +145,6 @@
     -fx-pref-height: 40px;
 }
 
-.table-row-cell {
-    -fx-cursor: hand;
-}
-
 .table-row-cell:selected {
     -fx-background-color: #586995CC;
 }

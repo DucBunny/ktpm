@@ -65,7 +65,7 @@ public class PaymentDetailController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
-        } else if (Objects.equals(role, "cashier")) {
+        } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
         }
 
@@ -279,8 +279,8 @@ public class PaymentDetailController {
             try {
                 Connection connection = DatabaseConnection.getConnection();
 
-                String deleteQuery = "DELETE FROM payments WHERE id = ?";
-                PreparedStatement stmt = connection.prepareStatement(deleteQuery);
+                String sql = "DELETE FROM payments WHERE id = ?";
+                PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setInt(1, paymentDetail.getId());
 
                 int rowsAffected = stmt.executeUpdate();

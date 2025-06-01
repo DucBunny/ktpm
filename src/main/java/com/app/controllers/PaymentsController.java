@@ -57,7 +57,7 @@ public class PaymentsController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
-        } else if (Objects.equals(role, "cashier")) {
+        } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
         }
 
@@ -87,10 +87,9 @@ public class PaymentsController {
         tablePaymentStatistics.setRowFactory(tv -> {
             TableRow<PaymentStatistics> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() >= 2 && !row.isEmpty()) {
-                    PaymentStatistics rowData = row.getItem();
+                if (event.getClickCount() >= 2 && row.getItem().getNumberOfPayers() != 0) {
                     try {
-                        openPaymentDetailScene(rowData.getNameRevenue()); // lấy revenue name từ row
+                        openPaymentDetailScene(row.getItem().getNameRevenue());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

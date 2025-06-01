@@ -254,7 +254,7 @@ public class RoomsController {
             detailButton.setFont(new Font(18.0));
             detailButton.setOnAction(event -> {
                 try {
-                    showRoomDetails(room);
+                    showRoomDetails(event, room.getRoomNumber());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -273,13 +273,11 @@ public class RoomsController {
         }
     }
 
-    private void showRoomDetails(Room room) throws IOException {
+    private void showRoomDetails(ActionEvent event, int roomname) throws IOException {
         // Hiển thị chi tiết phòng
-        CustomAlert.showAlert(Alert.AlertType.INFORMATION, "Chi tiết căn hộ",
-                "Số phòng: P" + room.getRoomNumber() +
-                        "\nTầng: " + room.getFloor() +
-                        "\nDiện tích: " + room.getArea() +
-                        "\nTrạng thái: " + room.getStatus());
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/room-detail.fxml", "/styles/room-detail.css", event, true);
+        RoomDetailController controller = loader.getController();
+        controller.initialize(role, username, roomname);
     }
 
     // Các phương thức xử lý sự kiện nút header

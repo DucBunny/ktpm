@@ -3,6 +3,11 @@
     src: url("fonts/Raleway-Bold.ttf");
 }
 
+@font-face {
+    font-family: "Raleway SemiBold";
+    src: url("fonts/Raleway-SemiBold.ttf");
+}
+
 .boldText {
     -fx-font-family: "Raleway Bold";
     -fx-font-weight: 700;
@@ -70,8 +75,8 @@
 }
 
 .menu-item {
-    -fx-font-family: "Raleway Bold";
-    -fx-font-weight: 700;
+    -fx-font-family: "Raleway SemiBold";
+    -fx-font-weight: 600;
     -fx-font-size: 14px;
     -fx-background-color: transparent;
     -fx-padding: 16 7 0 16;
@@ -85,15 +90,14 @@
     -fx-text-fill: #424f70;
 }
 
-
 /************************************************************ Body ************************************************************/
 
 .btn-edit-room {
-    -fx-font-family: "Raleway Bold";
-    -fx-font-weight: 700;
-    -fx-font-size: 20px;
+    -fx-font-family: "Raleway SemiBold";
+    -fx-font-weight: 600;
+    -fx-font-size: 16px;
     -fx-background-color: #516089;
-    -fx-background-radius: 15;
+    -fx-background-radius: 10;
 }
 
 .btn-edit-room:hover {
@@ -104,4 +108,60 @@
 
 .btn-edit-room:pressed {
     -fx-translate-y: 1px;
+}
+
+/********************************* Table *********************************/
+/* Định dạng chung cho toàn bảng */
+.table-view {
+    -fx-background-color: #f4f4f4;
+    -fx-table-cell-border-color: transparent;
+    -fx-border-color: #cccccc;
+}
+
+/* Tiêu đề */
+.table-view .column-header-background {
+    -fx-background-color: #ffffff;
+}
+
+.table-view .column-header {
+    -fx-border-color: #00000033;
+    -fx-border-width: 0px 1px 1px 0px;
+    -fx-background-color: #ffffff;
+    -fx-pref-height: 30px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #516089;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* Dữ liệu */
+.table-view .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell {
+    -fx-border-color: #CCCCCC4C;
+    -fx-border-width: 0 1px 1px 0;
+    -fx-alignment: center;
+    -fx-text-fill: #516089;
+    -fx-font-size: 14px;
+    -fx-pref-height: 20px;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #586995CC;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #ffffff;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #51608926;
+}
+
+.table-row-cell:hover .table-cell {
+    -fx-text-fill: #516089;
 }

@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -24,21 +25,32 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class RoomDetailController {
     private String role;
     private String username;
+
+    //    Header
+    @FXML
+    private Label roleLabel;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private MenuItem MenuItem_SignUp;
+
+    // Body
     private int roomname;
 
     @FXML
+    private VBox ownerBox;
+    @FXML
     private Button btnEditRoom;
-
     @FXML
     private Label ownerField;
     @FXML
     private Label roomName;     // fx:id="roomName"
-    @FXML
-    private Label roomCode;     // fx:id="roomCode"
     @FXML
     private Label roomArea;     // fx:id="roomArea"
     @FXML
@@ -47,8 +59,6 @@ public class RoomDetailController {
     // ==== Bảng Danh sách cư dân ====
     @FXML
     private TableView<Residents> tableResidents;     // fx:id="tableResidents"
-    @FXML
-    private TableColumn<Residents, Integer> colSTT;  // fx:id="colSTT"
     @FXML
     private TableColumn<Residents, String> colHoTen; // fx:id="colHoTen"
     @FXML
@@ -71,7 +81,18 @@ public class RoomDetailController {
         this.username = username;
         this.roomname = roomname;
 
-        colSTT.setCellValueFactory(new PropertyValueFactory<>("id"));
+        this.role = role;
+        this.username = username;
+
+        if (Objects.equals(role, "admin")) {
+            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
+            MenuItem_SignUp.setVisible(true);
+        } else if (Objects.equals(role, "accountant")) {
+            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
+        }
+
+        nameLabel.setText("Xin chào, " + username);
+
         colHoTen.setCellValueFactory(new PropertyValueFactory<>("name"));
         colQuanHe.setCellValueFactory(new PropertyValueFactory<>("relationshipToOwner"));
         colNgaySinh.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
@@ -82,35 +103,45 @@ public class RoomDetailController {
         double padding = 17;
         tableResidents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        colSTT.prefWidthProperty().bind(
-                tableResidents.widthProperty().subtract(padding).multiply(0.05)
-        );
         colHoTen.prefWidthProperty().bind(
-                tableResidents.widthProperty().subtract(padding).multiply(0.20)
+                tableResidents.widthProperty().subtract(padding).multiply(0.2)
         );
         colQuanHe.prefWidthProperty().bind(
-                tableResidents.widthProperty().subtract(padding).multiply(0.15)
+                tableResidents.widthProperty().subtract(padding).multiply(0.12)
         );
         colNgaySinh.prefWidthProperty().bind(
                 tableResidents.widthProperty().subtract(padding).multiply(0.15)
         );
         colGioiTinh.prefWidthProperty().bind(
-                tableResidents.widthProperty().subtract(padding).multiply(0.05)
+                tableResidents.widthProperty().subtract(padding).multiply(0.12)
         );
         colCCCD.prefWidthProperty().bind(
-                tableResidents.widthProperty().subtract(padding).multiply(0.15)
+                tableResidents.widthProperty().subtract(padding).multiply(0.13)
         );
         colSDT.prefWidthProperty().bind(
                 tableResidents.widthProperty().subtract(padding).multiply(0.13)
         );
         colAction.prefWidthProperty().bind(
-                tableResidents.widthProperty().subtract(padding).multiply(0.12)
+                tableResidents.widthProperty().subtract(padding).multiply(0.15)
         );
 
-        loadResidentsData();
+        // Định dạng lại ngày sinh
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        colNgaySinh.setCellFactory(column -> new TableCell<Residents, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.format(formatter));
+                }
+            }
+        });
+
         loadRoomData();
         addActionButtonsToTable();
-
     }
 
     public void loadRoomData() {
@@ -127,15 +158,19 @@ public class RoomDetailController {
 
                 // Gán lên các Label trong giao diện
                 roomName.setText(soNha);
-                roomCode.setText(maCan);
-                roomArea.setText(dienTich + " m²");
-                roomStatus.setText(tinhTrang);
+                roomArea.setText(dienTich + " m");
+                roomStatus.setText(tinhTrang.equals("occupied") ? "Đang ở" : "Trống");
 
                 Rooms room = new Rooms(Integer.parseInt(soNha), maCan, dienTich, tinhTrang);
 
                 btnEditRoom.setOnAction(event -> {
                     handleEditRoomDetail(room);
                 });
+
+                if (tinhTrang.equals("occupied")) {
+                    ownerBox.setVisible(true);
+                    loadResidentsData();
+                }
             } else {
                 System.out.println("Không tìm thấy căn hộ có room_number = 101");
             }
@@ -152,23 +187,32 @@ public class RoomDetailController {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM residents WHERE room_number = '" + roomname + "'");
 
             residentList.clear();
-            int stt = 1;
             while (resultSet.next()) {
+                String relationshipRaw = resultSet.getString("relationship_to_owner");
+                String relationshipDisplay = switch (relationshipRaw) {
+                    case "owner" -> "Chủ hộ";
+                    case "spouse" -> "Vợ/Chồng";
+                    case "parent" -> "Cha/Mẹ";
+                    case "child" -> "Con cái";
+                    default -> "Khác";
+                };
+
                 residentList.add(new Residents(
-                        stt,
+                        resultSet.getInt("id"),
                         resultSet.getString("full_name"),
                         resultSet.getDate("date_of_birth").toLocalDate(),
-                        resultSet.getString("gender"),
+                        resultSet.getString("gender").equals("male") ? "Nam" : "Nữ",
                         resultSet.getString("phone"),
                         resultSet.getString("citizen_id"),
                         resultSet.getString("room_number"),
-                        resultSet.getString("relationship_to_owner")
+                        relationshipDisplay
                 ));
-                stt++;
+
                 if (resultSet.getString("relationship_to_owner").equals("owner")) {
                     ownerField.setText(resultSet.getString("full_name"));
                 }
             }
+
             tableResidents.setItems(residentList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,13 +298,13 @@ public class RoomDetailController {
                     private final Button btnDelete = new Button("Xóa");
 
                     {
-                        btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 40; -fx-font-size: 12");
                         btnEdit.setOnAction((ActionEvent event) -> {
                             Residents data = getTableView().getItems().get(getIndex());
                             handleEditResidents(data);
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 40; -fx-font-size: 12");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Residents data = getTableView().getItems().get(getIndex());
                             try {
@@ -295,6 +339,14 @@ public class RoomDetailController {
 
 
     //    Header Buton ---------------------------------------------------------
+    public void changeToHomePage(ActionEvent event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
+                , "/styles/home-page.css", event, true);
+
+        HomePageController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
     public void changeToRooms(Event event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/rooms.fxml", "/styles/rooms.css",
                 event, true);
@@ -316,6 +368,14 @@ public class RoomDetailController {
                 event, true);
 
         RevenuesController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
+    public void changeToPayments(ActionEvent event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payments.fxml", "/styles/payments.css",
+                event, true);
+
+        PaymentsController controller = loader.getController();
         controller.initialize(role, username);
     }
 

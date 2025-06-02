@@ -1,10 +1,7 @@
 package com.app.controllers;
 
 import com.app.models.Rooms;
-import com.app.utils.CustomAlert;
-import com.app.utils.DatabaseConnection;
-import com.app.utils.SceneNavigator;
-import com.app.utils.StageManager;
+import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,9 +43,7 @@ public class RoomsController {
     @FXML
     private ComboBox<String> floorComboBox;
     @FXML
-    private ComboBox<String> statusComboBox;
-    @FXML
-    private ComboBox<String> ownerComboBox;
+    private ComboBox<ComboBoxOption> statusComboBox;
 
     private final ObservableList<Rooms> roomList = FXCollections.observableArrayList();
 
@@ -63,7 +58,7 @@ public class RoomsController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
         } else if (Objects.equals(role, "accountant")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
+            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
         nameLabel.setText("Xin chào, " + username);
@@ -83,6 +78,7 @@ public class RoomsController {
     }
 
     private void initializeComboBoxes() throws IOException {
+        // Load floors
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT DISTINCT floor FROM rooms")) {
@@ -90,7 +86,7 @@ public class RoomsController {
             while (resultSet.next()) {
                 floors.add(resultSet.getString("floor"));
             }
-            floors.add("Tất cả");
+            floors.addFirst("Tất cả");
             floorComboBox.setItems(floors);
 
         } catch (SQLException e) {
@@ -98,25 +94,12 @@ public class RoomsController {
             CustomAlert.showErrorAlert("Không thể tải danh sách tầng.");
         }
 
-        // Điền dữ liệu cho ComboBox trạng thái
-        statusComboBox.setItems(FXCollections.observableArrayList("Đang ở", "Trống", "Đang sửa", "Tất cả"));
-
-        // Điền dữ liệu cho ComboBox chủ hộ (Lấy dữ liệu từ bảng residents)
-        try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(
-                     "SELECT DISTINCT full_name FROM residents WHERE relationship_to_owner = 'owner'"
-             )) {
-            ObservableList<String> owners = FXCollections.observableArrayList();
-            while (resultSet.next()) {
-                owners.add(resultSet.getString("full_name"));
-            }
-            owners.add("Tất cả");
-            ownerComboBox.setItems(owners);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CustomAlert.showErrorAlert("Không thể tải danh sách chủ hộ.");
-        }
+        // Load status
+        statusComboBox.setItems(FXCollections.observableArrayList(
+                new ComboBoxOption("Tất cả", "Tất cả"),
+                new ComboBoxOption("Đang ở", "occupied"),
+                new ComboBoxOption("Trống", "available")
+        ));
     }
 
     //    Lấy ra danh sách các phòng hiện có
@@ -150,16 +133,12 @@ public class RoomsController {
 
         // Lọc khi chọn trạng thái
         statusComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> filterRooms());
-
-        // Lọc khi chọn chủ hộ
-        ownerComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> filterRooms());
     }
 
     private void filterRooms() {
         String roomName = roomNameField.getText().trim().toLowerCase();
         String selectedFloor = floorComboBox.getValue();
-        String selectedStatus = statusComboBox.getValue();
-        String selectedOwner = ownerComboBox.getValue();
+        String selectedStatus = (statusComboBox.getValue() != null) ? (statusComboBox.getValue().getValue()) : null;
 
         filteredRoomList.clear();
 
@@ -181,16 +160,6 @@ public class RoomsController {
                 matches = false;
             }
 
-
-            // Lọc theo chủ hộ (giả sử cần join với bảng owners để lấy thông tin)
-            // Ở đây tôi giả định rằng Room không có thông tin chủ hộ, bạn có thể mở rộng nếu cần
-            if (selectedOwner != null && !selectedOwner.equals("Tất cả")) {
-                String roomOwner = getRoomOwner(room.getRoomNumber());
-                if (roomOwner == null || !roomOwner.equals(selectedOwner)) {
-                    matches = false;
-                }
-            }
-
             if (matches) {
                 filteredRoomList.add(room);
             }
@@ -200,30 +169,10 @@ public class RoomsController {
         populateRoomsGrid();
     }
 
-    // Phương thức helper để lấy thông tin chủ hộ của phòng
-    private String getRoomOwner(int roomNumber) {
-        try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(
-                     "SELECT r.full_name FROM residents r " +
-                             "WHERE r.room_number = " + roomNumber + " " +
-                             "AND r.relationship_to_owner = 'owner'"
-             )) {
-
-            if (resultSet.next()) {
-                return resultSet.getString("full_name");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null; // Không có chủ hộ hoặc lỗi truy vấn
-    }
-
     //    Hiển thị grid child
     private void populateRoomsGrid() {
-        roomsGrid.getChildren().clear(); // Xóa các phần tử hiện tại trong GridPane
-        int column = 0;
-        int row = 0;
+        roomsGrid.getChildren().clear();
+        int column = 0, row = 0;
 
         for (Rooms room : filteredRoomList) {
             // Tạo VBox cho mỗi phòng
@@ -246,7 +195,7 @@ public class RoomsController {
             statusBox.setPrefHeight(40.0);
             statusBox.setPrefWidth(410.0);
 
-            Label statusLabel = new Label("Trạng thái: " + room.getStatus());
+            Label statusLabel = new Label("Trạng thái: " + (room.getStatus().equals("occupied") ? "Đang ở" : "Trống"));
             statusLabel.setAlignment(Pos.CENTER);
             statusLabel.setPrefHeight(40.0);
             statusLabel.setPrefWidth(210.0);
@@ -257,14 +206,23 @@ public class RoomsController {
             detailButton.setAlignment(Pos.CENTER);
             detailButton.setPrefHeight(40.0);
             detailButton.setPrefWidth(120.0);
-            detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10;");
+            detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand");
             detailButton.setFont(new Font(18.0));
+            detailButton.setOnMouseEntered(e -> {
+                detailButton.setStyle("-fx-background-color: #E0E0E0; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-translate-y: -0.5px;");
+            });
+            detailButton.setOnMouseExited(e -> {
+                detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand");
+            });
+            detailButton.setOnMousePressed(e -> {
+                detailButton.setStyle("-fx-background-color: #D6D6D6; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-translate-y: 1px;");
+            });
             detailButton.setOnAction(event -> {
-                //                try {
-                //                    showRoomDetails(room);
-                //                } catch (IOException e) {
-                //                    throw new RuntimeException(e);
-                //                }
+                try {
+                    openRoomDetailScene(event, room.getRoomNumber());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
             statusBox.getChildren().addAll(statusLabel, detailButton);
@@ -279,15 +237,6 @@ public class RoomsController {
             }
         }
     }
-
-    //    private void showRoomDetails(Room room) throws IOException {
-    //        // Hiển thị chi tiết phòng
-    //        CustomAlert.showAlert(Alert.AlertType.INFORMATION, "Chi tiết căn hộ",
-    //                "Số phòng: P" + room.getRoomNumber() +
-    //                        "\nTầng: " + room.getFloor() +
-    //                        "\nDiện tích: " + room.getArea() +
-    //                        "\nTrạng thái: " + room.getStatus());
-    //    }
 
     //    Header Buton ---------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {
@@ -336,5 +285,14 @@ public class RoomsController {
     public void changeToSignIn(ActionEvent event) throws Exception {
         SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
                 event, false);
+    }
+
+    //    Body -----------------------------------------------------------------
+    private void openRoomDetailScene(Event event, int roomName) throws IOException {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/room-detail.fxml", "/styles/room-detail.css",
+                event, true);
+
+        RoomDetailController controller = loader.getController();
+        controller.initialize(role, username, roomName);
     }
 }

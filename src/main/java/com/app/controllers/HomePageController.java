@@ -41,7 +41,7 @@ public class HomePageController {
             footerBar.setManaged(false);
             AnchorPane.setBottomAnchor(mainContentPane, 0.0);
         } else if (Objects.equals(role, "accountant")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
+            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
         nameLabel.setText("Xin chào, " + username);

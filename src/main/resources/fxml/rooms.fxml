@@ -117,7 +117,7 @@
                             <children>
                                 <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.5">
                                     <image>
-                                        <Image url="@../images/avatar.png" />
+                                        <Image url="@../images/avt-admin.png" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -145,23 +145,22 @@
             <children>
                 <AnchorPane>
                     <children>
-                        <Label alignment="CENTER" text="THÔNG TIN CĂN HỘ" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Label alignment="CENTER" styleClass="boldText" text="THÔNG TIN CĂN HỘ" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="32.0" />
                             </font>
                         </Label>
                     </children>
                 </AnchorPane>
-                <HBox alignment="CENTER" cache="true" prefHeight="40.0" spacing="54.0">
+                <HBox alignment="CENTER" cache="true" prefHeight="40.0" spacing="100.0">
                     <children>
-                        <TextField fx:id="roomNameField" prefHeight="40.0" prefWidth="285.0" promptText=" Nhập tên căn hộ" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;">
+                        <TextField fx:id="roomNameField" prefHeight="40.0" prefWidth="300.0" promptText=" Nhập tên căn hộ" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </TextField>
-                        <ComboBox fx:id="floorComboBox" prefHeight="40.0" prefWidth="285.0" promptText=" Số tầng" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" />
-                        <ComboBox fx:id="statusComboBox" prefHeight="40.0" prefWidth="285.0" promptText=" Trạng thái" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" HBox.hgrow="ALWAYS" />
-                        <ComboBox fx:id="ownerComboBox" prefHeight="40.0" prefWidth="285.0" promptText=" Chủ hộ" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" />
+                        <ComboBox fx:id="floorComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Số tầng" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" />
+                        <ComboBox fx:id="statusComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Trạng thái" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" HBox.hgrow="ALWAYS" />
                     </children>
                     <VBox.margin>
                         <Insets top="30.0" />

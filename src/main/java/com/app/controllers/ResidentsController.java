@@ -68,7 +68,7 @@ public class ResidentsController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
         } else if (Objects.equals(role, "accountant")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Thu ngân.");
+            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
         nameLabel.setText("Xin chào, " + username);

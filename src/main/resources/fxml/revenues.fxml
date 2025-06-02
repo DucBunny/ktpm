@@ -149,7 +149,7 @@
                                            AnchorPane.rightAnchor="0.0"
                                            AnchorPane.topAnchor="-0.5">
                                     <image>
-                                        <Image url="@../images/avatar.png"/>
+                                        <Image url="@../images/avt-admin.png"/>
                                     </image>
                                 </ImageView>
                             </children>

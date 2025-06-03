@@ -37,6 +37,9 @@ public class RevenuesController {
 
     //    Body
     @FXML
+    private Button btnCreate;
+
+    @FXML
     private TableView<Revenues> tableRevenues;
     @FXML
     private TableColumn<Revenues, String> nameRevenues;
@@ -63,6 +66,10 @@ public class RevenuesController {
             MenuItem_SignUp.setVisible(true);
         } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
+            btnCreate.setVisible(true);
+            actionRevenues.setVisible(true);
+
+            addActionButtonsToTable();
         }
 
         nameLabel.setText("Xin chào, " + username);
@@ -84,7 +91,6 @@ public class RevenuesController {
         statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         loadRevenuesFromDatabase();
-        addActionButtonsToTable();
     }
 
     //    Header Buton ---------------------------------------------------------

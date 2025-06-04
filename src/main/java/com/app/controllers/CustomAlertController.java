@@ -130,6 +130,7 @@ public class CustomAlertController {
             Pane_Success.setVisible(false);
             Pane_Alert.setStyle("-fx-border-color: #FF4040; -fx-border-radius: 15; -fx-background-color: #FFFFFF; -fx-background-radius: 15");
             btnClose.setStyle("-fx-text-fill: #00000066;");
+            btnClose.setOnMouseExited(e -> btnClose.setStyle("-fx-text-fill: #00000066;"));
             btnClose.setOnMouseEntered(e -> btnClose.setStyle("-fx-text-fill: #fd5556;"));
             btnClose.setOnMouseClicked(e -> {
                 Stage stage = (Stage) btnClose.getScene().getWindow();

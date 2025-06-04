@@ -159,8 +159,14 @@
                                 <Font size="18.0" />
                             </font>
                         </TextField>
-                        <ComboBox fx:id="floorComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Số tầng" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" />
-                        <ComboBox fx:id="statusComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Trạng thái" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="floorComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Số tầng" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></ComboBox>
+                        <ComboBox fx:id="statusComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Trạng thái" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" HBox.hgrow="ALWAYS">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></ComboBox>
                     </children>
                     <VBox.margin>
                         <Insets top="30.0" />

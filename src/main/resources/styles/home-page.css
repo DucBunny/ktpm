@@ -109,6 +109,7 @@
 .btnLabel:hover {
     -fx-font-family: "Raleway SemiBold";
     -fx-font-weight: 600;
+    -fx-translate-y: -1px;
 }
 
 .btnLabel:pressed {

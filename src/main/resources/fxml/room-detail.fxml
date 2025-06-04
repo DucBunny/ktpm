@@ -196,7 +196,7 @@
                                                   <Font name="System Bold" size="24.0" />
                                               </font>
                                           </Label>
-                                          <Button fx:id="btnEditRoom" alignment="BASELINE_CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" styleClass="btn-edit-room" text="Chỉnh sửa" textFill="WHITE" AnchorPane.rightAnchor="0.0">
+                                          <Button fx:id="btnEditRoom" alignment="BASELINE_CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="235.0" styleClass="btn-edit-room" text="Quản lý phương tiện" textFill="WHITE" AnchorPane.rightAnchor="0.0">
                                               <font>
                                                   <Font size="20.0" />
                                               </font>
@@ -263,14 +263,14 @@
                               <children>
                            <AnchorPane>
                               <children>
-                                          <Label prefHeight="30.0" text="Danh sách cư dân đang ở trong căn hộ" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label prefHeight="30.0" text="Thông tin cư dân đang ở" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                               <font>
                                                   <Font name="System Bold" size="24.0" />
                                               </font>
                                           </Label>
-                                          <Button fx:id="btnAddResident" mnemonicParsing="false" onAction="#handleCreateResident" prefHeight="45.0" prefWidth="180.0" styleClass="btn-edit-room" text="Thêm thành viên" textFill="WHITE" AnchorPane.rightAnchor="0.0">
+                                          <Button fx:id="btnAddResident" mnemonicParsing="false" onAction="#handleCreateResident" prefHeight="45.0" prefWidth="200.0" styleClass="btn-edit-room" text="Thêm thành viên" textFill="WHITE" AnchorPane.rightAnchor="0.0">
                                               <font>
-                                                  <Font size="16.0" />
+                                                  <Font size="20.0" />
                                               </font>
                                               <cursor>
                                                   <Cursor fx:constant="HAND" />
@@ -286,8 +286,8 @@
                                           <TableColumn fx:id="colQuanHe" prefWidth="180.0" text="Quan hệ" />
                                           <TableColumn fx:id="colNgaySinh" prefWidth="120.0" text="Ngày sinh" />
                                           <TableColumn fx:id="colGioiTinh" prefWidth="80.0" text="Giới tính" />
-                                          <TableColumn fx:id="colCCCD" prefWidth="180.0" text="Căn cước" />
                                           <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="117.5999755859375" text="Số điện thoại" />
+                                          <TableColumn fx:id="colCCCD" prefWidth="180.0" text="Căn cước" />
                                           <!-- Cột "Thao tác" để chứa nút Sửa / Xóa trong mỗi row -->
                                           <TableColumn fx:id="colAction" prefWidth="119.199951171875" text="Thao tác" />
                                       </columns>

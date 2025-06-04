@@ -46,7 +46,7 @@ public class RoomDetailController {
     @FXML
     private VBox ownerBox;
     @FXML
-    private Button btnEditRoom;
+    private Button btnVehicles;
     @FXML
     private Label ownerField;
     @FXML
@@ -97,8 +97,8 @@ public class RoomDetailController {
         colQuanHe.setCellValueFactory(new PropertyValueFactory<>("relationshipToOwner"));
         colNgaySinh.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         colGioiTinh.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        colCCCD.setCellValueFactory(new PropertyValueFactory<>("citizenId"));
         colSDT.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colCCCD.setCellValueFactory(new PropertyValueFactory<>("citizenId"));
 
         double padding = 17;
         tableResidents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -115,10 +115,10 @@ public class RoomDetailController {
         colGioiTinh.prefWidthProperty().bind(
                 tableResidents.widthProperty().subtract(padding).multiply(0.12)
         );
-        colCCCD.prefWidthProperty().bind(
+        colSDT.prefWidthProperty().bind(
                 tableResidents.widthProperty().subtract(padding).multiply(0.13)
         );
-        colSDT.prefWidthProperty().bind(
+        colCCCD.prefWidthProperty().bind(
                 tableResidents.widthProperty().subtract(padding).multiply(0.13)
         );
         colAction.prefWidthProperty().bind(
@@ -161,11 +161,11 @@ public class RoomDetailController {
                 roomArea.setText(dienTich + " m");
                 roomStatus.setText(tinhTrang.equals("occupied") ? "Đang ở" : "Trống");
 
-                Rooms room = new Rooms(Integer.parseInt(soNha), maCan, dienTich, tinhTrang);
+                //                Rooms room = new Rooms(Integer.parseInt(soNha), maCan, dienTich, tinhTrang);
 
-                btnEditRoom.setOnAction(event -> {
-                    handleEditRoomDetail(room);
-                });
+                //                btnVehicles.setOnAction(event -> {
+                //                    openVehicles();
+                //                });
 
                 if (tinhTrang.equals("occupied")) {
                     ownerBox.setVisible(true);
@@ -233,7 +233,7 @@ public class RoomDetailController {
         }
     }
 
-    public void handleEditRoomDetail(Rooms room) {
+    public void openVehicles(Rooms room) {
         try {
             Stage owner = StageManager.getPrimaryStage();
             EditRoomController.setRoomToEdit(room);

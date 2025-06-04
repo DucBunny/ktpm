@@ -4,68 +4,174 @@ import java.time.LocalDate;
 
 public class Residents {
     private int id;
-    private String name;
-    private String roomNumber;
+    private String fullName;
+    private LocalDate dateOfBirth;
+    private String placeOfBirth;
+    private String ethnicity;
+    private String occupation;
+    private String hometown;
+    private String idCardNumber;
+    private String residenceStatus;
     private String phone;
-    private LocalDate date_of_birth;
     private String gender;
-    private String citizen_id;
-    private String relationship_to_owner;
+    private String relationshipToOwner;
+    private String roomNumber;
+    private String status;
 
-    public Residents(int id, String name, LocalDate date_of_birth, String gender, String phone, String citizen_id, String roomNumber, String relationship_to_owner) {
-        super();
+    public Residents(int id, String fullName, LocalDate dateOfBirth, String placeOfBirth, String ethnicity,
+                     String occupation, String hometown, String idCardNumber, String residenceStatus,
+                     String phone, String gender, String relationshipToOwner, String roomNumber, String status) {
         this.id = id;
-        this.name = name;
-        this.date_of_birth = date_of_birth;
-        this.gender = gender;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.placeOfBirth = placeOfBirth;
+        this.ethnicity = ethnicity;
+        this.occupation = occupation;
+        this.hometown = hometown;
+        this.idCardNumber = idCardNumber;
+        this.residenceStatus = residenceStatus;
         this.phone = phone;
-        this.citizen_id = citizen_id;
+        this.gender = gender;
+        this.relationshipToOwner = relationshipToOwner;
         this.roomNumber = roomNumber;
-        this.relationship_to_owner = relationship_to_owner;
+        this.status = status;
     }
 
-    public Residents(int id, String name, String roomNumber) {
-        super();
+    public Residents(int id, String fullName, LocalDate dateOfBirth, String gender, String phone,
+                     String idCardNumber, String roomNumber, String relationshipToOwner) {
         this.id = id;
-        this.name = name;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.idCardNumber = idCardNumber;
+        this.phone = phone;
+        this.gender = gender;
+        this.relationshipToOwner = relationshipToOwner;
         this.roomNumber = roomNumber;
     }
 
+    public Residents(int id, String fullName, String roomNumber) {
+        this.id = id;
+        this.fullName = fullName;
+        this.roomNumber = roomNumber;
+    }
+
+    // Getters
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
     public LocalDate getDateOfBirth() {
-        return date_of_birth;
+        return dateOfBirth;
     }
 
-    public String getGender() {
-        return gender;
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public String getEthnicity() {
+        return ethnicity;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public String getHometown() {
+        return hometown;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public String getResidenceStatus() {
+        return residenceStatus;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public String getCitizenId() {
-        return citizen_id;
+    public String getGender() {
+        return gender;
+    }
+
+    public String getRelationshipToOwner() {
+        return relationshipToOwner;
     }
 
     public String getRoomNumber() {
         return roomNumber;
     }
 
-    public String getRelationshipToOwner() {
-        return relationship_to_owner;
+    public String getStatus() {
+        return status;
+    }
+
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
+    }
+
+    public void setEthnicity(String ethnicity) {
+        this.ethnicity = ethnicity;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public void setHometown(String hometown) {
+        this.hometown = hometown;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
+    public void setResidenceStatus(String residenceStatus) {
+        this.residenceStatus = residenceStatus;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setRelationshipToOwner(String relationshipToOwner) {
+        this.relationshipToOwner = relationshipToOwner;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return name;
+        return fullName;
     }
 }
 

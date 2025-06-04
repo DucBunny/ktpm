@@ -57,7 +57,7 @@ public class SignInController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            errorLabel.setText("Lỗi kết nối Database!");
+            errorLabel.setText("Lỗi kết nối CSDL!");
         }
     }
 

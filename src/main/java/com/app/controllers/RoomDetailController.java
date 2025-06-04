@@ -1,5 +1,7 @@
 package com.app.controllers;
 
+import com.app.controllers.Resident.EditResidentController;
+import com.app.controllers.Resident.ResidentsController;
 import com.app.models.Residents;
 import com.app.models.Rooms;
 import com.app.utils.CustomAlert;
@@ -223,7 +225,7 @@ public class RoomDetailController {
         try {
             Stage owner = StageManager.getPrimaryStage();
             SceneNavigator.showPopupScene("/fxml/create-resident.fxml",
-                    "/styles/create-resident.css", owner);
+                    "/styles/crud-resident.css", owner);
 
             //  Reload lại bảng
             residentList.clear();
@@ -266,19 +268,19 @@ public class RoomDetailController {
     }
 
     public void handleDeleteResidents(Residents residents) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", residents.getName());
+        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", residents.getFullName());
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
                 Statement stmt = connection.createStatement();
 
-                String deleteQuery = "DELETE FROM residents WHERE citizen_id = " + residents.getCitizenId();
+                String deleteQuery = "DELETE FROM residents WHERE citizen_id = " + residents.getIdCardNumber();
                 System.out.println(residents.getId());
                 int rowsAffected = stmt.executeUpdate(deleteQuery);
 
                 if (rowsAffected > 0) {
                     tableResidents.getItems().remove(residents);
-                    System.out.println("Đã xóa: " + residents.getName());
+                    System.out.println("Đã xóa: " + residents.getFullName());
                 } else {
                     System.out.println("Không tìm thấy cư dân để xóa.");
                 }

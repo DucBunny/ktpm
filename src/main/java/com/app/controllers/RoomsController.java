@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.controllers.Resident.ResidentsController;
 import com.app.models.Rooms;
 import com.app.utils.*;
 import javafx.collections.FXCollections;

@@ -80,7 +80,7 @@ public class SceneNavigator {
     }
 
     // Hiển thị scene trong một cửa sổ mới (Stage mới), dạng popup
-    public static void showPopupScene(String fxmlPath, String cssPath, Stage owner) throws IOException {
+    public static FXMLLoader showPopupScene(String fxmlPath, String cssPath, Stage owner) throws IOException {
         FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(fxmlPath));
         Parent root = loader.load();
 
@@ -99,7 +99,7 @@ public class SceneNavigator {
         }
 
         popupStage.showAndWait(); // hoặc .showAndWait() nếu muốn chặn cửa sổ cha
+
+        return loader;
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.controllers.Resident.ResidentsController;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
 import javafx.event.ActionEvent;
@@ -81,14 +82,10 @@ public class HomePageController {
     }
 
     //  Pop-up Button Cài đặt --------------------------------------------------
-    public void changeToSignUp() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                    "/styles/sign-in-create-account.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void changeToSignUp() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+                "/styles/sign-in-create-account.css", owner);
     }
 
     public void changeToSignIn(ActionEvent event) throws Exception {
@@ -97,23 +94,13 @@ public class HomePageController {
     }
 
     // Footer Button -----------------------------------------------------------
-    public void changeToCreatePayments() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-payment.fxml",
-                    "/styles/create-payment.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void changeToCreatePayments() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-payment.fxml", "/styles/create-payment.css", owner);
     }
 
-    public void changeToCreateRevenues() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenue.fxml",
-                    "/styles/create-revenue.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void changeToCreateRevenues() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-revenue.fxml", "/styles/create-revenue.css", owner);
     }
 }

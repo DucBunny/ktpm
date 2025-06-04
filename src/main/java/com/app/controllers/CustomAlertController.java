@@ -114,20 +114,22 @@ public class CustomAlertController {
     }
 
     public void setupMode() {
+        Pane_Confirm.setVisible(false);
+        Pane_Success.setVisible(false);
+        Pane_Error.setVisible(false);
+
         if (isConfirm) {
             Pane_Confirm.setVisible(true);
-            Pane_Success.setVisible(false);
-            Pane_Error.setVisible(false);
+            Pane_Confirm.toFront();
             Pane_Alert.setStyle("-fx-border-color: #586995; -fx-border-radius: 15; -fx-background-color: #FFFFFF; -fx-background-radius: 15");
         } else if (isSuccess) {
             Pane_Success.setVisible(true);
-            Pane_Confirm.setVisible(false);
-            Pane_Error.setVisible(false);
+            Pane_Success.toFront();
             Pane_Alert.setStyle("-fx-border-color: #71CC2E; -fx-border-radius: 15; -fx-background-color: #FFFFFF; -fx-background-radius: 15");
         } else if (isError) {
             Pane_Error.setVisible(true);
-            Pane_Confirm.setVisible(false);
-            Pane_Success.setVisible(false);
+            Pane_Error.toFront();
+            btnClose.toFront();
             Pane_Alert.setStyle("-fx-border-color: #FF4040; -fx-border-radius: 15; -fx-background-color: #FFFFFF; -fx-background-radius: 15");
             btnClose.setStyle("-fx-text-fill: #00000066;");
             btnClose.setOnMouseExited(e -> btnClose.setStyle("-fx-text-fill: #00000066;"));

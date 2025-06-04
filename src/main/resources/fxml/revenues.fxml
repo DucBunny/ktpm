@@ -138,29 +138,23 @@
         </HBox>
         <VBox VBox.vgrow="ALWAYS">
             <children>
-                <HBox alignment="TOP_RIGHT" prefHeight="77.0">
-                    <children>
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefWidth="430.0" styleClass="boldText" text="DANH SÁCH KHOẢN THU" textAlignment="CENTER">
+            <AnchorPane prefHeight="77.0">
+               <children>
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefWidth="430.0" styleClass="boldText" text="DANH SÁCH KHOẢN THU" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="32.0" />
                             </font>
-                            <HBox.margin>
-                                <Insets right="260.0" />
-                            </HBox.margin>
                         </Label>
-                        <Button fx:id="btnCreate" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCreateRevenue" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-revenues" text="Tạo khoản thu" textFill="WHITE" visible="false">
+                        <Button fx:id="btnCreate" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCreateRevenue" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-revenues" text="Tạo khoản thu" textFill="WHITE" visible="false" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="24.0" />
                             </font>
-                            <HBox.margin>
-                                <Insets right="30.0" />
-                            </HBox.margin>
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </Button>
-                    </children>
-                </HBox>
+               </children>
+            </AnchorPane>
                 <TableView fx:id="tableRevenues" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="nameRevenues" prefWidth="246.3999481201172" text="Tên khoản thu" />

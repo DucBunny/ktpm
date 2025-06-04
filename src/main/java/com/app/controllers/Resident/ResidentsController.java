@@ -1,5 +1,9 @@
-package com.app.controllers;
+package com.app.controllers.Resident;
 
+import com.app.controllers.HomePageController;
+import com.app.controllers.PaymentsController;
+import com.app.controllers.RevenuesController;
+import com.app.controllers.RoomsController;
 import com.app.models.Residents;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
@@ -73,23 +77,24 @@ public class ResidentsController {
 
         nameLabel.setText("Xin chào, " + username);
 
-        // Trừ khoảng scroll bar 17px hoặc padding nếu cần
-        double padding = 17; // hoặc 0 nếu không cần
-        tableResidents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // Trừ khoảng scroll bar 18px
+        double padding = 18;
+        tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         nameResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.2));
         dateOfBirthResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.15));
         genderResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
-        phoneResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.12));
-        citizenIDResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.12));
-        roomResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
-        relationshipResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
+        phoneResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.125));
+        citizenIDResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.125));
+        roomResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
+        relationshipResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
+        actionResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
 
-        nameResidents.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameResidents.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         dateOfBirthResidents.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         genderResidents.setCellValueFactory(new PropertyValueFactory<>("gender"));
         phoneResidents.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        citizenIDResidents.setCellValueFactory(new PropertyValueFactory<>("citizenId"));
+        citizenIDResidents.setCellValueFactory(new PropertyValueFactory<>("idCardNumber"));
         roomResidents.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         relationshipResidents.setCellValueFactory(new PropertyValueFactory<>("relationshipToOwner"));
 
@@ -106,6 +111,21 @@ public class ResidentsController {
                     setText(item.format(formatter));
                 }
             }
+        });
+
+        // Nháy chuột vào row sẽ mở chi tiết cư dân
+        tableResidents.setRowFactory(tv -> {
+            TableRow<Residents> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() >= 2 && row.getItem() != null) {
+                    try {
+                        openResidentDetailScene(row.getItem());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row;
         });
 
         loadResidentsFromDatabase();
@@ -146,14 +166,10 @@ public class ResidentsController {
     }
 
     //  Pop-up Button Cài đặt --------------------------------------------------
-    public void changeToSignUp() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                    "/styles/sign-in-create-account.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void changeToSignUp() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+                "/styles/sign-in-create-account.css", owner);
     }
 
     public void changeToSignIn(ActionEvent event) throws Exception {
@@ -162,18 +178,19 @@ public class ResidentsController {
     }
 
     //    Body -----------------------------------------------------------------
-    public void handleCreateResident() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-resident.fxml",
-                    "/styles/create-resident.css", owner);
+    public void handleCreateResident() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-resident.fxml", "/styles/crud-resident.css", owner);
 
-            //  Reload lại bảng
-            ResidentsList.clear();
-            loadResidentsFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //  Reload lại bảng
+        ResidentsList.clear();
+        loadResidentsFromDatabase();
+    }
+
+    private void openResidentDetailScene(Residents resident) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        ResidentDetailController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/resident-detail.fxml", "/styles/crud-resident.css", owner);
     }
 
     public void loadResidentsFromDatabase() {
@@ -193,21 +210,35 @@ public class ResidentsController {
                     default -> "Khác";
                 };
 
-                ResidentsList.add(new Residents(
+                Residents resident = new Residents(
                         resultSet.getInt("id"),
                         resultSet.getString("full_name"),
                         resultSet.getDate("date_of_birth").toLocalDate(),
                         resultSet.getString("gender").equals("male") ? "Nam" : "Nữ",
                         resultSet.getString("phone"),
-                        resultSet.getString("citizen_id"),
+                        resultSet.getString("id_card_number"),
                         resultSet.getString("room_number"),
                         relationshipDisplay
-                ));
+                );
+
+                resident.setPlaceOfBirth(resultSet.getString("place_of_birth"));
+                resident.setOccupation(resultSet.getString("occupation"));
+                resident.setHometown(resultSet.getString("hometown"));
+                resident.setEthnicity(resultSet.getString("ethnicity"));
+                resident.setResidenceStatus(resultSet.getString("residence_status"));
+                resident.setStatus(resultSet.getString("status"));
+
+                ResidentsList.add(resident);
             }
 
             tableResidents.setItems(ResidentsList);
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                CustomAlert.showErrorAlert("Lỗi, không thể tải dữ liệu cư dân từ CSDL.");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -223,7 +254,11 @@ public class ResidentsController {
                         btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnEdit.setOnAction((ActionEvent event) -> {
                             Residents data = getTableView().getItems().get(getIndex());
-                            handleEdit(data);
+                            try {
+                                handleEdit(data);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         });
 
                         btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
@@ -259,25 +294,18 @@ public class ResidentsController {
         actionResidents.setCellFactory(cellFactory);
     }
 
-    private void handleEdit(Residents residents) {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
+    private void handleEdit(Residents resident) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        EditResidentController.setResidentToEdit(resident); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/edit-resident.fxml", "/styles/crud-resident.css", owner);
 
-            // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
-            EditResidentController.setResidentToEdit(residents); // Hàm static để tạm giữ dữ liệu
-
-            SceneNavigator.showPopupScene("/fxml/edit-resident.fxml", "/styles/edit-resident.css", owner);
-
-            // Sau khi sửa, làm mới lại bảng dữ liệu:
-            ResidentsList.clear();
-            loadResidentsFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Sau khi sửa, làm mới lại bảng dữ liệu:
+        ResidentsList.clear();
+        loadResidentsFromDatabase();
     }
 
     private void handleDelete(Residents residents) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", residents.getName());
+        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", residents.getFullName());
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
@@ -285,11 +313,9 @@ public class ResidentsController {
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setInt(1, residents.getId());
 
-                int rowsAffected = stmt.executeUpdate();
-
-                if (rowsAffected > 0) {
+                if (stmt.executeUpdate() > 0) {
                     tableResidents.getItems().remove(residents);
-                    System.out.println("Đã xóa: " + residents.getName());
+                    System.out.println("Đã xóa cư dân: " + residents.getFullName());
                 } else {
                     System.out.println("Không tìm thấy cư dân để xóa.");
                 }

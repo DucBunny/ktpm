@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.controllers.Resident.ResidentsController;
 import com.app.models.Revenues;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
@@ -57,7 +58,7 @@ public class RevenuesController {
     private final ObservableList<Revenues> revenuesList = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize(String role, String username) {
+    public void initialize(String role, String username) throws IOException {
         this.role = role;
         this.username = username;
 
@@ -127,14 +128,10 @@ public class RevenuesController {
     }
 
     //  Pop-up Button Cài đặt --------------------------------------------------
-    public void changeToSignUp() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                    "/styles/sign-in-create-account.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void changeToSignUp() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+                "/styles/sign-in-create-account.css", owner);
     }
 
     public void changeToSignIn(ActionEvent event) throws Exception {
@@ -143,21 +140,16 @@ public class RevenuesController {
     }
 
     //    Body -----------------------------------------------------------------
-    public void handleCreateRevenue() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-revenue.fxml",
-                    "/styles/create-revenue.css", owner);
+    public void handleCreateRevenue() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-revenue.fxml", "/styles/create-revenue.css", owner);
 
-            //  Reload lại bảng
-            revenuesList.clear();
-            loadRevenuesFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //  Reload lại bảng
+        revenuesList.clear();
+        loadRevenuesFromDatabase();
     }
 
-    public void loadRevenuesFromDatabase() {
+    public void loadRevenuesFromDatabase() throws IOException {
         try {
             Connection connection = DatabaseConnection.getConnection();
             String query = "SELECT * FROM revenue_items ORDER BY unit_price DESC";
@@ -178,6 +170,7 @@ public class RevenuesController {
             tableRevenues.setItems(revenuesList);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomAlert.showErrorAlert("Lỗi, không thể tải dữ liệu khoản thu từ CSDL.");
         }
     }
 
@@ -193,7 +186,11 @@ public class RevenuesController {
                         btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnEdit.setOnAction((ActionEvent event) -> {
                             Revenues data = getTableView().getItems().get(getIndex());
-                            handleEdit(data);
+                            try {
+                                handleEdit(data);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         });
 
                         btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
@@ -229,21 +226,14 @@ public class RevenuesController {
         actionRevenues.setCellFactory(cellFactory);
     }
 
-    private void handleEdit(Revenues revenues) {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
+    private void handleEdit(Revenues revenues) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/edit-revenue.fxml", "/styles/edit-revenue.css", owner);
 
-            // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
-            EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
-
-            SceneNavigator.showPopupScene("/fxml/edit-revenue.fxml", "/styles/edit-revenue.css", owner);
-
-            // Sau khi sửa, làm mới lại bảng dữ liệu:
-            revenuesList.clear();
-            loadRevenuesFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Sau khi sửa, làm mới lại bảng dữ liệu
+        revenuesList.clear();
+        loadRevenuesFromDatabase();
     }
 
     private void handleDelete(Revenues revenues) throws IOException {

@@ -144,6 +144,10 @@
     -fx-pref-height: 40px;
 }
 
+.table-row-cell {
+    -fx-cursor: hand;
+}
+
 .table-row-cell:selected {
     -fx-background-color: #586995CC;
 }
@@ -158,4 +162,29 @@
 
 .table-row-cell:hover .table-cell {
     -fx-text-fill: #516089;
+}
+
+/* Scroll bar của bảng */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: #ECEFF1;
+    -fx-pref-width: 13px;
+    -fx-cursor: hand;
+}
+
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #516089;
+}
+
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: #F5F5F5;
+}
+
+.table-view .scroll-bar:vertical .increment-button,
+.table-view .scroll-bar:vertical .decrement-button {
+    -fx-background-color: #ECEFF1;
+}
+
+.table-view .scroll-bar:vertical .increment-arrow,
+.table-view .scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: #516089;
 }

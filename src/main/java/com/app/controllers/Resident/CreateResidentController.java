@@ -1,4 +1,4 @@
-package com.app.controllers;
+package com.app.controllers.Resident;
 
 import com.app.utils.ComboBoxOption;
 import com.app.utils.CustomAlert;
@@ -43,7 +43,7 @@ public class CreateResidentController {
     @FXML
     private TextField ethnicityField;
     @FXML
-    private TextField citizenIdField;
+    private TextField idCardNumberField;
     @FXML
     private ComboBox<ComboBoxOption> residenceStatusBox;
     @FXML
@@ -95,7 +95,6 @@ public class CreateResidentController {
         }
     }
 
-
     private void initDayBox() {
         ObservableList<ComboBoxOption> days = FXCollections.observableArrayList();
         for (int i = 1; i <= 31; i++) {
@@ -141,9 +140,9 @@ public class CreateResidentController {
         return Stream.of(
                 fullNameField.getText(),
                 placeOfBirthField.getText(),
-                occupationField.getText(),
-                phoneField.getText(),
-                citizenIdField.getText(),
+                // occupationField.getText(),
+                // phoneField.getText(),
+                idCardNumberField.getText(),
                 hometownField.getText(),
                 ethnicityField.getText()
         ).anyMatch(s -> s == null || s.trim().isEmpty()) ||
@@ -159,11 +158,11 @@ public class CreateResidentController {
     }
 
     private boolean isValidPhoneNumber(String phone) {
-        return phone != null && phone.matches("\\d{10,11}");
+        return phone.isEmpty() || phone.matches("\\d{10,11}");
     }
 
-    private boolean isValidCitizenId(String citizenId) {
-        return citizenId != null && citizenId.matches("\\d{12}");
+    private boolean isValidIdCardNumber(String idCardNumber) {
+        return idCardNumber.isEmpty() || idCardNumber.matches("\\d{12}");
     }
 
     private boolean isValidDateOfBirth(int day, int month, int year) {
@@ -198,7 +197,7 @@ public class CreateResidentController {
             int year = yearSpinner.getValue();
             String hometown = hometownField.getText().trim();
             String ethnicity = ethnicityField.getText().trim();
-            String citizenId = citizenIdField.getText().trim();
+            String idCardNumber = idCardNumberField.getText().trim();
             String residenceStatus = residenceStatusBox.getValue().getValue();
             String relationship = relationshipBox.getValue().getValue();
 
@@ -213,7 +212,7 @@ public class CreateResidentController {
             }
 
             // Kiểm tra định dạng CCCD
-            if (!isValidCitizenId(citizenId)) {
+            if (!isValidIdCardNumber(idCardNumber)) {
                 try {
                     CustomAlert.showErrorAlert("Số CCCD phải chứa đúng 12 chữ số.");
                 } catch (IOException ex) {
@@ -245,7 +244,7 @@ public class CreateResidentController {
                     stmt.setString(4, ethnicity);
                     stmt.setString(5, occupation);
                     stmt.setString(6, hometown);
-                    stmt.setString(7, citizenId);
+                    stmt.setString(7, idCardNumber);
                     stmt.setString(8, residenceStatus);
                     stmt.setString(9, phone);
                     stmt.setString(10, gender);
@@ -271,7 +270,7 @@ public class CreateResidentController {
                     connection.rollback();
                     ex.printStackTrace();
                     try {
-                        CustomAlert.showErrorAlert("Lỗi SQL: Không thể lưu dữ liệu.");
+                        CustomAlert.showErrorAlert("Lỗi SQL, không thể lưu dữ liệu.");
                     } catch (IOException exc) {
                         throw new RuntimeException(exc);
                     }
@@ -281,7 +280,7 @@ public class CreateResidentController {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 try {
-                    CustomAlert.showErrorAlert("Lỗi SQL, Không thể lưu dữ liệu.");
+                    CustomAlert.showErrorAlert("Lỗi SQL, không thể lưu dữ liệu.");
                 } catch (IOException exc) {
                     throw new RuntimeException(exc);
                 }

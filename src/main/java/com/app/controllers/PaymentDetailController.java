@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.controllers.Resident.ResidentsController;
 import com.app.models.PaymentDetail;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;

@@ -67,7 +67,7 @@ public class CreateAccountController {
             errorLabel.setText("Email đã tồn tại!");
         } catch (SQLException e) {
             e.printStackTrace();
-            errorLabel.setText("Lỗi kết nối Database!");
+            errorLabel.setText("Lỗi kết nối CSDL!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

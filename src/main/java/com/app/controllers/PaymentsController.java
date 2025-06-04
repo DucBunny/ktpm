@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.controllers.Resident.ResidentsController;
 import com.app.models.PaymentStatistics;
 import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;

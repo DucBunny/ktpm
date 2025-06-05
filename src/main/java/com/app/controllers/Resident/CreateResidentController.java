@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.sql.*;
@@ -52,6 +53,9 @@ public class CreateResidentController {
     @FXML
     private Button saveButton;
 
+    private final ObservableList<ComboBoxOption> roomSuggestions = FXCollections.observableArrayList();
+    private final ObservableList<ComboBoxOption> allRooms = FXCollections.observableArrayList();
+
     public void initialize() {
         initGenderBox();
         initRoomBox();
@@ -62,6 +66,7 @@ public class CreateResidentController {
         initResidenceStatusBox();
         initRelationshipBox();
 
+        setupRoomBoxSearch();
         setupSaveButton();
     }
 
@@ -75,24 +80,85 @@ public class CreateResidentController {
 
     private void initRoomBox() {
         roomBox.getItems().clear();
+        allRooms.clear();
         try {
             Connection connection = DatabaseConnection.getConnection();
-            String sql = "SELECT room_number FROM rooms";
+            String sql = "SELECT * FROM rooms ORDER BY floor ASC, room_number ASC ";
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String roomNumber = rs.getString("room_number");
-                roomBox.getItems().add(new ComboBoxOption("Phòng " + roomNumber, roomNumber));
+                ComboBoxOption option = new ComboBoxOption("Căn hộ " + roomNumber, roomNumber);
+                allRooms.add(option);
+                roomSuggestions.add(option);
             }
+            roomBox.setItems(roomSuggestions);
+
+            roomBox.setConverter(new StringConverter<ComboBoxOption>() {
+                @Override
+                public String toString(ComboBoxOption option) {
+                    return option != null ? option.getLabel() : "";
+                }
+
+                @Override
+                public ComboBoxOption fromString(String string) {
+                    if (string == null || string.trim().isEmpty()) {
+                        return null;
+                    }
+
+                    // Tìm mục khớp với văn bản nhập
+                    String lowerInput = string.trim().toLowerCase();
+                    for (ComboBoxOption room : allRooms) {
+                        if (room.getLabel().toLowerCase().equals(lowerInput)) {
+                            return room;
+                        }
+                    }
+
+                    return null; // Không cho phép String tự do
+                }
+            });
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                CustomAlert.showErrorAlert("Lỗi khi tải danh sách phòng.");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            showErrorAlert("Lỗi khi tải danh sách phòng.");
         }
+    }
+
+    private void setupRoomBoxSearch() {
+        roomBox.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                String inputText = newValue.trim();
+                ObservableList<ComboBoxOption> filteredItems = FXCollections.observableArrayList();
+                if (inputText.isEmpty()) {
+                    filteredItems.addAll(allRooms);
+                } else {
+                    String lowerInput = inputText.toLowerCase();
+                    for (ComboBoxOption room : allRooms) {
+                        if (room.getLabel().toLowerCase().contains(lowerInput) ||
+                                room.getValue().toLowerCase().contains(lowerInput)) {
+                            filteredItems.add(room);
+                        }
+                    }
+                }
+                roomSuggestions.setAll(filteredItems);
+
+                // Hiển thị dropdown nếu có văn bản và có mục khớp
+                if (!inputText.isEmpty() && !filteredItems.isEmpty()) {
+                    roomBox.show();
+                } else {
+                    roomBox.hide();
+                }
+            }
+        });
+
+        // Xử lý khi chọn mục
+        roomBox.setOnAction(e -> {
+            ComboBoxOption selected = roomBox.getValue();
+            if (selected != null) {
+                roomBox.setValue(selected);
+                roomBox.getEditor().setText(selected.getLabel());
+            }
+        });
     }
 
     private void initDayBox() {
@@ -162,7 +228,7 @@ public class CreateResidentController {
     }
 
     private boolean isValidIdCardNumber(String idCardNumber) {
-        return idCardNumber.isEmpty() || idCardNumber.matches("\\d{12}");
+        return idCardNumber != null && idCardNumber.matches("\\d{12}");
     }
 
     private boolean isValidDateOfBirth(int day, int month, int year) {
@@ -177,11 +243,7 @@ public class CreateResidentController {
     private void setupSaveButton() {
         saveButton.setOnAction(e -> {
             if (areRequiredFieldsEmpty()) {
-                try {
-                    CustomAlert.showErrorAlert("Vui lòng nhập đầy đủ thông tin.");
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                showErrorAlert("Vui lòng nhập đầy đủ thông tin.");
                 return;
             }
 
@@ -203,31 +265,19 @@ public class CreateResidentController {
 
             // Kiểm tra định dạng số điện thoại
             if (!isValidPhoneNumber(phone)) {
-                try {
-                    CustomAlert.showErrorAlert("Số điện thoại phải chứa 10-11 chữ số.");
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                showErrorAlert("Số điện thoại phải chứa 10-11 chữ số nếu được nhập.");
                 return;
             }
 
             // Kiểm tra định dạng CCCD
             if (!isValidIdCardNumber(idCardNumber)) {
-                try {
-                    CustomAlert.showErrorAlert("Số CCCD phải chứa đúng 12 chữ số.");
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                showErrorAlert("Số CCCD phải chứa đúng 12 chữ số.");
                 return;
             }
 
             // Kiểm tra ngày sinh hợp lệ
             if (!isValidDateOfBirth(day, month, year)) {
-                try {
-                    CustomAlert.showErrorAlert("Ngày sinh không hợp lệ.");
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                showErrorAlert("Ngày sinh không hợp lệ.");
                 return;
             }
 
@@ -235,24 +285,38 @@ public class CreateResidentController {
                 connection.setAutoCommit(false);
 
                 try {
+                    // Kiểm tra CCCD trùng lặp
+                    String checkSql = "SELECT id FROM residents WHERE id_card_number = ?";
+                    try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
+                        checkStmt.setString(1, idCardNumber);
+                        ResultSet rs = checkStmt.executeQuery();
+                        if (rs.next()) {
+                            showErrorAlert("Số CCCD đã tồn tại trong hệ thống.");
+                            connection.rollback();
+                            return;
+                        }
+                    }
+
+                    // Thêm cư dân
                     String sql = "INSERT INTO residents (full_name, date_of_birth, place_of_birth, ethnicity, occupation, hometown, id_card_number, residence_status, phone, gender, relationship_to_owner, room_number, status) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    PreparedStatement stmt = connection.prepareStatement(sql);
-                    stmt.setString(1, fullName);
-                    stmt.setDate(2, Date.valueOf(LocalDate.of(year, month, day)));
-                    stmt.setString(3, placeOfBirth);
-                    stmt.setString(4, ethnicity);
-                    stmt.setString(5, occupation);
-                    stmt.setString(6, hometown);
-                    stmt.setString(7, idCardNumber);
-                    stmt.setString(8, residenceStatus);
-                    stmt.setString(9, phone);
-                    stmt.setString(10, gender);
-                    stmt.setString(11, relationship);
-                    stmt.setString(12, roomNumber);
-                    stmt.setString(13, "living");
+                    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                        stmt.setString(1, fullName);
+                        stmt.setDate(2, Date.valueOf(LocalDate.of(year, month, day)));
+                        stmt.setString(3, placeOfBirth);
+                        stmt.setString(4, ethnicity);
+                        stmt.setString(5, occupation.isEmpty() ? null : occupation);
+                        stmt.setString(6, hometown);
+                        stmt.setString(7, idCardNumber);
+                        stmt.setString(8, residenceStatus);
+                        stmt.setString(9, phone.isEmpty() ? null : phone);
+                        stmt.setString(10, gender);
+                        stmt.setString(11, relationship);
+                        stmt.setString(12, roomNumber);
+                        stmt.setString(13, "living");
 
-                    stmt.executeUpdate();
+                        stmt.executeUpdate();
+                    }
 
                     // Cập nhật trạng thái phòng nếu là chủ hộ
                     if (relationship.equals("owner")) {
@@ -268,24 +332,18 @@ public class CreateResidentController {
                     handleSave();
                 } catch (SQLException ex) {
                     connection.rollback();
-                    ex.printStackTrace();
-                    try {
-                        CustomAlert.showErrorAlert("Lỗi SQL, không thể lưu dữ liệu.");
-                    } catch (IOException exc) {
-                        throw new RuntimeException(exc);
+                    if (ex.getSQLState().equals("23000") && ex.getMessage().contains("unique_id_card_number")) {
+                        showErrorAlert("Số CCCD đã tồn tại trong hệ thống.");
+                    } else {
+                        ex.printStackTrace();
+                        showErrorAlert("Lỗi SQL: " + ex.getMessage());
                     }
                 } finally {
                     connection.setAutoCommit(true);
                 }
-            } catch (SQLException ex) {
+            } catch (SQLException | IOException ex) {
                 ex.printStackTrace();
-                try {
-                    CustomAlert.showErrorAlert("Lỗi SQL, không thể lưu dữ liệu.");
-                } catch (IOException exc) {
-                    throw new RuntimeException(exc);
-                }
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                showErrorAlert("Lỗi: " + ex.getMessage());
             }
         });
     }
@@ -293,5 +351,13 @@ public class CreateResidentController {
     private void handleSave() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
+    }
+
+    private void showErrorAlert(String message) {
+        try {
+            CustomAlert.showErrorAlert(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

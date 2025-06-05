@@ -101,6 +101,10 @@
     -fx-font-size: 14px;
 }
 
+#dateBoxEdit .text, #spinnerEdit .text-field {
+    -fx-font-size: 18px;
+}
+
 .spinner {
     -fx-background-color: #FFFFFF;
 }

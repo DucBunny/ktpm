@@ -108,7 +108,7 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-                <ComboBox id="dateBox" fx:id="dayBox" prefHeight="45.0" prefWidth="90.0" promptText="Ngày" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="0.0">
+                <ComboBox id="dateBoxEdit" fx:id="dayBox" prefHeight="45.0" prefWidth="90.0" promptText="Ngày" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="0.0">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -118,7 +118,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-                <ComboBox id="dateBox" fx:id="monthBox" layoutX="312.0" layoutY="6.0" prefHeight="45.0" prefWidth="90.0" promptText="Tháng" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="0.0">
+                <ComboBox id="dateBoxEdit" fx:id="monthBox" layoutX="312.0" layoutY="6.0" prefHeight="45.0" prefWidth="90.0" promptText="Tháng" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="0.0">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -128,7 +128,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-                <Spinner fx:id="yearSpinner" editable="true" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <Spinner id="spinnerEdit" fx:id="yearSpinner" editable="true" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </children>
         </AnchorPane>
         <AnchorPane layoutX="594.0" layoutY="366.0" prefWidth="470.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="188.0">
@@ -217,7 +217,7 @@
       </AnchorPane>
         <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="558.0">
             <children>
-                <Button fx:id="saveButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleSave" prefHeight="70.0" prefWidth="550.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Cập nhật" textFill="WHITE">
+                <Button fx:id="saveButton" alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="550.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Cập nhật" textFill="WHITE">
                     <font>
                         <Font size="20.0" />
                     </font>

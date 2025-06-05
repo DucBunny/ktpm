@@ -96,7 +96,7 @@
                 </Label>
                 <ComboBox fx:id="roomBox" editable="true" prefHeight="45.0" prefWidth="300.0" promptText="Chọn căn hộ" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.rightAnchor="0.0">
                     <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="TEXT" />
                     </cursor>
                 </ComboBox>
             </children>

@@ -1,6 +1,5 @@
-package com.app.controllers.Resident;
+package com.app.controllers.Residents;
 
-import com.app.models.Residents;
 import com.app.utils.ComboBoxOption;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
@@ -18,7 +17,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class EditResidentController {
+public class CreateResidentController {
     // Left
     @FXML
     private TextField fullNameField;
@@ -50,8 +49,6 @@ public class EditResidentController {
     private ComboBox<ComboBoxOption> residenceStatusBox;
     @FXML
     private ComboBox<ComboBoxOption> relationshipBox;
-    @FXML
-    private ComboBox<ComboBoxOption> statusBox;
 
     @FXML
     private Button saveButton;
@@ -59,13 +56,6 @@ public class EditResidentController {
     private final ObservableList<ComboBoxOption> roomSuggestions = FXCollections.observableArrayList();
     private final ObservableList<ComboBoxOption> allRooms = FXCollections.observableArrayList();
 
-    private static Residents residentToEdit;
-
-    public static void setResidentToEdit(Residents resident) {
-        residentToEdit = resident;
-    }
-
-    @FXML
     public void initialize() {
         initGenderBox();
         initRoomBox();
@@ -75,34 +65,6 @@ public class EditResidentController {
         initYearSpinner();
         initResidenceStatusBox();
         initRelationshipBox();
-        initStatusBox();
-
-        // Set dữ liệu nếu có
-        if (residentToEdit != null) {
-            fullNameField.setText(residentToEdit.getFullName());
-            placeOfBirthField.setText(residentToEdit.getPlaceOfBirth());
-            occupationField.setText(residentToEdit.getOccupation() != null ? residentToEdit.getOccupation() : "");
-            phoneField.setText(residentToEdit.getPhone() != null ? residentToEdit.getPhone() : "");
-            setComboBoxValue(genderBox, residentToEdit.getGender(), true);
-            setComboBoxValue(roomBox, residentToEdit.getRoomNumber(), false);
-
-            hometownField.setText(residentToEdit.getHometown());
-            ethnicityField.setText(residentToEdit.getEthnicity());
-            idCardNumberField.setText(residentToEdit.getIdCardNumber());
-            setComboBoxValue(relationshipBox, residentToEdit.getRelationshipToOwner(), true);
-            setComboBoxValue(residenceStatusBox, residentToEdit.getResidenceStatus(), false);
-            setComboBoxValue(statusBox, residentToEdit.getStatus(), false);
-
-            // Gán giá trị ngày sinh
-            if (residentToEdit.getDateOfBirth() != null) {
-                int day = residentToEdit.getDateOfBirth().getDayOfMonth();
-                int month = residentToEdit.getDateOfBirth().getMonthValue();
-                int year = residentToEdit.getDateOfBirth().getYear();
-                setComboBoxValue(dayBox, String.format("%02d", day), false);
-                setComboBoxValue(monthBox, String.format("%02d", month), false);
-                yearSpinner.getValueFactory().setValue(year);
-            }
-        }
 
         setupRoomBoxSearch();
         setupSaveButton();
@@ -121,13 +83,13 @@ public class EditResidentController {
         allRooms.clear();
         try {
             Connection connection = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM rooms ORDER BY floor ASC, room_number ASC ";
+            String sql = "SELECT floor, room_number FROM rooms ORDER BY floor ASC, room_number ASC ";
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String roomNumber = rs.getString("room_number");
-                ComboBoxOption option = new ComboBoxOption("Căn hộ " + roomNumber, roomNumber);
+                ComboBoxOption option = new ComboBoxOption("Phòng " + roomNumber, roomNumber);
                 allRooms.add(option);
                 roomSuggestions.add(option);
             }
@@ -158,7 +120,7 @@ public class EditResidentController {
             });
         } catch (SQLException e) {
             e.printStackTrace();
-            showErrorAlert("Lỗi khi tải danh sách phòng.");
+            showErrorAlert("Không thể tải danh sách phòng từ CSDL.");
         }
     }
 
@@ -240,25 +202,6 @@ public class EditResidentController {
         ));
     }
 
-    private void initStatusBox() {
-        statusBox.setItems(FXCollections.observableArrayList(
-                new ComboBoxOption("Đang ở", "living"),
-                new ComboBoxOption("Đã rời", "moved_out")
-        ));
-    }
-
-    private void setComboBoxValue(ComboBox<ComboBoxOption> comboBox, String value, boolean compareWithLabel) {
-        if (value != null && comboBox.getItems() != null) {
-            for (ComboBoxOption option : comboBox.getItems()) {
-                String compareValue = compareWithLabel ? option.getLabel() : option.getValue();
-                if (compareValue != null && compareValue.equalsIgnoreCase(value.trim())) {
-                    comboBox.setValue(option);
-                    break;
-                }
-            }
-        }
-    }
-
     private boolean areRequiredFieldsEmpty() {
         return Stream.of(
                 fullNameField.getText(),
@@ -319,7 +262,6 @@ public class EditResidentController {
             String idCardNumber = idCardNumberField.getText().trim();
             String residenceStatus = residenceStatusBox.getValue().getValue();
             String relationship = relationshipBox.getValue().getValue();
-            String status = statusBox.getValue().getValue();
 
             // Kiểm tra định dạng số điện thoại
             if (!isValidPhoneNumber(phone)) {
@@ -343,11 +285,10 @@ public class EditResidentController {
                 connection.setAutoCommit(false);
 
                 try {
-                    // Kiểm tra CCCD trùng lặp (trừ bản ghi hiện tại)
-                    String checkSql = "SELECT id FROM residents WHERE id_card_number = ? AND id != ?";
+                    // Kiểm tra CCCD trùng lặp
+                    String checkSql = "SELECT id FROM residents WHERE id_card_number = ?";
                     try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
                         checkStmt.setString(1, idCardNumber);
-                        checkStmt.setInt(2, residentToEdit.getId());
                         ResultSet rs = checkStmt.executeQuery();
                         if (rs.next()) {
                             showErrorAlert("Số CCCD đã tồn tại trong hệ thống.");
@@ -356,31 +297,25 @@ public class EditResidentController {
                         }
                     }
 
-                    // Cập nhật cư dân
-                    String sql = "UPDATE residents SET full_name = ?, date_of_birth = ?, gender = ?, phone = ?, id_card_number = ?, " +
-                            "room_number = ?, relationship_to_owner = ?, place_of_birth = ?, occupation = ?, hometown = ?, " +
-                            "ethnicity = ?, residence_status = ?, status = ? WHERE id = ?";
+                    // Thêm cư dân
+                    String sql = "INSERT INTO residents (full_name, date_of_birth, place_of_birth, ethnicity, occupation, hometown, id_card_number, residence_status, phone, gender, relationship_to_owner, room_number, status) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setString(1, fullName);
                         stmt.setDate(2, Date.valueOf(LocalDate.of(year, month, day)));
-                        stmt.setString(3, gender);
-                        stmt.setString(4, phone.isEmpty() ? null : phone);
-                        stmt.setString(5, idCardNumber);
-                        stmt.setString(6, roomNumber);
-                        stmt.setString(7, relationship);
-                        stmt.setString(8, placeOfBirth);
-                        stmt.setString(9, occupation.isEmpty() ? null : occupation);
-                        stmt.setString(10, hometown);
-                        stmt.setString(11, ethnicity);
-                        stmt.setString(12, residenceStatus);
-                        stmt.setString(13, status);
-                        stmt.setInt(14, residentToEdit.getId());
+                        stmt.setString(3, placeOfBirth);
+                        stmt.setString(4, ethnicity);
+                        stmt.setString(5, occupation.isEmpty() ? null : occupation);
+                        stmt.setString(6, hometown);
+                        stmt.setString(7, idCardNumber);
+                        stmt.setString(8, residenceStatus);
+                        stmt.setString(9, phone.isEmpty() ? null : phone);
+                        stmt.setString(10, gender);
+                        stmt.setString(11, relationship);
+                        stmt.setString(12, roomNumber);
+                        stmt.setString(13, "living");
 
-                        if (stmt.executeUpdate() == 0) {
-                            showErrorAlert("Lỗi, không tìm thấy cư dân để cập nhật.");
-                            connection.rollback();
-                            return;
-                        }
+                        stmt.executeUpdate();
                     }
 
                     // Cập nhật trạng thái phòng nếu là chủ hộ
@@ -393,7 +328,7 @@ public class EditResidentController {
                     }
 
                     connection.commit();
-                    CustomAlert.showSuccessAlert("Cập nhật thông tin cư dân thành công.", true, 1);
+                    CustomAlert.showSuccessAlert("Thêm cư dân thành công!", true, 1);
                     handleSave();
                 } catch (SQLException ex) {
                     connection.rollback();
@@ -426,4 +361,3 @@ public class EditResidentController {
         }
     }
 }
-

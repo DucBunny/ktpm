@@ -15,12 +15,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.RoomsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Rooms.RoomsController">
     <children>
         <AnchorPane>
             <children>
@@ -154,43 +153,39 @@
                 </AnchorPane>
                 <HBox alignment="CENTER" cache="true" prefHeight="40.0" spacing="100.0">
                     <children>
-                        <TextField fx:id="roomNameField" prefHeight="40.0" prefWidth="300.0" promptText=" Nhập tên căn hộ" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;">
+                        <TextField fx:id="roomField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="300.0" promptText=" Nhập tên căn hộ" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </TextField>
-                        <ComboBox fx:id="floorComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Số tầng" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></ComboBox>
-                        <ComboBox fx:id="statusComboBox" prefHeight="40.0" prefWidth="300.0" promptText=" Trạng thái" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" HBox.hgrow="ALWAYS">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></ComboBox>
+                        <ComboBox fx:id="floorBox" prefHeight="40.0" prefWidth="300.0" promptText="Số tầng" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </ComboBox>
+                        <ComboBox fx:id="statusBox" prefHeight="40.0" prefWidth="300.0" promptText=" Trạng thái" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF; -fx-border-color: #E5E5E5; -fx-border-radius: 10;" HBox.hgrow="ALWAYS">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </ComboBox>
                     </children>
                     <VBox.margin>
                         <Insets top="30.0" />
                     </VBox.margin>
                 </HBox>
-                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="598.0" style="-fx-background-color: #F5F5F5;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="598.0" style="-fx-background-color: #F5F5F5;" VBox.vgrow="ALWAYS">
                     <VBox.margin>
                         <Insets top="31.0" />
                     </VBox.margin>
                     <content>
-                        <StackPane>
+                        <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="1500.0">
                             <children>
-                                <GridPane fx:id="roomsGrid" alignment="CENTER" hgap="36.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="798.0" prefWidth="1302.0" vgap="26.0">
+                                <GridPane fx:id="roomsGrid" alignment="CENTER" hgap="36.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1302.0" vgap="26.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    </rowConstraints>
                                     <StackPane.margin>
                                         <Insets bottom="5.0" left="53.0" right="53.0" />
                                     </StackPane.margin>
@@ -204,7 +199,7 @@
                 <Insets />
             </opaqueInsets>
             <VBox.margin>
-                <Insets bottom="14.0" top="30.0" />
+                <Insets bottom="15.0" top="30.0" />
             </VBox.margin>
         </VBox>
     </children>

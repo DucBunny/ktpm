@@ -1,6 +1,7 @@
 package com.app.controllers;
 
-import com.app.controllers.Resident.ResidentsController;
+import com.app.controllers.Residents.ResidentsController;
+import com.app.controllers.Rooms.RoomsController;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
 import javafx.event.ActionEvent;

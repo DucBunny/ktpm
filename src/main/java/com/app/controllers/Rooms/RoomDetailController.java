@@ -1,7 +1,10 @@
-package com.app.controllers;
+package com.app.controllers.Rooms;
 
-import com.app.controllers.Resident.EditResidentController;
-import com.app.controllers.Resident.ResidentsController;
+import com.app.controllers.HomePageController;
+import com.app.controllers.PaymentsController;
+import com.app.controllers.Residents.EditResidentController;
+import com.app.controllers.Residents.ResidentsController;
+import com.app.controllers.RevenuesController;
 import com.app.models.Residents;
 import com.app.models.Rooms;
 import com.app.utils.CustomAlert;
@@ -43,7 +46,7 @@ public class RoomDetailController {
     private MenuItem MenuItem_SignUp;
 
     // Body
-    private int roomname;
+    private String roomname;
 
     @FXML
     private VBox ownerBox;
@@ -78,7 +81,7 @@ public class RoomDetailController {
 
     private final ObservableList<Residents> residentList = FXCollections.observableArrayList();
 
-    public void initialize(String role, String username, int roomname) {
+    public void initialize(String role, String username, String roomname) {
         this.role = role;
         this.username = username;
         this.roomname = roomname;
@@ -256,7 +259,7 @@ public class RoomDetailController {
             // Giả định bạn có thể truyền dữ liệu cần sửa qua controller hoặc static variable
             EditResidentController.setResidentToEdit(residents); // Hàm static để tạm giữ dữ liệu
 
-            SceneNavigator.showPopupScene("/fxml/edit-resident.fxml", "/styles/edit-resident.css", owner);
+            SceneNavigator.showPopupScene("/fxml/edit-resident.fxml", "/styles/crud-resident.css", owner);
 
             // Sau khi sửa, làm mới lại bảng dữ liệu:
             residentList.clear();

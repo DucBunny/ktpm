@@ -12,7 +12,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 public class CustomAlert {
-    public static void showSuccessAlert(String title, boolean autoClose, int seconds) throws IOException {
+    public static void showSuccessAlert(String title, boolean autoClose, double seconds) throws IOException {
         FXMLLoader loader = new FXMLLoader(CustomAlert.class.getResource("/fxml/custom-alert.fxml"));
         Parent root = loader.load();
 

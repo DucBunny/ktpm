@@ -1,4 +1,4 @@
-package com.app.controllers;
+package com.app.controllers.Rooms;
 
 import com.app.models.Rooms;
 import com.app.utils.ComboBoxOption;
@@ -39,8 +39,8 @@ public class EditRoomController {
 
         if (roomToEdit != null) {
             roomNameField.setText(String.valueOf(roomToEdit.getRoomNumber()));
-            roomFloorField.setText(roomToEdit.getFloor());
-            roomAreaField.setText(roomToEdit.getArea());
+            roomFloorField.setText(String.valueOf(roomToEdit.getFloor()));
+            roomAreaField.setText(String.valueOf(roomToEdit.getArea()));
 
             String statusValue = roomToEdit.getStatus();
             for (ComboBoxOption option : roomStatusCombox.getItems()) {

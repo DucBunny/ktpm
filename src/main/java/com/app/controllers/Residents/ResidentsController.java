@@ -1,9 +1,9 @@
-package com.app.controllers.Resident;
+package com.app.controllers.Residents;
 
 import com.app.controllers.HomePageController;
 import com.app.controllers.PaymentsController;
 import com.app.controllers.RevenuesController;
-import com.app.controllers.RoomsController;
+import com.app.controllers.Rooms.RoomsController;
 import com.app.models.Residents;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
@@ -53,11 +53,15 @@ public class ResidentsController {
     @FXML
     private TableColumn<Residents, String> phoneResidents;
     @FXML
-    private TableColumn<Residents, String> citizenIDResidents;
+    private TableColumn<Residents, String> idCardNumberResidents;
     @FXML
     private TableColumn<Residents, String> roomResidents;
     @FXML
     private TableColumn<Residents, String> relationshipResidents;
+    @FXML
+    private TableColumn<Residents, String> residenceStatusResidents;
+    @FXML
+    private TableColumn<Residents, String> statusResidents;
     @FXML
     private TableColumn<Residents, Void> actionResidents;
 
@@ -82,21 +86,25 @@ public class ResidentsController {
         tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         nameResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.2));
-        dateOfBirthResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.15));
-        genderResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
-        phoneResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.125));
-        citizenIDResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.125));
-        roomResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
-        relationshipResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
+        dateOfBirthResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
+        genderResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.07));
+        phoneResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
+        idCardNumberResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.11));
+        roomResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.07));
+        relationshipResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
+        residenceStatusResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
+        statusResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.09));
         actionResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
 
         nameResidents.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         dateOfBirthResidents.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         genderResidents.setCellValueFactory(new PropertyValueFactory<>("gender"));
         phoneResidents.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        citizenIDResidents.setCellValueFactory(new PropertyValueFactory<>("idCardNumber"));
+        idCardNumberResidents.setCellValueFactory(new PropertyValueFactory<>("idCardNumber"));
         roomResidents.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         relationshipResidents.setCellValueFactory(new PropertyValueFactory<>("relationshipToOwner"));
+        residenceStatusResidents.setCellValueFactory(new PropertyValueFactory<>("residenceStatus"));
+        statusResidents.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Định dạng lại ngày sinh
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -196,7 +204,12 @@ public class ResidentsController {
     public void loadResidentsFromDatabase() {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            String query = "SELECT * FROM residents ORDER BY room_number ASC";
+            String query = """
+                    SELECT residents.*
+                    FROM residents
+                    JOIN rooms ON residents.room_number = rooms.room_number
+                    ORDER BY rooms.floor ASC, residents.room_number ASC
+                    """;
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
 
@@ -218,15 +231,15 @@ public class ResidentsController {
                         resultSet.getString("phone"),
                         resultSet.getString("id_card_number"),
                         resultSet.getString("room_number"),
-                        relationshipDisplay
+                        relationshipDisplay,
+                        resultSet.getString("residence_status").equals("permanent") ? "Thường trú" : "Tạm trú",
+                        resultSet.getString("status").equals("living") ? "Đang ở" : "Đã rời"
                 );
 
                 resident.setPlaceOfBirth(resultSet.getString("place_of_birth"));
                 resident.setOccupation(resultSet.getString("occupation"));
                 resident.setHometown(resultSet.getString("hometown"));
                 resident.setEthnicity(resultSet.getString("ethnicity"));
-                resident.setResidenceStatus(resultSet.getString("residence_status"));
-                resident.setStatus(resultSet.getString("status"));
 
                 ResidentsList.add(resident);
             }
@@ -235,7 +248,7 @@ public class ResidentsController {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                CustomAlert.showErrorAlert("Lỗi, không thể tải dữ liệu cư dân từ CSDL.");
+                CustomAlert.showErrorAlert("Không thể tải dữ liệu cư dân từ CSDL.");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

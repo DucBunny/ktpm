@@ -1,4 +1,4 @@
-package com.app.controllers.Resident;
+package com.app.controllers.Residents;
 
 import com.app.models.Residents;
 import javafx.fxml.FXML;

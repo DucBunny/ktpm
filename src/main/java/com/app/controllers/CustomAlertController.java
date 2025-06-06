@@ -42,7 +42,7 @@ public class CustomAlertController {
 
     private Stage alertStage;
     private boolean autoClose = false;
-    private int autoCloseSeconds = 0;
+    private double autoCloseSeconds = 0;
     private boolean isConfirm = false;
     private boolean isSuccess = false;
     private boolean isError = false;
@@ -68,7 +68,7 @@ public class CustomAlertController {
         messageLabel.setText(message);
     }
 
-    public void enableAutoClose(int seconds) {
+    public void enableAutoClose(double seconds) {
         this.autoClose = true;
         this.autoCloseSeconds = seconds;
     }

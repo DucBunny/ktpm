@@ -1,6 +1,7 @@
 package com.app.controllers;
 
-import com.app.controllers.Resident.ResidentsController;
+import com.app.controllers.Residents.ResidentsController;
+import com.app.controllers.Rooms.RoomsController;
 import com.app.models.PaymentDetail;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;

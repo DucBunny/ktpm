@@ -87,15 +87,59 @@
 
 /************************************************************ Body ************************************************************/
 .combo-box .text {
-    -fx-font-size: 18px;
     -fx-cursor: hand;
+    -fx-font-size: 18px;
+}
+
+.combo-box .list-view {
+    -fx-background-color: #ffffff;
 }
 
 .combo-box .list-cell {
     -fx-cursor: hand;
     -fx-font-size: 18px;
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
 }
 
 .combo-box .list-cell:hover {
+    -fx-background-color: #51608926;
+    -fx-text-fill: #516089;
+}
+
+/**************************************** Scroll bar All (ComboBox, ScrollPane) ****************************************/
+.scroll-bar {
+    -fx-background-color: #ECEFF1;
+    -fx-cursor: hand;
+}
+
+.scroll-bar .thumb {
     -fx-background-color: #516089;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #F5F5F5;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: #ECEFF1;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #516089;
+}
+
+.combo-box .scroll-bar {
+    -fx-pref-width: 12px;
+}
+
+.scroll-pane .scroll-bar {
+    -fx-pref-width: 16px;
+}
+
+.scroll-pane .scroll-bar .track {
+    -fx-background-color: #FFFFFF;
 }

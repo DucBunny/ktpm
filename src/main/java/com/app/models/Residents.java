@@ -38,15 +38,29 @@ public class Residents {
     }
 
     public Residents(int id, String fullName, LocalDate dateOfBirth, String gender, String phone,
+                     String idCardNumber, String roomNumber, String relationshipToOwner, String residenceStatus, String status) {
+        this.id = id;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.phone = phone;
+        this.idCardNumber = idCardNumber;
+        this.roomNumber = roomNumber;
+        this.relationshipToOwner = relationshipToOwner;
+        this.residenceStatus = residenceStatus;
+        this.status = status;
+    }
+
+    public Residents(int id, String fullName, LocalDate dateOfBirth, String gender, String phone,
                      String idCardNumber, String roomNumber, String relationshipToOwner) {
         this.id = id;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
-        this.idCardNumber = idCardNumber;
-        this.phone = phone;
         this.gender = gender;
-        this.relationshipToOwner = relationshipToOwner;
+        this.phone = phone;
+        this.idCardNumber = idCardNumber;
         this.roomNumber = roomNumber;
+        this.relationshipToOwner = relationshipToOwner;
     }
 
     public Residents(int id, String fullName, String roomNumber) {

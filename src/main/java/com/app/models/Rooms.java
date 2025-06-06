@@ -1,39 +1,39 @@
 package com.app.models;
 
 public class Rooms {
-    private int roomNumber;
-    private String floor;
-    private String area;
+    private String roomNumber;
+    private int floor;
+    private float area;
     private String status;
 
-    public Rooms(int roomNumber, String floor, String area, String status) {
+    public Rooms(String roomNumber, int floor, float area, String status) {
         this.roomNumber = roomNumber;
         this.floor = floor;
         this.area = area;
         this.status = status;
     }
 
-    public int getRoomNumber() {
+    public String getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(int roomNumber) {
+    public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
 
-    public String getFloor() {
+    public int getFloor() {
         return floor;
     }
 
-    public void setFloor(String floor) {
+    public void setFloor(int floor) {
         this.floor = floor;
     }
 
-    public String getArea() {
+    public float getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(float area) {
         this.area = area;
     }
 

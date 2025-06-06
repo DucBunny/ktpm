@@ -1,318 +1,416 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.RoomDetailController">
+<?import javafx.scene.text.*?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.app.controllers.Rooms.RoomDetailController">
     <children>
-      <AnchorPane>
-         <children>
-            <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Bạn đang đăng nhập với quyền ..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <HBox alignment="CENTER" prefHeight="70.0" spacing="40.0" style="-fx-background-color: #586995; -fx-background-radius: 20;">
-         <children>
-            <Button mnemonicParsing="false" onAction="#changeToHomePage" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Trang chủ" textAlignment="CENTER" textFill="WHITE">
-               <HBox.margin>
-                  <Insets left="55.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button id="buttonActive" mnemonicParsing="false" onAction="#changeToRooms" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Căn hộ" textAlignment="CENTER" textFill="#424f70">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#changeToResidents" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cư dân" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#changeToRevenues" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Khoản thu" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#changeToPayments" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Thống kê" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <MenuButton id="btnHeaderMenu" alignment="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cài đặt" textAlignment="CENTER" textFill="WHITE">
-               <items>
-                  <MenuItem fx:id="MenuItem_SignUp" mnemonicParsing="false" onAction="#changeToSignUp" text="Tạo tài khoản" visible="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#changeToSignIn" text="Đăng xuất" />
-               </items>
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </MenuButton>
-            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
-               <children>
-                  <Label fx:id="nameLabel" prefHeight="50.0" prefWidth="170.0" text="Xin chào, username">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <AnchorPane prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 100%;">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.5">
-                           <image>
-                              <Image url="@../images/avt-admin.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="5.0" right="10.0" top="5.0" />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </AnchorPane>
-               </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </HBox>
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <VBox.margin>
-            <Insets left="10.0" right="10.0" top="3.0" />
-         </VBox.margin>
-      </HBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-         <children>
-      
-              <!-- ===== Tiêu đề trang (BỎ NÚT "Chỉnh sửa" ở đây) ===== -->
-              <AnchorPane prefHeight="105.0" prefWidth="1440.0">
-                  <children>
-                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="308.0" layoutY="28.0" prefWidth="662.0" styleClass="boldText" text="THÔNG TIN CHI TIẾT CỦA CĂN HỘ" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <font>
-                              <Font size="32.0" />
-                          </font>
-                     <padding>
-                        <Insets bottom="30.0" />
-                     </padding>
-                      </Label>
-                      <!-- Đã xóa nút "Chỉnh sửa" ở đây theo yêu cầu -->
-                  </children>
-              </AnchorPane>
-      
-              <!-- ===== Nội dung chính ===== -->
-              <HBox prefHeight="722.0" prefWidth="1440.0">
-                  <children>
-                      <!-- 1. Phần bên trái: Avatar và tên chủ hộ -->
-                      <VBox fx:id="ownerBox" alignment="TOP_CENTER" prefHeight="722.0" prefWidth="247.0" spacing="10.0" visible="false">
-                          <children>
-                              <ImageView fitHeight="160.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
-                                  <image>
-                                      <Image url="@../images/avt-owner.png" />
-                                  </image>
-                                  <clip>
-                                      <!-- Vì fitWidth/fitHeight = 160, nên radius = 80 để cắt hình tròn chính giữa -->
-                                      <Circle centerX="80.0" centerY="80.0" radius="80.0" />
-                                  </clip>
-                              </ImageView>
-                              <Label fx:id="ownerField" alignment="CENTER" prefHeight="18.0" prefWidth="161.0">
-                                  <font>
-                                      <Font size="20.0" />
-                                  </font>
-                                  <padding>
-                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                  </padding>
-                              </Label>
-                          </children>
-                          <VBox.margin>
-                              <Insets left="20.0" top="20.0" />
-                          </VBox.margin>
-                          <padding>
-                              <Insets top="10.0" />
-                          </padding>
-                      </VBox>
-      
-                      <!-- 2. Phần bên phải: Bảng Thông tin căn hộ và Bảng Danh sách cư dân -->
-                      <VBox prefHeight="722.0" prefWidth="1180.0" spacing="20.0">
-                          <!-- ===== Phần: Thông tin căn hộ ===== -->
-                          <VBox spacing="10.0" style="-fx-border-color: #d1d1d1; -fx-border-radius: 15; -fx-background-radius: 15; -fx-background-color: #FFFFFF;">
-                              <children>
-                           <AnchorPane>
-                              <children>
-                                          <Label text="Thông tin căn hộ" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                              <font>
-                                                  <Font name="System Bold" size="24.0" />
-                                              </font>
-                                          </Label>
-                                          <Button fx:id="btnEditRoom" alignment="BASELINE_CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="235.0" styleClass="btn-edit-room" text="Quản lý phương tiện" textFill="WHITE" AnchorPane.rightAnchor="0.0">
-                                              <font>
-                                                  <Font size="20.0" />
-                                              </font>
-                                              <cursor>
-                                                  <Cursor fx:constant="HAND" />
-                                              </cursor>
-                                          </Button>
-                              </children>
-                           </AnchorPane>
-                                  <HBox>
-                                      <children>
-                                          <Label text="Số căn hộ: ">
-                                              <font>
-                                                  <Font size="18.0" />
-                                              </font>
-                                          </Label>
-                                          <Label fx:id="roomName">
-                                              <font>
-                                                  <Font size="18.0" />
-                                              </font>
-                                          </Label>
-                                      </children>
-                                  </HBox>
-                                  <HBox>
-                                      <children>
-                                          <Label text="Diện tích: ">
-                                              <font>
-                                                  <Font size="18.0" />
-                                              </font>
-                                          </Label>
-                                          <Label fx:id="roomArea" text=" m">
-                                              <font>
-                                                  <Font size="18.0" />
-                                              </font>
-                                          </Label>
-                                 <Label text="2" />
-                                      </children>
-                                  </HBox>
-                                  <HBox>
-                                      <children>
-                                          <Label text="Tình trạng: ">
-                                              <font>
-                                                  <Font size="18.0" />
-                                              </font>
-                                          </Label>
-                                          <Label fx:id="roomStatus">
-                                              <font>
-                                                  <Font size="18.0" />
-                                              </font>
-                                          </Label>
-                                      </children>
-                                  </HBox>
-                              </children>
-                              <padding>
-                                  <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
-                              </padding>
-                        <VBox.margin>
-                           <Insets />
-                        </VBox.margin>
-                          </VBox>
-      
-                          <!-- ===== Phần: Danh sách cư dân ===== -->
-                          <VBox spacing="10.0" style="-fx-border-color: #d1d1d1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: #f9f9f9;">
-                              <children>
-                           <AnchorPane>
-                              <children>
-                                          <Label prefHeight="30.0" text="Thông tin cư dân đang ở" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                              <font>
-                                                  <Font name="System Bold" size="24.0" />
-                                              </font>
-                                          </Label>
-                                          <Button fx:id="btnAddResident" mnemonicParsing="false" onAction="#handleCreateResident" prefHeight="45.0" prefWidth="200.0" styleClass="btn-edit-room" text="Thêm thành viên" textFill="WHITE" AnchorPane.rightAnchor="0.0">
-                                              <font>
-                                                  <Font size="20.0" />
-                                              </font>
-                                              <cursor>
-                                                  <Cursor fx:constant="HAND" />
-                                              </cursor>
-                                          </Button>
-                              </children>
-                           </AnchorPane>
-      
-                                  <!-- TableView: Danh sách cư dân -->
-                                  <TableView fx:id="tableResidents" prefHeight="500.0" prefWidth="1160.0">
-                                      <columns>
-                                          <TableColumn fx:id="colHoTen" prefWidth="200.0" text="Họ và tên" />
-                                          <TableColumn fx:id="colQuanHe" prefWidth="180.0" text="Quan hệ" />
-                                          <TableColumn fx:id="colNgaySinh" prefWidth="120.0" text="Ngày sinh" />
-                                          <TableColumn fx:id="colGioiTinh" prefWidth="80.0" text="Giới tính" />
-                                          <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="117.5999755859375" text="Số điện thoại" />
-                                          <TableColumn fx:id="colCCCD" prefWidth="180.0" text="Căn cước" />
-                                          <!-- Cột "Thao tác" để chứa nút Sửa / Xóa trong mỗi row -->
-                                          <TableColumn fx:id="colAction" prefWidth="119.199951171875" text="Thao tác" />
-                                      </columns>
-                                  </TableView>
-                              </children>
-                              <padding>
-                                  <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
-                              </padding>
-                          </VBox>
-                          <HBox.margin>
-                              <Insets />
-                          </HBox.margin>
-                      </VBox>
-                  </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-              </HBox>
-         </children>
-         <VBox.margin>
-            <Insets top="30.0" />
-         </VBox.margin>
-      </VBox>
+        <AnchorPane>
+            <children>
+                <Label fx:id="roleLabel" alignment="CENTER"
+                       contentDisplay="CENTER" prefWidth="600.0"
+                       text="Bạn đang đăng nhập với quyền ..."
+                       textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.rightAnchor="0.0">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <HBox alignment="CENTER" prefHeight="70.0" spacing="40.0"
+              style="-fx-background-color: #586995; -fx-background-radius: 20;">
+            <children>
+                <Button mnemonicParsing="false" onAction="#changeToHomePage"
+                        prefHeight="50.0" prefWidth="130.0"
+                        style="-fx-background-radius: 20;"
+                        styleClass="btnHeader" text="Trang chủ"
+                        textAlignment="CENTER" textFill="WHITE">
+                    <HBox.margin>
+                        <Insets left="55.0"/>
+                    </HBox.margin>
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </Button>
+                <Button id="buttonActive" mnemonicParsing="false"
+                        onAction="#changeToRooms" prefHeight="50.0"
+                        prefWidth="130.0" style="-fx-background-radius: 20;"
+                        styleClass="btnHeader" text="Căn hộ"
+                        textAlignment="CENTER" textFill="#424f70">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#changeToResidents"
+                        prefHeight="50.0" prefWidth="130.0"
+                        style="-fx-background-radius: 20;"
+                        styleClass="btnHeader" text="Cư dân"
+                        textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#changeToRevenues"
+                        prefHeight="50.0" prefWidth="130.0"
+                        style="-fx-background-radius: 20;"
+                        styleClass="btnHeader" text="Khoản thu"
+                        textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#changeToPayments"
+                        prefHeight="50.0" prefWidth="130.0"
+                        style="-fx-background-radius: 20;"
+                        styleClass="btnHeader" text="Thống kê"
+                        textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </Button>
+                <MenuButton id="btnHeaderMenu" alignment="CENTER"
+                            mnemonicParsing="false" prefHeight="50.0"
+                            prefWidth="130.0" style="-fx-background-radius: 20;"
+                            styleClass="btnHeader" text="Cài đặt"
+                            textAlignment="CENTER" textFill="WHITE">
+                    <items>
+                        <MenuItem fx:id="MenuItem_SignUp"
+                                  mnemonicParsing="false"
+                                  onAction="#changeToSignUp"
+                                  text="Tạo tài khoản" visible="false"/>
+                        <MenuItem mnemonicParsing="false"
+                                  onAction="#changeToSignIn" text="Đăng xuất"/>
+                    </items>
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </MenuButton>
+                <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0"
+                      style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
+                    <children>
+                        <Label fx:id="nameLabel" prefHeight="50.0"
+                               prefWidth="170.0" text="Xin chào, username">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets left="20.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <AnchorPane prefHeight="40.0" prefWidth="40.0"
+                                    style="-fx-background-color: #FFFFFF; -fx-background-radius: 100%;">
+                            <children>
+                                <ImageView fitHeight="40.0" fitWidth="40.0"
+                                           pickOnBounds="true"
+                                           preserveRatio="true"
+                                           AnchorPane.leftAnchor="0.0"
+                                           AnchorPane.rightAnchor="0.0"
+                                           AnchorPane.topAnchor="-0.5">
+                                    <image>
+                                        <Image url="@../images/avt-admin.png"/>
+                                    </image>
+                                </ImageView>
+                            </children>
+                            <HBox.margin>
+                                <Insets bottom="5.0" right="10.0" top="5.0"/>
+                            </HBox.margin>
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                        </AnchorPane>
+                    </children>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" top="3.0"/>
+            </VBox.margin>
+        </HBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+            <children>
+
+                <!-- ===== Tiêu đề trang (BỎ NÚT "Chỉnh sửa" ở đây) ===== -->
+                <AnchorPane prefHeight="105.0" prefWidth="1440.0">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER"
+                               layoutX="308.0" layoutY="28.0" prefWidth="662.0"
+                               styleClass="boldText"
+                               text="THÔNG TIN CHI TIẾT CỦA CĂN HỘ"
+                               textAlignment="CENTER"
+                               AnchorPane.leftAnchor="0.0"
+                               AnchorPane.rightAnchor="0.0"
+                               AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="32.0"/>
+                            </font>
+                            <padding>
+                                <Insets bottom="30.0"/>
+                            </padding>
+                        </Label>
+                        <!-- Đã xóa nút "Chỉnh sửa" ở đây theo yêu cầu -->
+                    </children>
+                </AnchorPane>
+
+                <!-- ===== Nội dung chính ===== -->
+                <HBox prefHeight="722.0" prefWidth="1440.0">
+                    <children>
+                        <!-- 1. Phần bên trái: Avatar và tên chủ hộ -->
+                        <VBox fx:id="ownerBox" alignment="TOP_CENTER"
+                              prefHeight="722.0" prefWidth="247.0"
+                              spacing="10.0" visible="false">
+                            <children>
+                                <ImageView fitHeight="160.0" fitWidth="160.0"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/avt-owner.png"/>
+                                    </image>
+                                    <clip>
+                                        <!-- Vì fitWidth/fitHeight = 160, nên radius = 80 để cắt hình tròn chính giữa -->
+                                        <Circle centerX="80.0" centerY="80.0"
+                                                radius="80.0"/>
+                                    </clip>
+                                </ImageView>
+                                <Label fx:id="ownerField" alignment="CENTER"
+                                       prefHeight="18.0" prefWidth="161.0">
+                                    <font>
+                                        <Font size="20.0"/>
+                                    </font>
+                                    <padding>
+                                        <Insets bottom="5.0" left="10.0"
+                                                right="10.0" top="5.0"/>
+                                    </padding>
+                                </Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets left="20.0" top="20.0"/>
+                            </VBox.margin>
+                            <padding>
+                                <Insets top="10.0"/>
+                            </padding>
+                        </VBox>
+
+                        <!-- 2. Phần bên phải: Bảng Thông tin căn hộ và Bảng Danh sách cư dân -->
+                        <VBox prefHeight="722.0" prefWidth="1180.0"
+                              spacing="20.0">
+                            <!-- ===== Phần: Thông tin căn hộ ===== -->
+                            <VBox spacing="10.0"
+                                  style="-fx-border-color: #d1d1d1; -fx-border-radius: 15; -fx-background-radius: 15; -fx-background-color: #FFFFFF;">
+                                <children>
+                                    <AnchorPane>
+                                        <children>
+                                            <Label text="Thông tin căn hộ"
+                                                   AnchorPane.bottomAnchor="0.0"
+                                                   AnchorPane.leftAnchor="0.0"
+                                                   AnchorPane.topAnchor="0.0">
+                                                <font>
+                                                    <Font name="System Bold"
+                                                          size="24.0"/>
+                                                </font>
+                                            </Label>
+                                            <Button fx:id="btnEditRoom"
+                                                    alignment="BASELINE_CENTER"
+                                                    mnemonicParsing="false"
+                                                    prefHeight="45.0"
+                                                    prefWidth="235.0"
+                                                    styleClass="btn-edit-room"
+                                                    text="Quản lý phương tiện"
+                                                    textFill="WHITE"
+                                                    AnchorPane.rightAnchor="0.0">
+                                                <font>
+                                                    <Font size="20.0"/>
+                                                </font>
+                                                <cursor>
+                                                    <Cursor fx:constant="HAND"/>
+                                                </cursor>
+                                            </Button>
+                                        </children>
+                                    </AnchorPane>
+                                    <HBox>
+                                        <children>
+                                            <Label text="Số căn hộ: ">
+                                                <font>
+                                                    <Font size="18.0"/>
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="roomName">
+                                                <font>
+                                                    <Font size="18.0"/>
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </HBox>
+                                    <HBox>
+                                        <children>
+                                            <Label text="Diện tích: ">
+                                                <font>
+                                                    <Font size="18.0"/>
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="roomArea" text=" m">
+                                                <font>
+                                                    <Font size="18.0"/>
+                                                </font>
+                                            </Label>
+                                            <Label text="2"/>
+                                        </children>
+                                    </HBox>
+                                    <HBox>
+                                        <children>
+                                            <Label text="Tình trạng: ">
+                                                <font>
+                                                    <Font size="18.0"/>
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="roomStatus">
+                                                <font>
+                                                    <Font size="18.0"/>
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </HBox>
+                                </children>
+                                <padding>
+                                    <Insets bottom="20.0" left="20.0"
+                                            right="20.0" top="10.0"/>
+                                </padding>
+                                <VBox.margin>
+                                    <Insets/>
+                                </VBox.margin>
+                            </VBox>
+
+                            <!-- ===== Phần: Danh sách cư dân ===== -->
+                            <VBox spacing="10.0"
+                                  style="-fx-border-color: #d1d1d1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: #f9f9f9;">
+                                <children>
+                                    <AnchorPane>
+                                        <children>
+                                            <Label prefHeight="30.0"
+                                                   text="Thông tin cư dân đang ở"
+                                                   AnchorPane.bottomAnchor="0.0"
+                                                   AnchorPane.leftAnchor="0.0"
+                                                   AnchorPane.topAnchor="0.0">
+                                                <font>
+                                                    <Font name="System Bold"
+                                                          size="24.0"/>
+                                                </font>
+                                            </Label>
+                                            <Button fx:id="btnAddResident"
+                                                    mnemonicParsing="false"
+                                                    onAction="#handleCreateResident"
+                                                    prefHeight="45.0"
+                                                    prefWidth="200.0"
+                                                    styleClass="btn-edit-room"
+                                                    text="Thêm thành viên"
+                                                    textFill="WHITE"
+                                                    AnchorPane.rightAnchor="0.0">
+                                                <font>
+                                                    <Font size="20.0"/>
+                                                </font>
+                                                <cursor>
+                                                    <Cursor fx:constant="HAND"/>
+                                                </cursor>
+                                            </Button>
+                                        </children>
+                                    </AnchorPane>
+
+                                    <!-- TableView: Danh sách cư dân -->
+                                    <TableView fx:id="tableResidents"
+                                               prefHeight="500.0"
+                                               prefWidth="1160.0">
+                                        <columns>
+                                            <TableColumn fx:id="colHoTen"
+                                                         prefWidth="200.0"
+                                                         text="Họ và tên"/>
+                                            <TableColumn fx:id="colQuanHe"
+                                                         prefWidth="180.0"
+                                                         text="Quan hệ"/>
+                                            <TableColumn fx:id="colNgaySinh"
+                                                         prefWidth="120.0"
+                                                         text="Ngày sinh"/>
+                                            <TableColumn fx:id="colGioiTinh"
+                                                         prefWidth="80.0"
+                                                         text="Giới tính"/>
+                                            <TableColumn fx:id="colSDT"
+                                                         minWidth="0.0"
+                                                         prefWidth="117.5999755859375"
+                                                         text="Số điện thoại"/>
+                                            <TableColumn fx:id="colCCCD"
+                                                         prefWidth="180.0"
+                                                         text="Căn cước"/>
+                                            <!-- Cột "Thao tác" để chứa nút Sửa / Xóa trong mỗi row -->
+                                            <TableColumn fx:id="colAction"
+                                                         prefWidth="119.199951171875"
+                                                         text="Thao tác"/>
+                                        </columns>
+                                    </TableView>
+                                </children>
+                                <padding>
+                                    <Insets bottom="20.0" left="20.0"
+                                            right="20.0" top="10.0"/>
+                                </padding>
+                            </VBox>
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                        </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10.0"/>
+                    </VBox.margin>
+                </HBox>
+            </children>
+            <VBox.margin>
+                <Insets top="30.0"/>
+            </VBox.margin>
+        </VBox>
     </children>
-   <padding>
-      <Insets bottom="10.0" left="15.0" right="15.0" />
-   </padding>
+    <padding>
+        <Insets bottom="10.0" left="15.0" right="15.0"/>
+    </padding>
 </VBox>

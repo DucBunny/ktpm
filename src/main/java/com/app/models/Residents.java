@@ -37,6 +37,7 @@ public class Residents {
         this.status = status;
     }
 
+    // Residents
     public Residents(int id, String fullName, LocalDate dateOfBirth, String gender, String phone,
                      String idCardNumber, String roomNumber, String relationshipToOwner, String residenceStatus, String status) {
         this.id = id;
@@ -51,16 +52,17 @@ public class Residents {
         this.status = status;
     }
 
+    // Room detail
     public Residents(int id, String fullName, LocalDate dateOfBirth, String gender, String phone,
-                     String idCardNumber, String roomNumber, String relationshipToOwner) {
+                     String idCardNumber, String relationshipToOwner, String residenceStatus) {
         this.id = id;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.phone = phone;
         this.idCardNumber = idCardNumber;
-        this.roomNumber = roomNumber;
         this.relationshipToOwner = relationshipToOwner;
+        this.residenceStatus = residenceStatus;
     }
 
     public Residents(int id, String fullName, String roomNumber) {

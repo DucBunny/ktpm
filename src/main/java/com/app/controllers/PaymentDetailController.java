@@ -110,7 +110,7 @@ public class PaymentDetailController {
         addActionButtonsToTable();
     }
 
-    //    Header Buton ---------------------------------------------------------
+    // Header Buton ------------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true);
@@ -120,7 +120,7 @@ public class PaymentDetailController {
     }
 
     public void changeToRooms(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/rooms.fxml", "/styles/rooms.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/rooms.css",
                 event, true);
 
         RoomsController controller = loader.getController();
@@ -128,7 +128,7 @@ public class PaymentDetailController {
     }
 
     public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -151,15 +151,11 @@ public class PaymentDetailController {
         controller.initialize(role, username);
     }
 
-    //  Pop-up Button Cài đặt --------------------------------------------------
-    public void changeToSignUp() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                    "/styles/sign-in-create-account.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Pop-up Button Cài đặt ---------------------------------------------------
+    public void changeToSignUp() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+                "/styles/sign-in-create-account.css", owner);
     }
 
     public void changeToSignIn(ActionEvent event) throws Exception {
@@ -167,7 +163,7 @@ public class PaymentDetailController {
                 event, false);
     }
 
-    //    Body -----------------------------------------------------------------
+    // Body --------------------------------------------------------------------
     public void loadPaymentDetailByRevenueItem(String nameRevenueItem) {
         try {
             Connection connection = DatabaseConnection.getConnection();

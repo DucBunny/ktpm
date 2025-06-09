@@ -10,6 +10,7 @@ import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,7 +66,7 @@ public class ResidentsController {
     @FXML
     private TableColumn<Residents, Void> actionResidents;
 
-    private final ObservableList<Residents> ResidentsList = FXCollections.observableArrayList();
+    private final ObservableList<Residents> residentsList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(String role, String username) {
@@ -81,20 +82,11 @@ public class ResidentsController {
 
         nameLabel.setText("Xin chào, " + username);
 
-        // Trừ khoảng scroll bar 18px
-        double padding = 18;
         tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        nameResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.2));
-        dateOfBirthResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
-        genderResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.07));
-        phoneResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
-        idCardNumberResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.11));
-        roomResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.07));
-        relationshipResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.08));
-        residenceStatusResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
-        statusResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.09));
-        actionResidents.prefWidthProperty().bind(tableResidents.widthProperty().subtract(padding).multiply(0.1));
+        // Thiết lập lắng nghe khi có thay đổi kích thước hoặc dữ liệu
+        tableResidents.widthProperty().addListener((obs, oldVal, newVal) -> adjustColumnWidths());
+        residentsList.addListener((ListChangeListener<Residents>) c -> adjustColumnWidths());
 
         nameResidents.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         dateOfBirthResidents.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
@@ -140,7 +132,35 @@ public class ResidentsController {
         addActionButtonsToTable();
     }
 
-    //    Header Buton ---------------------------------------------------------
+    private void adjustColumnWidths() {
+        // Lấy số dòng dữ liệu (item count)
+        int rowCount = residentsList.size();
+        // Lấy chiều cao 1 hàng
+        double rowHeight = 40;
+        // Trừ chiều cao header
+        double headerHeight = 50;
+        // Tổng chiều cao dữ liệu
+        double totalRowsHeight = rowCount * rowHeight;
+        // Chiều cao hiển thị thực tế
+        double tableContentHeight = tableResidents.getHeight() - headerHeight;
+
+        // Nếu tổng chiều cao dữ liệu > chiều cao table -> có scroll bar
+        double padding = (totalRowsHeight > tableContentHeight) ? 18 : 0;
+        double tableWidth = tableResidents.getWidth() - padding;
+
+        nameResidents.setPrefWidth(tableWidth * 0.2);
+        dateOfBirthResidents.setPrefWidth(tableWidth * 0.08);
+        genderResidents.setPrefWidth(tableWidth * 0.07);
+        phoneResidents.setPrefWidth(tableWidth * 0.1);
+        idCardNumberResidents.setPrefWidth(tableWidth * 0.11);
+        roomResidents.setPrefWidth(tableWidth * 0.07);
+        relationshipResidents.setPrefWidth(tableWidth * 0.08);
+        residenceStatusResidents.setPrefWidth(tableWidth * 0.1);
+        statusResidents.setPrefWidth(tableWidth * 0.09);
+        actionResidents.setPrefWidth(tableWidth * 0.1);
+    }
+
+    // Header Buton ------------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true);
@@ -150,7 +170,7 @@ public class ResidentsController {
     }
 
     public void changeToRooms(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/rooms.fxml", "/styles/rooms.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/rooms.css",
                 event, true);
 
         RoomsController controller = loader.getController();
@@ -173,7 +193,7 @@ public class ResidentsController {
         controller.initialize(role, username);
     }
 
-    //  Pop-up Button Cài đặt --------------------------------------------------
+    // Pop-up Button Cài đặt ---------------------------------------------------
     public void changeToSignUp() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         SceneNavigator.showPopupScene("/fxml/create-account.fxml",
@@ -185,20 +205,20 @@ public class ResidentsController {
                 event, false);
     }
 
-    //    Body -----------------------------------------------------------------
+    // Body --------------------------------------------------------------------
     public void handleCreateResident() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-resident.fxml", "/styles/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Residents/create-resident.fxml", "/styles/crud-resident.css", owner);
 
         //  Reload lại bảng
-        ResidentsList.clear();
+        residentsList.clear();
         loadResidentsFromDatabase();
     }
 
-    private void openResidentDetailScene(Residents resident) throws IOException {
+    public void openResidentDetailScene(Residents resident) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         ResidentDetailController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/resident-detail.fxml", "/styles/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Residents/resident-detail.fxml", "/styles/crud-resident.css", owner);
     }
 
     public void loadResidentsFromDatabase() {
@@ -241,10 +261,10 @@ public class ResidentsController {
                 resident.setHometown(resultSet.getString("hometown"));
                 resident.setEthnicity(resultSet.getString("ethnicity"));
 
-                ResidentsList.add(resident);
+                residentsList.add(resident);
             }
 
-            tableResidents.setItems(ResidentsList);
+            tableResidents.setItems(residentsList);
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -310,10 +330,10 @@ public class ResidentsController {
     private void handleEdit(Residents resident) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         EditResidentController.setResidentToEdit(resident); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/edit-resident.fxml", "/styles/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Residents/edit-resident.fxml", "/styles/crud-resident.css", owner);
 
         // Sau khi sửa, làm mới lại bảng dữ liệu:
-        ResidentsList.clear();
+        residentsList.clear();
         loadResidentsFromDatabase();
     }
 
@@ -329,8 +349,9 @@ public class ResidentsController {
                 if (stmt.executeUpdate() > 0) {
                     tableResidents.getItems().remove(residents);
                     System.out.println("Đã xóa cư dân: " + residents.getFullName());
+                    CustomAlert.showSuccessAlert("Đã xóa cư dân thành công", true, 0.7);
                 } else {
-                    System.out.println("Không tìm thấy cư dân để xóa.");
+                    CustomAlert.showErrorAlert("Không tìm thấy cư dân để xóa.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -85,7 +85,7 @@ public class CreateRevenueController {
             stmt.setLong(4, unitPrice);
 
             if (stmt.executeUpdate() > 0) {
-                CustomAlert.showSuccessAlert("Thêm khoản thu thành công!", true, 1);
+                CustomAlert.showSuccessAlert("Thêm khoản thu thành công", true, 0.7);
                 handleSave();
             }
         } catch (SQLIntegrityConstraintViolationException e) {

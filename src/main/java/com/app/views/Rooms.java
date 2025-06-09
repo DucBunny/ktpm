@@ -12,7 +12,7 @@ import java.io.IOException;
 public class Rooms extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/rooms.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Rooms/rooms.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);

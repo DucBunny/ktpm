@@ -72,7 +72,7 @@
                         <Image url="@../images/error.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="titleErrorLabel" alignment="CENTER" style="-fx-background-radius: 15;" text="Thêm khoản thu thất bại">
+                  <Label fx:id="titleErrorLabel" alignment="CENTER" maxWidth="-Infinity" prefWidth="300.0" style="-fx-background-radius: 15;" text="Biển số xe đã tồn tại trong hệ thống và đang được sử dụng." wrapText="true">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

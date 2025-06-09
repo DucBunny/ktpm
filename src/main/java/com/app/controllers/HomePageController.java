@@ -49,9 +49,9 @@ public class HomePageController {
         nameLabel.setText("Xin chào, " + username);
     }
 
-    //    Header Buton ---------------------------------------------------------
+    // Header Buton ------------------------------------------------------------
     public void changeToRooms(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/rooms.fxml", "/styles/rooms.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/rooms.css",
                 event, true);
 
         RoomsController controller = loader.getController();
@@ -59,7 +59,7 @@ public class HomePageController {
     }
 
     public void changeToResidents(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -82,7 +82,7 @@ public class HomePageController {
         controller.initialize(role, username);
     }
 
-    //  Pop-up Button Cài đặt --------------------------------------------------
+    // Pop-up Button Cài đặt ---------------------------------------------------
     public void changeToSignUp() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         SceneNavigator.showPopupScene("/fxml/create-account.fxml",

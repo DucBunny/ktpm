@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="778.0" prefWidth="630.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Rooms.EditVehicleController">
+    <children>
+        <Label alignment="CENTER" layoutX="485.0" layoutY="30.0" prefWidth="150.0" styleClass="boldText" text="Cập nhật phương tiện" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.5">
+            <font>
+                <Font name="System Bold" size="36.0" />
+            </font>
+        </Label>
+        <AnchorPane layoutX="365.0" layoutY="118.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="118.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefWidth="170.0" styleClass="boldText" text="Loại xe" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            <ComboBox fx:id="typeBox" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ComboBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="237.0" layoutY="421.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="188.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Biển số xe" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="plateNumberField" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.rightAnchor="0.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="631.0" layoutY="487.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="258.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Hãng" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="brandField" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="115.0" layoutY="479.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="328.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Màu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="colorField" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.rightAnchor="0.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="76.0" layoutY="66.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="398.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Ngày đăng ký" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <ComboBox id="dateBox" fx:id="dayBox" prefHeight="45.0" prefWidth="90.0" promptText="Ngày" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="0.0">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </ComboBox>
+                <Label layoutX="10.0" layoutY="10.0" prefWidth="10.0" rotate="-10.0" text="/" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                <ComboBox id="dateBox" fx:id="monthBox" layoutX="312.0" layoutY="6.0" prefHeight="45.0" prefWidth="90.0" promptText="Tháng" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="0.0">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </ComboBox>
+                <Label layoutX="10.0" layoutY="10.0" prefWidth="10.0" rotate="-10.0" text="/" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                <Spinner fx:id="yearSpinner" editable="true" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="87.0" layoutY="333.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="468.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" styleClass="boldText" text="Ghi chú" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            <TextArea fx:id="noteField" prefHeight="90.0" prefWidth="300.0" wrapText="true" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+            </children>
+        </AnchorPane>
+      <AnchorPane layoutX="375.0" layoutY="128.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="583.0">
+         <children>
+            <Label alignment="BOTTOM_LEFT" prefWidth="170.0" styleClass="boldText" text="Trạng thái" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="isActiveBox" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ComboBox>
+         </children>
+      </AnchorPane>
+        <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="673.0">
+            <children>
+                <Button fx:id="saveButton" alignment="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Cập nhật" textFill="WHITE">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

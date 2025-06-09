@@ -18,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -108,7 +107,7 @@ public class RoomsController {
         ));
     }
 
-    //    Header Buton ---------------------------------------------------------
+    // Header Buton ------------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true);
@@ -118,7 +117,7 @@ public class RoomsController {
     }
 
     public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -141,15 +140,11 @@ public class RoomsController {
         controller.initialize(role, username);
     }
 
-    //  Pop-up Button Cài đặt --------------------------------------------------
-    public void changeToSignUp() {
-        try {
-            Stage owner = StageManager.getPrimaryStage();
-            SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                    "/styles/sign-in-create-account.css", owner);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Pop-up Button Cài đặt ---------------------------------------------------
+    public void changeToSignUp() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+                "/styles/sign-in-create-account.css", owner);
     }
 
     public void changeToSignIn(ActionEvent event) throws Exception {
@@ -157,16 +152,16 @@ public class RoomsController {
                 event, false);
     }
 
-    //    Body -----------------------------------------------------------------
-    private void openRoomDetailScene(Event event, String roomName) throws IOException {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/room-detail.fxml", "/styles/room-detail.css",
+    // Body --------------------------------------------------------------------
+    public void openRoomDetailScene(Event event, String roomNumber) throws IOException {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/room-detail.fxml", "/styles/room-detail.css",
                 event, true);
 
         RoomDetailController controller = loader.getController();
-        controller.initialize(role, username, roomName);
+        controller.initialize(role, username, roomNumber);
     }
-    
-    private void loadRoomsFromDatabase() {
+
+    public void loadRoomsFromDatabase() {
         roomList.clear();
         try {
             Connection connection = DatabaseConnection.getConnection();
@@ -234,7 +229,7 @@ public class RoomsController {
         populateRoomsGrid();
     }
 
-    //    Hiển thị grid child
+    // Hiển thị grid child
     private void populateRoomsGrid() {
         roomsGrid.getChildren().clear();
         roomsGrid.getRowConstraints().clear();
@@ -247,15 +242,20 @@ public class RoomsController {
             roomBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);");
             roomBox.setPrefHeight(188.0);
             roomBox.setPrefWidth(410.0);
+            roomBox.setOnMouseEntered(e -> {
+                roomBox.setStyle("-fx-translate-y: -1px; -fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);");
+            });
+            roomBox.setOnMouseExited(e -> {
+                roomBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.1, 0, 2);");
+            });
 
             // Tạo Label cho tên phòng
             Label roomLabel = new Label("Phòng " + room.getRoomNumber());
             roomLabel.setAlignment(Pos.CENTER);
             roomLabel.setPrefWidth(350.0);
             roomLabel.setPrefHeight(70.0);
-            roomLabel.setStyle("-fx-background-color: #586995; -fx-background-radius: 15; -fx-font-weight: bold");
+            roomLabel.setStyle("-fx-background-color: #586995; -fx-background-radius: 15; -fx-font-weight: bold; -fx-font-size: 36");
             roomLabel.setTextFill(Color.WHITE);
-            roomLabel.setFont(new Font(36.0));
 
             // Tạo HBox chứa trạng thái và nút chi tiết
             HBox statusBox = new HBox(20);
@@ -267,29 +267,27 @@ public class RoomsController {
             statusLabel.setAlignment(Pos.CENTER);
             statusLabel.setPrefHeight(40.0);
             statusLabel.setPrefWidth(210.0);
-            statusLabel.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10;");
-            statusLabel.setFont(new Font(18.0));
+            statusLabel.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-font-size: 18");
 
             Button detailButton = new Button("Chi tiết");
             detailButton.setAlignment(Pos.CENTER);
             detailButton.setPrefHeight(40.0);
             detailButton.setPrefWidth(120.0);
-            detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand");
-            detailButton.setFont(new Font(18.0));
+            detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-font-size: 18");
             detailButton.setOnMouseEntered(e -> {
-                detailButton.setStyle("-fx-background-color: #E0E0E0; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-translate-y: -0.5px;");
+                detailButton.setStyle(" -fx-translate-y: -0.5px; -fx-background-color: #E0E0E0; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-font-size: 18;");
             });
             detailButton.setOnMouseExited(e -> {
-                detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand");
+                detailButton.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-font-size: 18;");
             });
             detailButton.setOnMousePressed(e -> {
-                detailButton.setStyle("-fx-background-color: #D6D6D6; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-translate-y: 1px;");
+                detailButton.setStyle("-fx-translate-y: 1px; -fx-background-color: #D6D6D6; -fx-background-radius: 10; -fx-border-color: #586995; -fx-border-radius: 10; -fx-cursor: hand; -fx-font-size: 18;");
             });
-            detailButton.setOnAction(event -> {
+            detailButton.setOnAction(e -> {
                 try {
-                    openRoomDetailScene(event, room.getRoomNumber());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    openRoomDetailScene(e, room.getRoomNumber());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
             });
 
@@ -306,6 +304,7 @@ public class RoomsController {
         }
     }
 
+    // Utils -------------------------------------------------------------------
     private void showErrorAlert(String message) {
         try {
             CustomAlert.showErrorAlert(message);

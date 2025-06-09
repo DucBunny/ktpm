@@ -6,13 +6,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 
 public class RoomDetail extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/room-detail.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Rooms/room-detail.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);

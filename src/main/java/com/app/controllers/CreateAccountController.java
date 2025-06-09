@@ -60,7 +60,7 @@ public class CreateAccountController {
             stmt.setString(3, hashedPassword);
 
             if (stmt.executeUpdate() > 0) {
-                CustomAlert.showSuccessAlert("Tạo tài khoản thành công!", true, 1);
+                CustomAlert.showSuccessAlert("Tạo tài khoản thành công", true, 0.7);
                 handleSave();
             }
         } catch (SQLIntegrityConstraintViolationException e) {

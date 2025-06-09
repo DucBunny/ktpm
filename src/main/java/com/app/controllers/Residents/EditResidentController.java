@@ -364,12 +364,12 @@ public class EditResidentController {
                         stmt.setString(1, fullName);
                         stmt.setDate(2, Date.valueOf(LocalDate.of(year, month, day)));
                         stmt.setString(3, gender);
-                        stmt.setString(4, phone.isEmpty() ? null : phone);
+                        stmt.setString(4, phone.isEmpty() ? null : phone.trim());
                         stmt.setString(5, idCardNumber);
                         stmt.setString(6, roomNumber);
                         stmt.setString(7, relationship);
                         stmt.setString(8, placeOfBirth);
-                        stmt.setString(9, occupation.isEmpty() ? null : occupation);
+                        stmt.setString(9, occupation.isEmpty() ? null : occupation.trim());
                         stmt.setString(10, hometown);
                         stmt.setString(11, ethnicity);
                         stmt.setString(12, residenceStatus);
@@ -393,7 +393,7 @@ public class EditResidentController {
                     }
 
                     connection.commit();
-                    CustomAlert.showSuccessAlert("Cập nhật thông tin cư dân thành công.", true, 0.7);
+                    CustomAlert.showSuccessAlert("Cập nhật thông tin cư dân thành công", true, 0.7);
                     handleSave();
                 } catch (SQLException ex) {
                     connection.rollback();
@@ -418,6 +418,7 @@ public class EditResidentController {
         stage.close();
     }
 
+    // Utils -------------------------------------------------------------------
     private void showErrorAlert(String message) {
         try {
             CustomAlert.showErrorAlert(message);

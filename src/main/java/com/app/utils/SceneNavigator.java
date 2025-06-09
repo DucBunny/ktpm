@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SceneNavigator {
+    // Chuyển scene (event)
     public static FXMLLoader switchScene(String fxmlPath, String cssPath, Event event
             , boolean maximized) throws IOException {
         Stage stage;
@@ -61,7 +62,7 @@ public class SceneNavigator {
         return loader;
     }
 
-    // Không dùng event
+    // Chuyển scene (dùng node)
     public static FXMLLoader switchScene(String fxmlPath, String cssPath, Node nodeInScene) throws IOException {
         Stage stage = (Stage) nodeInScene.getScene().getWindow();  // Lấy stage từ node
 
@@ -79,8 +80,8 @@ public class SceneNavigator {
         return loader;
     }
 
-    // Hiển thị scene trong một cửa sổ mới (Stage mới), dạng popup
-    public static FXMLLoader showPopupScene(String fxmlPath, String cssPath, Stage owner) throws IOException {
+    // Hiển thị scene trong một cửa sổ mới (Stage mới), dạng popup => ko return
+    public static void showPopupScene(String fxmlPath, String cssPath, Stage owner) throws IOException {
         FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(fxmlPath));
         Parent root = loader.load();
 
@@ -98,7 +99,30 @@ public class SceneNavigator {
             popupStage.initOwner(owner);
         }
 
-        popupStage.showAndWait(); // hoặc .showAndWait() nếu muốn chặn cửa sổ cha
+        popupStage.showAndWait(); // Dùng showAndWait => tự reload được bảng
+    }
+
+    // Hiển thị scene trong một cửa sổ mới (Stage mới), dạng popup => FXML Loader
+    public static FXMLLoader showPopupSceneFXML(String fxmlPath, String cssPath, Stage owner) throws IOException {
+        FXMLLoader loader = new FXMLLoader(SceneNavigator.class.getResource(fxmlPath));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root);
+        if (cssPath != null) {
+            scene.getStylesheets().add(SceneNavigator.class.getResource(cssPath).toExternalForm());
+        }
+
+        Stage popupStage = new Stage();
+        popupStage.setScene(scene);
+        popupStage.setResizable(false);
+
+        if (owner != null) {
+            popupStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            popupStage.initOwner(owner);
+        }
+
+        popupStage.setUserData(loader);
+        popupStage.show(); // Dùng show => không tự reload bảng => Dùng interface Callback
 
         return loader;
     }

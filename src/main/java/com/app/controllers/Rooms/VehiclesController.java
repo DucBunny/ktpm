@@ -82,7 +82,7 @@ public class VehiclesController {
             }
         });
 
-        // Nháy chuột vào row sẽ mở chi tiết cư dân
+        // Nháy chuột vào row sẽ mở chi tiết phương tiện
         tableVehicles.setRowFactory(tv -> {
             TableRow<Vehicles> row = new TableRow<>();
             row.setOnMouseClicked(event -> {

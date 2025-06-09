@@ -7,100 +7,154 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 public class CreateRevenueController {
     @FXML
-    private TextField nameRevenueField;
-    @FXML
-    private TextField descriptionField;
-    @FXML
-    private ComboBox<ComboBoxOption> categoryField;
+    private TextField nameField;
     @FXML
     private TextField unitPriceField;
     @FXML
-    private Button createButton;
+    private TextArea descriptionArea;
+    @FXML
+    private ComboBox<ComboBoxOption> categoryBox;
+
+    @FXML
+    private AnchorPane unitPriceAnchorPane;
+
+    @FXML
+    private Button saveButton;
 
     public void initialize() {
-        categoryField.setItems(FXCollections.observableArrayList(
+        initCategoryBox();
+
+        // Ẩn unitPriceField mặc định
+        unitPriceAnchorPane.setVisible(false);
+        unitPriceAnchorPane.setManaged(false);
+
+        categoryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            if (newVal != null && newVal.getValue().equals("voluntary")) {
+                // height (FXML) + title bar (mặc định cao 35.5px)
+                stage.setHeight(533.5);
+                unitPriceAnchorPane.setVisible(false);
+                unitPriceAnchorPane.setManaged(false); // để layout co lại
+                unitPriceField.clear();
+            } else {
+                stage.setHeight(603.5);
+                unitPriceAnchorPane.setVisible(true);
+                unitPriceAnchorPane.setManaged(true);
+            }
+        });
+
+        setupSaveButton();
+    }
+
+    private void initCategoryBox() {
+        categoryBox.setItems(FXCollections.observableArrayList(
                 new ComboBoxOption("Bắt buộc", "mandatory"),
                 new ComboBoxOption("Tự nguyện", "voluntary")
         ));
-        categoryField.setValue(categoryField.getItems().getFirst()); // chọn mặc định
     }
 
-    @FXML
-    private void handleCreateRevenues() {
-        String nameRevenue = nameRevenueField.getText().trim();
-        String description = descriptionField.getText().trim();
-        String unitPriceString = unitPriceField.getText().trim();
-        String category = categoryField.getValue().getValue();
+    private boolean areRequiredFieldsEmpty() {
+        String name = nameField.getText();
+        ComboBoxOption category = categoryBox.getValue();
 
-        if (nameRevenue.isEmpty()) {
-            nameRevenueField.setStyle("-fx-prompt-text-fill: red; -fx-border-color: red");
-            nameRevenueField.clear();
-            nameRevenueField.setPromptText("Vui lòng nhập tên khoản thu!");
-            return;
+        if (name == null || name.trim().isEmpty() || category == null) {
+            return true;
         }
 
-        long unitPrice;
-        if (unitPriceString.isEmpty()) {
-            if (category.equals("mandatory")) {
-                unitPriceField.setStyle("-fx-prompt-text-fill: red; -fx-border-color: red");
-                unitPriceField.setPromptText("Bắt buộc phải nhập!");
+        if ("mandatory".equals(category.getValue())) {
+            String unitPrice = unitPriceField.getText();
+            return unitPrice == null || unitPrice.trim().isEmpty();
+        }
+
+        return false;
+    }
+
+    private void setupSaveButton() {
+        saveButton.setOnAction(e -> {
+            if (areRequiredFieldsEmpty()) {
+                showErrorAlert("Vui lòng nhập đầy đủ thông tin.");
                 return;
             }
 
-            unitPrice = 1;
-        } else {
-            try {
-                unitPrice = Long.parseLong(unitPriceString);
-                if (unitPrice < 0) {
-                    unitPriceField.setStyle("-fx-prompt-text-fill: red; -fx-border-color: red");
-                    unitPriceField.clear();
-                    unitPriceField.setPromptText("Vui lòng nhập số dương!");
-                    return;
+            String name = nameField.getText().trim();
+            String description = descriptionArea.getText().trim();
+            String category = categoryBox.getValue().getValue();
+            String unitPrice = category.equals("mandatory") ? unitPriceField.getText().trim() : "1";
+
+            try (Connection connection = DatabaseConnection.getConnection()) {
+                connection.setAutoCommit(false);
+
+                try {
+                    // Kiểm tra tên khoản thu trùng lặp
+                    String checkSql = "SELECT id FROM revenue_items WHERE name = ?";
+                    try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
+                        checkStmt.setString(1, name);
+                        ResultSet rs = checkStmt.executeQuery();
+                        if (rs.next()) {
+                            showErrorAlert("Tên khoản thu đã tồn tại trong hệ thống.");
+                            connection.rollback();
+                            return;
+                        }
+                    }
+
+                    // Thêm cư dân
+                    String sql = "INSERT INTO revenue_items (name, unit_price, description, category, status) " +
+                            "VALUES (?, ?, ?, ?, ?)";
+                    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                        stmt.setString(1, name);
+                        stmt.setDouble(2, Double.parseDouble(unitPrice));
+                        stmt.setString(3, description);
+                        stmt.setString(4, category);
+                        stmt.setString(5, "active");
+
+                        stmt.executeUpdate();
+                    }
+
+                    connection.commit();
+                    CustomAlert.showSuccessAlert("Thêm khoản thu thành công", true, 0.7);
+                    handleSave();
+                } catch (SQLException ex) {
+                    connection.rollback();
+                    if (ex.getSQLState().equals("23000") && ex.getMessage().contains("unique_name")) {
+                        showErrorAlert("Tên khoản thu đã tồn tại trong hệ thống.");
+                    } else {
+                        ex.printStackTrace();
+                        showErrorAlert("Lỗi SQL: " + ex.getMessage());
+                    }
+                } finally {
+                    connection.setAutoCommit(true);
                 }
-            } catch (NumberFormatException e) {
-                unitPriceField.setStyle("-fx-prompt-text-fill: red; -fx-border-color: red");
-                unitPriceField.clear();
-                unitPriceField.setPromptText("Vui lòng chỉ nhập số!");
-                return;
+            } catch (SQLException | IOException ex) {
+                ex.printStackTrace();
+                showErrorAlert("Lỗi: " + ex.getMessage());
             }
-        }
-
-        try (Connection connect = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO revenue_items (name, description, category, unit_price) VALUES (?, ?, ?, ?)";
-            PreparedStatement stmt = connect.prepareStatement(sql);
-            stmt.setString(1, nameRevenue);
-            stmt.setString(2, description);
-            stmt.setString(3, category);
-            stmt.setLong(4, unitPrice);
-
-            if (stmt.executeUpdate() > 0) {
-                CustomAlert.showSuccessAlert("Thêm khoản thu thành công", true, 0.7);
-                handleSave();
-            }
-        } catch (SQLIntegrityConstraintViolationException e) {
-            nameRevenueField.setStyle("-fx-prompt-text-fill: red; -fx-border-color: red");
-            nameRevenueField.clear();
-            nameRevenueField.setPromptText("Tên khoản thu đã tồn tại!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        });
     }
 
     private void handleSave() {
-        Stage stage = (Stage) createButton.getScene().getWindow();
+        Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
+    }
+
+    // Utils -------------------------------------------------------------------
+    private void showErrorAlert(String message) {
+        try {
+            CustomAlert.showErrorAlert(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -107,7 +107,7 @@ public class RoomsController {
         ));
     }
 
-    // Header Buton ------------------------------------------------------------
+    // Header Burton -----------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true);

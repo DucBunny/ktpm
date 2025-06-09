@@ -51,7 +51,7 @@ public class HomePageController {
         nameLabel.setText("Xin chào, " + username);
     }
 
-    // Header Buton ------------------------------------------------------------
+    // Header Button -----------------------------------------------------------
     public void changeToRooms(Event event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
                 event, true);
@@ -104,6 +104,6 @@ public class HomePageController {
 
     public void changeToCreateRevenues() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/create-revenue.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/crud-revenue.css", owner);
     }
 }

@@ -10,6 +10,7 @@ import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ import java.util.Objects;
 public class RevenuesController {
     private String role;
     private String username;
+    private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
     @FXML
@@ -48,7 +50,7 @@ public class RevenuesController {
     @FXML
     private TableColumn<Revenues, String> nameRevenues;
     @FXML
-    private TableColumn<Revenues, String> valueRevenues;
+    private TableColumn<Revenues, String> unitPriceRevenues;
     @FXML
     private TableColumn<Revenues, String> descriptionRevenues;
     @FXML
@@ -68,36 +70,72 @@ public class RevenuesController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
         } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
             btnCreate.setVisible(true);
             actionRevenues.setVisible(true);
-
             addActionButtonsToTable();
+            elasticity = 1;
         }
 
         nameLabel.setText("Xin chào, " + username);
 
-        // Trừ khoảng scroll bar 17px hoặc padding nếu cần
-        double padding = 17; // hoặc 0 nếu không cần
-        tableRevenues.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableRevenues.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        nameRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.2));
-        valueRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.15));
-        descriptionRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.3));
-        categoryRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
-        statusRevenues.prefWidthProperty().bind(tableRevenues.widthProperty().subtract(padding).multiply(0.1));
+        // Thiết lập lắng nghe khi có thay đổi kích thước hoặc dữ liệu
+        tableRevenues.widthProperty().addListener((obs, oldVal, newVal) -> adjustColumnWidths(elasticity));
+        revenuesList.addListener((ListChangeListener<Revenues>) c -> adjustColumnWidths(elasticity));
 
         nameRevenues.setCellValueFactory(new PropertyValueFactory<>("name"));
-        valueRevenues.setCellValueFactory(new PropertyValueFactory<>("value"));
+        unitPriceRevenues.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         descriptionRevenues.setCellValueFactory(new PropertyValueFactory<>("description"));
         categoryRevenues.setCellValueFactory(new PropertyValueFactory<>("category"));
         statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        // Nháy chuột vào row sẽ mở chi tiết khoản thu
+        tableRevenues.setRowFactory(tv -> {
+            TableRow<Revenues> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() >= 2 && row.getItem() != null) {
+                    try {
+                        openRevenueDetailScene(row.getItem());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row;
+        });
+
         loadRevenuesFromDatabase();
     }
 
-    // Header Buton ------------------------------------------------------------
+    private void adjustColumnWidths(double elasticity) {
+        // Lấy số dòng dữ liệu (item count)
+        int rowCount = revenuesList.size();
+        // Lấy chiều cao 1 hàng
+        double rowHeight = 40;
+        // Trừ chiều cao header
+        double headerHeight = 50;
+        // Tổng chiều cao dữ liệu
+        double totalRowsHeight = rowCount * rowHeight;
+        // Chiều cao hiển thị thực tế
+        double tableContentHeight = tableRevenues.getHeight() - headerHeight;
+
+        // Nếu tổng chiều cao dữ liệu > chiều cao table -> có scroll bar
+        double padding = (totalRowsHeight > tableContentHeight) ? 18 : 0;
+        double tableWidth = tableRevenues.getWidth() - padding;
+
+        nameRevenues.setPrefWidth(tableWidth * 0.2 * elasticity);
+        unitPriceRevenues.setPrefWidth(tableWidth * 0.15 * elasticity);
+        descriptionRevenues.setPrefWidth(tableWidth * 0.35 * elasticity);
+        categoryRevenues.setPrefWidth(tableWidth * 0.1 * elasticity);
+        statusRevenues.setPrefWidth(tableWidth * 0.1 * elasticity);
+        actionRevenues.setPrefWidth(tableWidth * 0.1 * elasticity);
+    }
+
+    // Header Button -----------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true);
@@ -145,17 +183,23 @@ public class RevenuesController {
     // Body --------------------------------------------------------------------
     public void handleCreateRevenue() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/create-revenue.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/crud-revenue.css", owner);
 
         //  Reload lại bảng
         revenuesList.clear();
         loadRevenuesFromDatabase();
     }
 
-    public void loadRevenuesFromDatabase() throws IOException {
+    public void openRevenueDetailScene(Revenues revenue) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        RevenueDetailController.setRevenueDetail(revenue); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/Revenues/revenue-detail.fxml", "/styles/Revenues/crud-revenue.css", owner);
+    }
+
+    public void loadRevenuesFromDatabase() {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            String query = "SELECT * FROM revenue_items ORDER BY unit_price DESC";
+            String query = "SELECT * FROM revenue_items ORDER BY status ASC , unit_price DESC, name ASC";
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
 
@@ -163,7 +207,7 @@ public class RevenuesController {
                 revenuesList.add(new Revenues(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
-                        resultSet.getString("unit_price"),
+                        resultSet.getString("unit_price").equals("1.00") ? "" : resultSet.getString("unit_price"),
                         resultSet.getString("description"),
                         resultSet.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện",
                         resultSet.getString("status").equals("active") ? "Mở" : "Đóng"
@@ -173,7 +217,11 @@ public class RevenuesController {
             tableRevenues.setItems(revenuesList);
         } catch (Exception e) {
             e.printStackTrace();
-            CustomAlert.showErrorAlert("Không thể tải dữ liệu khoản thu từ CSDL.");
+            try {
+                CustomAlert.showErrorAlert("Không thể tải dữ liệu khoản thu từ CSDL.");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
@@ -232,7 +280,7 @@ public class RevenuesController {
     private void handleEdit(Revenues revenues) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/Revenues/edit-revenue.fxml", "/styles/Revenues/edit-revenue.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Revenues/edit-revenue.fxml", "/styles/Revenues/crud-revenue.css", owner);
 
         // Sau khi sửa, làm mới lại bảng dữ liệu
         revenuesList.clear();
@@ -248,13 +296,12 @@ public class RevenuesController {
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setInt(1, revenues.getId());
 
-                int rowsAffected = stmt.executeUpdate();
-
-                if (rowsAffected > 0) {
+                if (stmt.executeUpdate() > 0) {
                     tableRevenues.getItems().remove(revenues);
-                    System.out.println("Đã xóa: " + revenues.getName());
+                    System.out.println("Đã xóa khoản thu: " + revenues.getName());
+                    CustomAlert.showSuccessAlert("Đã xóa khoản thu thành công", true, 0.7);
                 } else {
-                    System.out.println("Không tìm thấy khoản thu để xóa.");
+                    CustomAlert.showErrorAlert("Không tìm thấy khoản thu để xóa.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

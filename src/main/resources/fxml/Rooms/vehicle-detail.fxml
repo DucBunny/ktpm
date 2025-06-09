@@ -25,6 +25,9 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
             </TextField>
             </children>
         </AnchorPane>
@@ -39,6 +42,9 @@
                     <font>
                         <Font size="18.0" />
                     </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
                 </TextField>
             </children>
         </AnchorPane>
@@ -53,6 +59,9 @@
                     <font>
                         <Font size="18.0" />
                     </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
                 </TextField>
             </children>
         </AnchorPane>
@@ -67,6 +76,9 @@
                     <font>
                         <Font size="18.0" />
                     </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
                 </TextField>
             </children>
         </AnchorPane>
@@ -124,6 +136,9 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
             </TextArea>
             </children>
         </AnchorPane>
@@ -138,6 +153,9 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
             </TextField>
          </children>
       </AnchorPane>
@@ -152,6 +170,9 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
             </TextField>
          </children>
       </AnchorPane>

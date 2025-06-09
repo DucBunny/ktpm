@@ -169,7 +169,7 @@ public class RoomDetailController {
         actionResidents.setPrefWidth(tableWidth * 0.1);
     }
 
-    // Header Buton ------------------------------------------------------------
+    // Header Butron -----------------------------------------------------------
     public void changeToHomePage(ActionEvent event) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true);

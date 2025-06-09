@@ -13,32 +13,34 @@ public class Rooms {
         this.status = status;
     }
 
+    // Getters
     public String getRoomNumber() {
         return roomNumber;
-    }
-
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
     }
 
     public int getFloor() {
         return floor;
     }
 
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
-
     public float getArea() {
         return area;
     }
 
-    public void setArea(float area) {
-        this.area = area;
-    }
-
     public String getStatus() {
         return status;
+    }
+
+    // Setters
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public void setArea(float area) {
+        this.area = area;
     }
 
     public void setStatus(String status) {

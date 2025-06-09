@@ -1,6 +1,8 @@
-package com.app.controllers;
+package com.app.controllers.Payments;
 
+import com.app.controllers.HomePageController;
 import com.app.controllers.Residents.ResidentsController;
+import com.app.controllers.Revenues.RevenuesController;
 import com.app.controllers.Rooms.RoomsController;
 import com.app.models.PaymentStatistics;
 import com.app.utils.DatabaseConnection;
@@ -111,7 +113,7 @@ public class PaymentsController {
     }
 
     public void changeToRooms(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/rooms.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
                 event, true);
 
         RoomsController controller = loader.getController();
@@ -119,7 +121,7 @@ public class PaymentsController {
     }
 
     public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -127,7 +129,7 @@ public class PaymentsController {
     }
 
     public void changeToRevenues(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Revenues/revenues.fxml", "/styles/Revenues/revenues.css",
                 event, true);
 
         RevenuesController controller = loader.getController();
@@ -148,7 +150,7 @@ public class PaymentsController {
 
     // Body --------------------------------------------------------------------
     private void openPaymentDetailScene(String revenueItemName) throws IOException {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payment-detail.fxml", "/styles/payment-detail.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payment-detail.fxml", "/styles/Payments/payment-detail.css",
                 tablePaymentStatistics);
 
         PaymentDetailController controller = loader.getController();

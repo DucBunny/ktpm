@@ -130,7 +130,7 @@ public class VehiclesController {
     // Body --------------------------------------------------------------------
     public void handleCreateVehicle() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/create-vehicle.fxml", "/styles/crud-vehicle.css", owner);
+        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/create-vehicle.fxml", "/styles/Rooms/crud-vehicle.css", owner);
 
         CreateVehicleController controller = loader.getController();
         controller.initialize(roomNumber);
@@ -146,7 +146,7 @@ public class VehiclesController {
     public void openVehicleDetailScene(Vehicles vehicle) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         VehicleDetailController.setVehicleDetail(vehicle); // Hàm static để tạm giữ dữ liệu
-        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/vehicle-detail.fxml", "/styles/crud-vehicle.css", owner);
+        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/vehicle-detail.fxml", "/styles/Rooms/crud-vehicle.css", owner);
 
         VehicleDetailController controller = loader.getController();
         controller.initialize(roomNumber);
@@ -241,7 +241,7 @@ public class VehiclesController {
     private void handleEdit(Vehicles vehicle) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         EditVehicleController.setVehicleToEdit(vehicle); // Hàm static để tạm giữ dữ liệu
-        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/edit-vehicle.fxml", "/styles/crud-vehicle.css", owner);
+        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/edit-vehicle.fxml", "/styles/Rooms/crud-vehicle.css", owner);
 
         EditVehicleController controller = loader.getController();
         controller.initialize(roomNumber);

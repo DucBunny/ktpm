@@ -12,11 +12,11 @@ import java.io.IOException;
 public class CreatePayment extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/create-payment.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Payments/create-payment.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/create-payment.css").toExternalForm());
+        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/Payments/create-payment.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

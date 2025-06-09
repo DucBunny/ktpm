@@ -1,9 +1,9 @@
 package com.app.controllers.Rooms;
 
 import com.app.controllers.HomePageController;
-import com.app.controllers.PaymentsController;
+import com.app.controllers.Payments.PaymentsController;
 import com.app.controllers.Residents.ResidentsController;
-import com.app.controllers.RevenuesController;
+import com.app.controllers.Revenues.RevenuesController;
 import com.app.models.Rooms;
 import com.app.utils.*;
 import javafx.collections.FXCollections;
@@ -117,7 +117,7 @@ public class RoomsController {
     }
 
     public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -125,7 +125,7 @@ public class RoomsController {
     }
 
     public void changeToRevenues(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Revenues/revenues.fxml", "/styles/Revenues/revenues.css",
                 event, true);
 
         RevenuesController controller = loader.getController();
@@ -133,7 +133,7 @@ public class RoomsController {
     }
 
     public void changeToPayments(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payments.fxml", "/styles/payments.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
                 event, true);
 
         PaymentsController controller = loader.getController();
@@ -154,7 +154,7 @@ public class RoomsController {
 
     // Body --------------------------------------------------------------------
     public void openRoomDetailScene(Event event, String roomNumber) throws IOException {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/room-detail.fxml", "/styles/room-detail.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/room-detail.fxml", "/styles/Rooms/room-detail.css",
                 event, true);
 
         RoomDetailController controller = loader.getController();

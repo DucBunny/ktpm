@@ -12,11 +12,11 @@ import java.io.IOException;
 public class Revenues extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/revenues.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Revenues/revenues.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Revenues.class.getResource("/styles/revenues.css").toExternalForm());
+        scene.getStylesheets().add(Revenues.class.getResource("/styles/Revenues/revenues.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

@@ -16,7 +16,7 @@ public class Residents extends Application {
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Residents.class.getResource("/styles/residents.css").toExternalForm());
+        scene.getStylesheets().add(Residents.class.getResource("/styles/Residents/residents.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

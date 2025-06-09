@@ -1,6 +1,8 @@
 package com.app.controllers;
 
+import com.app.controllers.Payments.PaymentsController;
 import com.app.controllers.Residents.ResidentsController;
+import com.app.controllers.Revenues.RevenuesController;
 import com.app.controllers.Rooms.RoomsController;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
@@ -51,7 +53,7 @@ public class HomePageController {
 
     // Header Buton ------------------------------------------------------------
     public void changeToRooms(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/rooms.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
                 event, true);
 
         RoomsController controller = loader.getController();
@@ -59,7 +61,7 @@ public class HomePageController {
     }
 
     public void changeToResidents(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -67,7 +69,7 @@ public class HomePageController {
     }
 
     public void changeToRevenues(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Revenues/revenues.fxml", "/styles/Revenues/revenues.css",
                 event, true);
 
         RevenuesController controller = loader.getController();
@@ -75,7 +77,7 @@ public class HomePageController {
     }
 
     public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payments.fxml", "/styles/payments.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
                 event, true);
 
         PaymentsController controller = loader.getController();
@@ -97,11 +99,11 @@ public class HomePageController {
     // Footer Button -----------------------------------------------------------
     public void changeToCreatePayments() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-payment.fxml", "/styles/create-payment.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Payments/create-payment.fxml", "/styles/Payments/create-payment.css", owner);
     }
 
     public void changeToCreateRevenues() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-revenue.fxml", "/styles/create-revenue.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/create-revenue.css", owner);
     }
 }

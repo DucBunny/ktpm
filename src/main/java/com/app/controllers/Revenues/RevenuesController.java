@@ -1,5 +1,7 @@
-package com.app.controllers;
+package com.app.controllers.Revenues;
 
+import com.app.controllers.HomePageController;
+import com.app.controllers.Payments.PaymentsController;
 import com.app.controllers.Residents.ResidentsController;
 import com.app.controllers.Rooms.RoomsController;
 import com.app.models.Revenues;
@@ -105,7 +107,7 @@ public class RevenuesController {
     }
 
     public void changeToRooms(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/rooms.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
                 event, true);
 
         RoomsController controller = loader.getController();
@@ -113,7 +115,7 @@ public class RevenuesController {
     }
 
     public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -121,7 +123,7 @@ public class RevenuesController {
     }
 
     public void changeToPayments(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payments.fxml", "/styles/payments.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
                 event, true);
 
         PaymentsController controller = loader.getController();
@@ -143,7 +145,7 @@ public class RevenuesController {
     // Body --------------------------------------------------------------------
     public void handleCreateRevenue() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-revenue.fxml", "/styles/create-revenue.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/create-revenue.css", owner);
 
         //  Reload lại bảng
         revenuesList.clear();
@@ -230,7 +232,7 @@ public class RevenuesController {
     private void handleEdit(Revenues revenues) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         EditRevenueController.setRevenueToEdit(revenues); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/edit-revenue.fxml", "/styles/edit-revenue.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Revenues/edit-revenue.fxml", "/styles/Revenues/edit-revenue.css", owner);
 
         // Sau khi sửa, làm mới lại bảng dữ liệu
         revenuesList.clear();

@@ -1,4 +1,4 @@
-package com.app.controllers;
+package com.app.controllers.Payments;
 
 import com.app.models.Residents;
 import com.app.models.Revenues;

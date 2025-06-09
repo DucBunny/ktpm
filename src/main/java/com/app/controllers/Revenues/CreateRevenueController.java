@@ -1,4 +1,4 @@
-package com.app.controllers;
+package com.app.controllers.Revenues;
 
 import com.app.utils.ComboBoxOption;
 import com.app.utils.CustomAlert;

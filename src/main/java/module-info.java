@@ -17,4 +17,8 @@ module com.app {
     opens com.app.controllers.Residents to javafx.fxml;
     exports com.app.controllers.Rooms;
     opens com.app.controllers.Rooms to javafx.fxml;
+    exports com.app.controllers.Revenues;
+    opens com.app.controllers.Revenues to javafx.fxml;
+    exports com.app.controllers.Payments;
+    opens com.app.controllers.Payments to javafx.fxml;
 }

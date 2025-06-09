@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="725.0" prefWidth="1120.0"
+            style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.app.controllers.Payments.EditPaymentController">
+    <children>
+        <Label alignment="CENTER" layoutX="485.0" layoutY="30.0"
+               prefWidth="150.0" styleClass="boldText" text="Cập nhật thu phí"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="30.0">
+            <font>
+                <Font name="System Bold" size="40.0"/>
+            </font>
+        </Label>
+        <Label layoutX="90.0" layoutY="128.0" prefWidth="170.0"
+               styleClass="boldText" text="Họ và tên"
+               AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="128.0">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+        <ComboBox fx:id="fullNameBox" layoutX="470.0" layoutY="383.0"
+                  prefHeight="60.0" prefWidth="545.0"
+                  promptText="Chọn người đóng"
+                  style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;"
+                  AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="115.0">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </ComboBox>
+        <Label layoutX="141.0" layoutY="208.0" prefHeight="35.0"
+               prefWidth="250.0" styleClass="boldText" text="Số tiền"
+               AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="208.0">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="amountField" layoutX="505.0" layoutY="375.0"
+                   prefHeight="60.0" prefWidth="545.0"
+                   style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;"
+                   AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="195.0">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </TextField>
+        <Label layoutX="120.0" layoutY="291.0" prefHeight="35.0"
+               prefWidth="250.0" styleClass="boldText" text="Khoản thu"
+               AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="288.0">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+        <ComboBox fx:id="nameRevenueBox" layoutX="460.0" layoutY="373.0"
+                  prefHeight="60.0" prefWidth="545.0"
+                  promptText="Chọn khoản thu"
+                  style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;"
+                  AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="275.0">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </ComboBox>
+        <Label layoutX="115.0" layoutY="448.0" prefHeight="35.0"
+               prefWidth="250.0" styleClass="boldText" text="Ghi chú"
+               AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="368.0">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="noteField" layoutX="495.0" layoutY="365.0"
+                   prefHeight="60.0" prefWidth="545.0"
+                   style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;"
+                   AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="355.0">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </TextField>
+        <Label layoutX="137.0" layoutY="445.0" prefHeight="35.0"
+               prefWidth="250.0" styleClass="boldText" text="Ngày đóng"
+               AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="448.0">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+        <DatePicker fx:id="paymentDate" prefHeight="60.0" prefWidth="545.0"
+                    style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;"
+                    AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="435.0">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </DatePicker>
+        <Label layoutX="140.0" layoutY="529.0" prefHeight="35.0"
+               prefWidth="250.0" styleClass="boldText" text="Căn hộ"
+               AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="528.0">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+        <ComboBox fx:id="roomBox" layoutX="470.0" layoutY="383.0"
+                  prefHeight="60.0" prefWidth="545.0" promptText="Chọn căn hộ"
+                  style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-radius: 10;"
+                  AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="515.0">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </ComboBox>
+        <Button fx:id="saveButton" layoutX="485.0" layoutY="530.0"
+                mnemonicParsing="false" onAction="#handleSave" prefHeight="70.0"
+                prefWidth="545.0"
+                style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);"
+                text="Cập nhật" textFill="WHITE" AnchorPane.rightAnchor="140.0"
+                AnchorPane.topAnchor="610.0">
+            <font>
+                <Font size="20.0"/>
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </Button>
+    </children>
+</AnchorPane>

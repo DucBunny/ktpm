@@ -17,7 +17,7 @@ public class RoomDetail extends Application {
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Revenues.class.getResource("/styles/room-detail.css").toExternalForm());
+        scene.getStylesheets().add(Revenues.class.getResource("/styles/Rooms/room-detail.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

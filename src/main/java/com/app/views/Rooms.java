@@ -16,7 +16,7 @@ public class Rooms extends Application {
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Rooms.class.getResource("/styles/rooms.css").toExternalForm());
+        scene.getStylesheets().add(Rooms.class.getResource("/styles/Rooms/rooms.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

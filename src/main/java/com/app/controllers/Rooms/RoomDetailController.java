@@ -1,11 +1,11 @@
 package com.app.controllers.Rooms;
 
 import com.app.controllers.HomePageController;
-import com.app.controllers.PaymentsController;
+import com.app.controllers.Payments.PaymentsController;
 import com.app.controllers.Residents.EditResidentController;
 import com.app.controllers.Residents.ResidentDetailController;
 import com.app.controllers.Residents.ResidentsController;
-import com.app.controllers.RevenuesController;
+import com.app.controllers.Revenues.RevenuesController;
 import com.app.models.Residents;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
@@ -179,7 +179,7 @@ public class RoomDetailController {
     }
 
     public void changeToRooms(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/rooms.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
                 event, true);
 
         RoomsController controller = loader.getController();
@@ -187,7 +187,7 @@ public class RoomDetailController {
     }
 
     public void changeToResidents(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/residents.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
                 event, true);
 
         ResidentsController controller = loader.getController();
@@ -195,7 +195,7 @@ public class RoomDetailController {
     }
 
     public void changeToRevenues(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/revenues.fxml", "/styles/revenues.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Revenues/revenues.fxml", "/styles/Revenues/revenues.css",
                 event, true);
 
         RevenuesController controller = loader.getController();
@@ -203,7 +203,7 @@ public class RoomDetailController {
     }
 
     public void changeToPayments(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/payments.fxml", "/styles/payments.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
                 event, true);
 
         PaymentsController controller = loader.getController();
@@ -225,7 +225,7 @@ public class RoomDetailController {
     // Body --------------------------------------------------------------------
     public void handleCreateResident() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Residents/create-resident.fxml", "/styles/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Residents/create-resident.fxml", "/styles/Residents/crud-resident.css", owner);
 
         //  Reload lại bảng
         residentsList.clear();
@@ -234,7 +234,7 @@ public class RoomDetailController {
 
     public void openVehicleScene() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/vehicles.fxml", "/styles/vehicles.css", owner);
+        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/vehicles.fxml", "/styles/Rooms/vehicles.css", owner);
 
         VehiclesController controller = loader.getController();
         controller.initialize(roomNumber);
@@ -243,7 +243,7 @@ public class RoomDetailController {
     public void openResidentDetailScene(Residents resident) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         ResidentDetailController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/Residents/resident-detail.fxml", "/styles/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Residents/resident-detail.fxml", "/styles/Residents/crud-resident.css", owner);
     }
 
     public void loadRoomData() {
@@ -382,7 +382,7 @@ public class RoomDetailController {
     private void handleEditResidents(Residents residents) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         EditResidentController.setResidentToEdit(residents); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/Residents/edit-resident.fxml", "/styles/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Residents/edit-resident.fxml", "/styles/Residents/crud-resident.css", owner);
 
         // Sau khi sửa, làm mới lại bảng dữ liệu:
         residentsList.clear();

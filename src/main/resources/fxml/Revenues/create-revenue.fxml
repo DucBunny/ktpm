@@ -9,7 +9,7 @@
             style="-fx-background-color: ffffff; -fx-background-radius: 20; -fx-border-radius: 20;"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.app.controllers.CreateRevenueController">
+            fx:controller="com.app.controllers.Revenues.CreateRevenueController">
     <children>
         <Label alignment="CENTER" prefWidth="300.0" styleClass="boldText"
                text="Tạo khoản thu" AnchorPane.leftAnchor="410.0"

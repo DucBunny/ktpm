@@ -1,4 +1,4 @@
-package com.app.controllers;
+package com.app.controllers.Payments;
 
 import com.app.models.PaymentDetail;
 import com.app.utils.ComboBoxOption;

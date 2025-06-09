@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Raleway Bold";
-    src: url("fonts/Raleway-Bold.ttf");
+    src: url("../fonts/Raleway-Bold.ttf");
 }
 
 .boldText {
@@ -8,85 +8,8 @@
     -fx-font-weight: 700;
 }
 
-/******************************************************** Btn Header ********************************************************/
-#buttonActive {
-    -fx-background-color: #E9B880;
-    -fx-text-fill: #424f70;
-}
-
-.btnHeader {
-    -fx-font-family: "Raleway Bold";
-    -fx-font-weight: 700;
-    -fx-font-size: 20px;
-    -fx-background-color: #586995;
-    -fx-text-fill: #ffffff;
-}
-
-.btnHeader:hover {
-    -fx-translate-y: -0.5px;
-    -fx-text-fill: #424f70;
-    -fx-background-color: #E9B880;
-}
-
-.btnHeader:pressed {
-    -fx-translate-y: 1px;
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
-}
-
-/* Do MenuButton không đổi màu chữ như Button bình thường*/
-#btnHeaderMenu .label {
-    -fx-text-fill: #ffffff;
-}
-
-#btnHeaderMenu .label:hover {
-    -fx-text-fill: #424f70;
-}
-
-/* Ẩn phần chứa mũi tên */
-#btnHeaderMenu > .arrow-button {
-    -fx-padding: 0;
-    -fx-background-color: transparent;
-    -fx-shape: "";
-    -fx-pref-width: 0;
-    -fx-min-width: 0;
-    -fx-max-width: 0;
-}
-
-/* Ẩn mũi tên */
-#btnHeaderMenu > .arrow-button > .arrow {
-    -fx-shape: "";
-    -fx-background-color: transparent;
-    -fx-padding: 0;
-    -fx-pref-width: 0;
-    -fx-min-width: 0;
-    -fx-max-width: 0;
-}
-
-/* Menu Context (pop up) đổ xuống */
-.context-menu {
-    -fx-background-color: #586995;
-    -fx-background-radius: 0 0 15 15;
-    -fx-padding: 10 6 6 6;
-}
-
-.menu-item {
-    -fx-font-family: "Raleway Bold";
-    -fx-font-weight: 700;
-    -fx-font-size: 14px;
-    -fx-background-color: transparent;
-    -fx-padding: 16 7 0 16;
-    -fx-text-fill: #ffffff;
-    -fx-cursor: hand;
-}
-
-.menu-item:hover {
-    -fx-background-radius: 10;
-    -fx-background-color: #E9B880;
-    -fx-text-fill: #424f70;
-}
-
 /************************************************************ Body ************************************************************/
-.btn-create-residents {
+.btn-create-vehicles {
     -fx-font-family: "Raleway Bold";
     -fx-font-weight: 700;
     -fx-font-size: 20px;
@@ -94,13 +17,13 @@
     -fx-background-radius: 15;
 }
 
-.btn-create-residents:hover {
+.btn-create-vehicles:hover {
     -fx-translate-y: -0.5px;
     -fx-background-color: #424f70;
     -fx-cursor: hand;
 }
 
-.btn-create-residents:pressed {
+.btn-create-vehicles:pressed {
     -fx-translate-y: 1px;
 }
 
@@ -121,12 +44,12 @@
     -fx-border-color: #00000033;
     -fx-border-width: 0px 1px 1px 0px;
     -fx-background-color: #ffffff;
-    -fx-pref-height: 50px;
+    -fx-pref-height: 30px;
 }
 
 .table-view .column-header .label {
     -fx-text-fill: #516089;
-    -fx-font-size: 20px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
 
@@ -140,8 +63,8 @@
     -fx-border-width: 0 1px 1px 0;
     -fx-alignment: center;
     -fx-text-fill: #516089;
-    -fx-font-size: 18px;
-    -fx-pref-height: 40px;
+    -fx-font-size: 14px;
+    -fx-pref-height: 20px;
 }
 
 .table-row-cell {
@@ -187,4 +110,10 @@
 .table-view .scroll-bar:vertical .increment-arrow,
 .table-view .scroll-bar:vertical .decrement-arrow {
     -fx-background-color: #516089;
+}
+
+.table-view .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
 }

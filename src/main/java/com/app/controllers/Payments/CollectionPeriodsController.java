@@ -23,7 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Objects;
 
-public class PaymentsController {
+public class CollectionPeriodsController {
     private String role;
     private String username;
 

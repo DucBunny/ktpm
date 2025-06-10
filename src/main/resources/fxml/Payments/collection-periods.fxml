@@ -149,12 +149,12 @@
                 </AnchorPane>
                 <TableView fx:id="tablePaymentStatistics" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="name" prefWidth="246.3999481201172" text="Đầu mục" />
-                        <TableColumn fx:id="totalAmount" prefWidth="198.4000244140625" text="Tổng số tiền" />
-                        <TableColumn fx:id="description" prefWidth="250.39996337890625" text="Mô tả" />
-                        <TableColumn fx:id="category" prefWidth="140" text="Loại" />
-                        <TableColumn fx:id="status" prefWidth="195.2000732421875" text="Trạng thái" />
-                        <TableColumn fx:id="numberOfPaymentRooms" prefWidth="195.2000732421875" text="Số hộ đã đóng" />
+                        <TableColumn fx:id="name" prefWidth="246.3999481201172" text="Đợt thu" />
+                  <TableColumn fx:id="totalAmount" prefWidth="246.3999481201172" text="Tổng số tiền" />
+                        <TableColumn fx:id="startDate" prefWidth="198.4000244140625" text="Ngày bắt đầu" />
+                        <TableColumn fx:id="endDate" prefWidth="250.39996337890625" text="Ngày kết thúc" />
+                        <TableColumn fx:id="type" prefWidth="140" text="Chu kì" />
+                  <TableColumn fx:id="action" prefWidth="140" text="Thao tác" />
                     </columns>
                     <VBox.margin>
                         <Insets />

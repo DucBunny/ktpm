@@ -1,6 +1,6 @@
 package com.app.controllers;
 
-import com.app.controllers.Payments.PaymentsController;
+import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
 import com.app.controllers.Residents.ResidentsController;
 import com.app.controllers.Revenues.RevenuesController;
 import com.app.controllers.Rooms.RoomsController;
@@ -77,10 +77,10 @@ public class HomePageController {
     }
 
     public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
                 event, true);
 
-        PaymentsController controller = loader.getController();
+        CollectionPeriodsController controller = loader.getController();
         controller.initialize(role, username);
     }
 

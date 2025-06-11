@@ -1,7 +1,7 @@
 package com.app.controllers.Rooms;
 
 import com.app.controllers.HomePageController;
-import com.app.controllers.Payments.PaymentsController;
+import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
 import com.app.controllers.Residents.ResidentsController;
 import com.app.controllers.Revenues.RevenuesController;
 import com.app.models.Rooms;
@@ -132,11 +132,11 @@ public class RoomsController {
         controller.initialize(role, username);
     }
 
-    public void changeToPayments(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
+    public void changeToPayments(Event event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
                 event, true);
 
-        PaymentsController controller = loader.getController();
+        CollectionPeriodsController controller = loader.getController();
         controller.initialize(role, username);
     }
 

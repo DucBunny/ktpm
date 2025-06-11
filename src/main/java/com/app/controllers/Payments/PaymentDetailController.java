@@ -1,17 +1,16 @@
 package com.app.controllers.Payments;
 
 import com.app.controllers.HomePageController;
+import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
 import com.app.controllers.Residents.ResidentsController;
 import com.app.controllers.Revenues.RevenuesController;
 import com.app.controllers.Rooms.RoomsController;
 import com.app.models.PaymentDetail;
-import com.app.utils.CustomAlert;
-import com.app.utils.DatabaseConnection;
-import com.app.utils.SceneNavigator;
-import com.app.utils.StageManager;
+import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -26,7 +25,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class PaymentDetailController {
@@ -94,19 +92,7 @@ public class PaymentDetailController {
         roomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
 
         // Định dạng lại ngày
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        date.setCellFactory(column -> new TableCell<PaymentDetail, LocalDate>() {
-            @Override
-            protected void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.format(formatter));
-                }
-            }
-        });
+        date.setCellFactory(DateFormat.forLocalDate());
 
         loadPaymentDetailByRevenueItem(nameRevenueItem);
         addActionButtonsToTable();
@@ -145,11 +131,11 @@ public class PaymentDetailController {
         controller.initialize(role, username);
     }
 
-    public void changeToPayments(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
+    public void changeToPayments(Event event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
                 event, true);
 
-        PaymentsController controller = loader.getController();
+        CollectionPeriodsController controller = loader.getController();
         controller.initialize(role, username);
     }
 

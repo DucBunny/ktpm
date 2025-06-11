@@ -91,9 +91,9 @@ public class PaymentsController {
         tablePaymentStatistics.setRowFactory(tv -> {
             TableRow<PaymentStatistics> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() >= 2 && row.getItem().getnumberOfPaymentRooms() != 0) {
+                if (event.getClickCount() >= 2 && row.getItem().getNumberOfPayers() != 0) {
                     try {
-                        openPaymentDetailScene(row.getItem().getname());
+                        openPaymentDetailScene(row.getItem().getNameRevenue());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

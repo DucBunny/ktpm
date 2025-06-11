@@ -1,10 +1,7 @@
 package com.app.controllers.Rooms;
 
 import com.app.models.Vehicles;
-import com.app.utils.CustomAlert;
-import com.app.utils.DatabaseConnection;
-import com.app.utils.SceneNavigator;
-import com.app.utils.StageManager;
+import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -23,7 +20,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class VehiclesController {
     private String roomNumber;
@@ -67,20 +63,8 @@ public class VehiclesController {
         noteVehicles.setCellValueFactory(new PropertyValueFactory<>("note"));
         isActiveVehicles.setCellValueFactory(new PropertyValueFactory<>("isActive"));
 
-        // Định dạng lại ngày sinh
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        registrationDateVehicles.setCellFactory(column -> new TableCell<Vehicles, LocalDate>() {
-            @Override
-            protected void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.format(formatter));
-                }
-            }
-        });
+        // Định dạng lại ngày đăng ký
+        registrationDateVehicles.setCellFactory(DateFormat.forLocalDate());
 
         // Nháy chuột vào row sẽ mở chi tiết phương tiện
         tableVehicles.setRowFactory(tv -> {

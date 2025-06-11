@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Payments.PaymentsController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController">
     <children>
         <AnchorPane>
             <children>
@@ -147,14 +147,15 @@
                         </Label>
                     </children>
                 </AnchorPane>
-                <TableView fx:id="tablePaymentStatistics" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tableCollectionPeriods" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="name" prefWidth="246.3999481201172" text="Đợt thu" />
-                  <TableColumn fx:id="totalAmount" prefWidth="246.3999481201172" text="Tổng số tiền" />
-                        <TableColumn fx:id="startDate" prefWidth="198.4000244140625" text="Ngày bắt đầu" />
-                        <TableColumn fx:id="endDate" prefWidth="250.39996337890625" text="Ngày kết thúc" />
-                        <TableColumn fx:id="type" prefWidth="140" text="Chu kì" />
-                  <TableColumn fx:id="action" prefWidth="140" text="Thao tác" />
+                        <TableColumn fx:id="namePeriod" prefWidth="246.3999481201172" text="Đợt thu" />
+                        <TableColumn fx:id="totalAmountPeriod" prefWidth="246.3999481201172" text="Tổng số tiền" />
+                  <TableColumn fx:id="totalPaidAmountPeriod" prefWidth="246.3999481201172" text="Số tiền đã thu" />
+                        <TableColumn fx:id="startDatePeriod" prefWidth="198.4000244140625" text="Ngày bắt đầu" />
+                        <TableColumn fx:id="endDatePeriod" prefWidth="250.39996337890625" text="Ngày kết thúc" />
+                        <TableColumn fx:id="typePeriod" prefWidth="140" text="Chu kì" />
+                        <TableColumn fx:id="actionPeriod" prefWidth="140" text="Thao tác" />
                     </columns>
                     <VBox.margin>
                         <Insets />

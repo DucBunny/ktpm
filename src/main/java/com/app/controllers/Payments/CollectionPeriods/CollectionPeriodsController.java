@@ -1,10 +1,10 @@
-package com.app.controllers.Residents;
+package com.app.controllers.Payments.CollectionPeriods;
 
 import com.app.controllers.HomePageController;
-import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
+import com.app.controllers.Residents.ResidentsController;
 import com.app.controllers.Revenues.RevenuesController;
 import com.app.controllers.Rooms.RoomsController;
-import com.app.models.Residents;
+import com.app.models.CollectionPeriods;
 import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -27,7 +27,7 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class ResidentsController {
+public class CollectionPeriodsController {
     private String role;
     private String username;
 
@@ -41,29 +41,23 @@ public class ResidentsController {
 
     //    Body
     @FXML
-    private TableView<Residents> tableResidents;
+    private TableView<CollectionPeriods> tableCollectionPeriods;
     @FXML
-    private TableColumn<Residents, String> nameResidents;
+    private TableColumn<CollectionPeriods, String> namePeriod;
     @FXML
-    private TableColumn<Residents, LocalDate> dateOfBirthResidents;
+    private TableColumn<CollectionPeriods, String> totalAmountPeriod;
     @FXML
-    private TableColumn<Residents, String> genderResidents;
+    private TableColumn<CollectionPeriods, String> totalPaidAmountPeriod;
     @FXML
-    private TableColumn<Residents, String> phoneResidents;
+    private TableColumn<CollectionPeriods, LocalDate> startDatePeriod;
     @FXML
-    private TableColumn<Residents, String> idCardNumberResidents;
+    private TableColumn<CollectionPeriods, LocalDate> endDatePeriod;
     @FXML
-    private TableColumn<Residents, String> roomResidents;
+    private TableColumn<CollectionPeriods, String> typePeriod;
     @FXML
-    private TableColumn<Residents, String> relationshipResidents;
-    @FXML
-    private TableColumn<Residents, String> residenceStatusResidents;
-    @FXML
-    private TableColumn<Residents, String> statusResidents;
-    @FXML
-    private TableColumn<Residents, Void> actionResidents;
+    private TableColumn<CollectionPeriods, Void> actionPeriod;
 
-    private final ObservableList<Residents> residentsList = FXCollections.observableArrayList();
+    private final ObservableList<CollectionPeriods> collectionPeriodsList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(String role, String username) {
@@ -79,32 +73,30 @@ public class ResidentsController {
 
         nameLabel.setText("Xin chào, " + username);
 
-        tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        tableCollectionPeriods.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         // Thiết lập lắng nghe khi có thay đổi kích thước hoặc dữ liệu
-        tableResidents.widthProperty().addListener((obs, oldVal, newVal) -> adjustColumnWidths());
-        residentsList.addListener((ListChangeListener<Residents>) c -> adjustColumnWidths());
+        tableCollectionPeriods.widthProperty().addListener((obs, oldVal, newVal) -> adjustColumnWidths());
+        collectionPeriodsList.addListener((ListChangeListener<CollectionPeriods>) c -> adjustColumnWidths());
 
-        nameResidents.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        dateOfBirthResidents.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
-        genderResidents.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        phoneResidents.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        idCardNumberResidents.setCellValueFactory(new PropertyValueFactory<>("idCardNumber"));
-        roomResidents.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
-        relationshipResidents.setCellValueFactory(new PropertyValueFactory<>("relationshipToOwner"));
-        residenceStatusResidents.setCellValueFactory(new PropertyValueFactory<>("residenceStatus"));
-        statusResidents.setCellValueFactory(new PropertyValueFactory<>("status"));
+        namePeriod.setCellValueFactory(new PropertyValueFactory<>("name"));
+        totalAmountPeriod.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
+        totalPaidAmountPeriod.setCellValueFactory(new PropertyValueFactory<>("totalPaidAmount"));
+        startDatePeriod.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        endDatePeriod.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        typePeriod.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-        // Định dạng lại ngày sinh
-        dateOfBirthResidents.setCellFactory(DateFormat.forLocalDate());
+        // Định dạng lại ngày
+        startDatePeriod.setCellFactory(DateFormat.forLocalDate());
+        endDatePeriod.setCellFactory(DateFormat.forLocalDate());
 
-        // Nháy chuột vào row sẽ mở chi tiết cư dân
-        tableResidents.setRowFactory(tv -> {
-            TableRow<Residents> row = new TableRow<>();
+        // Nháy chuột vào row sẽ mở chi tiết những người đóng
+        tableCollectionPeriods.setRowFactory(tv -> {
+            TableRow<CollectionPeriods> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() >= 2 && row.getItem() != null) {
                     try {
-                        openResidentDetailScene(row.getItem());
+                        openPeriodDetailScene(row.getItem());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -113,13 +105,13 @@ public class ResidentsController {
             return row;
         });
 
-        loadResidentsFromDatabase();
+        loadCollectionPeriodsFromDatabase();
         addActionButtonsToTable();
     }
 
     private void adjustColumnWidths() {
         // Lấy số dòng dữ liệu (item count)
-        int rowCount = residentsList.size();
+        int rowCount = collectionPeriodsList.size();
         // Lấy chiều cao 1 hàng
         double rowHeight = 40;
         // Trừ chiều cao header
@@ -127,22 +119,19 @@ public class ResidentsController {
         // Tổng chiều cao dữ liệu
         double totalRowsHeight = rowCount * rowHeight;
         // Chiều cao hiển thị thực tế
-        double tableContentHeight = tableResidents.getHeight() - headerHeight;
+        double tableContentHeight = tableCollectionPeriods.getHeight() - headerHeight;
 
         // Nếu tổng chiều cao dữ liệu > chiều cao table -> có scroll bar
         double padding = (totalRowsHeight > tableContentHeight) ? 18 : 0;
-        double tableWidth = tableResidents.getWidth() - padding;
+        double tableWidth = tableCollectionPeriods.getWidth() - padding;
 
-        nameResidents.setPrefWidth(tableWidth * 0.2);
-        dateOfBirthResidents.setPrefWidth(tableWidth * 0.08);
-        genderResidents.setPrefWidth(tableWidth * 0.07);
-        phoneResidents.setPrefWidth(tableWidth * 0.1);
-        idCardNumberResidents.setPrefWidth(tableWidth * 0.11);
-        roomResidents.setPrefWidth(tableWidth * 0.07);
-        relationshipResidents.setPrefWidth(tableWidth * 0.08);
-        residenceStatusResidents.setPrefWidth(tableWidth * 0.1);
-        statusResidents.setPrefWidth(tableWidth * 0.09);
-        actionResidents.setPrefWidth(tableWidth * 0.1);
+        namePeriod.setPrefWidth(tableWidth * 0.2);
+        totalAmountPeriod.setPrefWidth(tableWidth * 0.15);
+        totalPaidAmountPeriod.setPrefWidth(tableWidth * 0.15);
+        startDatePeriod.setPrefWidth(tableWidth * 0.15);
+        endDatePeriod.setPrefWidth(tableWidth * 0.15);
+        typePeriod.setPrefWidth(tableWidth * 0.1);
+        actionPeriod.setPrefWidth(tableWidth * 0.1);
     }
 
     // Header Button -----------------------------------------------------------
@@ -159,6 +148,14 @@ public class ResidentsController {
                 event, true);
 
         RoomsController controller = loader.getController();
+        controller.initialize(role, username);
+    }
+
+    public void changeToResidents(Event event) throws Exception {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
+                event, true);
+
+        ResidentsController controller = loader.getController();
         controller.initialize(role, username);
     }
 
@@ -191,69 +188,66 @@ public class ResidentsController {
     }
 
     // Body --------------------------------------------------------------------
-    public void handleCreateResident() throws IOException {
+    private void openPeriodDetailScene(CollectionPeriods collectionPeriods) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Residents/create-resident.fxml", "/styles/Residents/crud-resident.css", owner);
-
-        //  Reload lại bảng
-        residentsList.clear();
-        loadResidentsFromDatabase();
-    }
-
-    public void openResidentDetailScene(Residents resident) throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        ResidentDetailController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
+        //        PaymentsController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
         SceneNavigator.showPopupScene("/fxml/Residents/resident-detail.fxml", "/styles/Residents/crud-resident.css", owner);
     }
 
-    public void loadResidentsFromDatabase() {
+    public void loadCollectionPeriodsFromDatabase() {
+        collectionPeriodsList.clear();
         try {
             Connection connection = DatabaseConnection.getConnection();
             String query = """
-                    SELECT residents.*
-                    FROM residents
-                    JOIN rooms ON residents.room_number = rooms.room_number
-                    ORDER BY rooms.floor ASC, residents.room_number ASC
+                        SELECT
+                           cp.id,
+                           cp.name,
+                           cp.start_date,
+                           cp.end_date,
+                           cp.type,
+                           COALESCE(SUM(ci.total_amount), 0) AS total_amount,
+                           COALESCE((
+                              SELECT SUM(p.amount)
+                              FROM payments p
+                              WHERE p.collection_period_id = cp.id
+                            ), 0) AS total_paid_amount
+                       FROM
+                           collection_periods cp
+                       LEFT JOIN
+                           collection_items ci ON cp.id = ci.collection_period_id
+                       GROUP BY
+                           cp.id, cp.name, cp.start_date, cp.end_date, cp.type
+                       ORDER BY
+                           cp.start_date DESC;
                     """;
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                String relationshipRaw = resultSet.getString("relationship_to_owner");
-                String relationshipDisplay = switch (relationshipRaw) {
-                    case "owner" -> "Chủ hộ";
-                    case "spouse" -> "Vợ/Chồng";
-                    case "parent" -> "Cha/Mẹ";
-                    case "child" -> "Con cái";
-                    default -> "Khác";
+                String typeRaw = resultSet.getString("type");
+                String typeDisplay = switch (typeRaw) {
+                    case "monthly" -> "Theo tháng";
+                    case "quarterly" -> "Theo quý";
+                    case "yearly" -> "Theo năm";
+                    default -> "";
                 };
 
-                Residents resident = new Residents(
+                collectionPeriodsList.add(new CollectionPeriods(
                         resultSet.getInt("id"),
-                        resultSet.getString("full_name"),
-                        resultSet.getDate("date_of_birth").toLocalDate(),
-                        resultSet.getString("gender").equals("male") ? "Nam" : "Nữ",
-                        resultSet.getString("phone"),
-                        resultSet.getString("id_card_number"),
-                        resultSet.getString("room_number"),
-                        relationshipDisplay,
-                        resultSet.getString("residence_status").equals("permanent") ? "Thường trú" : "Tạm trú",
-                        resultSet.getString("status").equals("living") ? "Đang ở" : "Đã rời"
-                );
-
-                resident.setPlaceOfBirth(resultSet.getString("place_of_birth"));
-                resident.setOccupation(resultSet.getString("occupation"));
-                resident.setHometown(resultSet.getString("hometown"));
-                resident.setEthnicity(resultSet.getString("ethnicity"));
-
-                residentsList.add(resident);
+                        resultSet.getString("name"),
+                        resultSet.getString("total_amount"),
+                        resultSet.getString("total_paid_amount"),
+                        resultSet.getDate("start_date").toLocalDate(),
+                        resultSet.getDate("end_date").toLocalDate(),
+                        typeDisplay
+                ));
             }
 
-            tableResidents.setItems(residentsList);
+            tableCollectionPeriods.setItems(collectionPeriodsList);
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                CustomAlert.showErrorAlert("Không thể tải dữ liệu cư dân từ CSDL.");
+                CustomAlert.showErrorAlert("Không thể tải dữ liệu đợt thu từ CSDL.");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -261,9 +255,9 @@ public class ResidentsController {
     }
 
     private void addActionButtonsToTable() {
-        Callback<TableColumn<Residents, Void>, TableCell<Residents, Void>> cellFactory = new Callback<>() {
+        Callback<TableColumn<CollectionPeriods, Void>, TableCell<CollectionPeriods, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Residents, Void> call(final TableColumn<Residents, Void> param) {
+            public TableCell<CollectionPeriods, Void> call(final TableColumn<CollectionPeriods, Void> param) {
                 return new TableCell<>() {
                     private final Button btnEdit = new Button("Sửa");
                     private final Button btnDelete = new Button("Xóa");
@@ -271,7 +265,7 @@ public class ResidentsController {
                     {
                         btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnEdit.setOnAction((ActionEvent event) -> {
-                            Residents data = getTableView().getItems().get(getIndex());
+                            CollectionPeriods data = getTableView().getItems().get(getIndex());
                             try {
                                 handleEdit(data);
                             } catch (IOException e) {
@@ -281,7 +275,7 @@ public class ResidentsController {
 
                         btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnDelete.setOnAction((ActionEvent event) -> {
-                            Residents data = getTableView().getItems().get(getIndex());
+                            CollectionPeriods data = getTableView().getItems().get(getIndex());
                             try {
                                 handleDelete(data);
                             } catch (IOException e) {
@@ -309,31 +303,31 @@ public class ResidentsController {
             }
         };
 
-        actionResidents.setCellFactory(cellFactory);
+        actionPeriod.setCellFactory(cellFactory);
     }
 
-    private void handleEdit(Residents resident) throws IOException {
+    private void handleEdit(CollectionPeriods collectionPeriods) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        EditResidentController.setResidentToEdit(resident); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/Residents/edit-resident.fxml", "/styles/Residents/crud-resident.css", owner);
+        EditCollectionPeriodsController.setCollectionPeriodsToEdit(collectionPeriods); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/CollectionPeriods/edit-resident.fxml", "/styles/CollectionPeriods/crud-resident.css", owner);
 
         // Sau khi sửa, làm mới lại bảng dữ liệu:
-        residentsList.clear();
-        loadResidentsFromDatabase();
+        collectionPeriodsList.clear();
+        loadCollectionPeriodsFromDatabase();
     }
 
-    private void handleDelete(Residents residents) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", residents.getFullName());
+    private void handleDelete(CollectionPeriods CollectionPeriods) throws IOException {
+        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", CollectionPeriods.getName());
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
-                String sql = "DELETE FROM residents WHERE id = ?";
+                String sql = "DELETE FROM CollectionPeriods WHERE id = ?";
                 PreparedStatement stmt = connection.prepareStatement(sql);
-                stmt.setInt(1, residents.getId());
+                stmt.setInt(1, CollectionPeriods.getId());
 
                 if (stmt.executeUpdate() > 0) {
-                    tableResidents.getItems().remove(residents);
-                    System.out.println("Đã xóa cư dân: " + residents.getFullName());
+                    tableCollectionPeriods.getItems().remove(CollectionPeriods);
+                    System.out.println("Đã xóa cư dân: " + CollectionPeriods.getName());
                     CustomAlert.showSuccessAlert("Đã xóa cư dân thành công", true, 0.7);
                 } else {
                     CustomAlert.showErrorAlert("Không tìm thấy cư dân để xóa.");

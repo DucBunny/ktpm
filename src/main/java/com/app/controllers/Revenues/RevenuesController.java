@@ -51,6 +51,8 @@ public class RevenuesController {
     @FXML
     private TableColumn<Revenues, String> nameRevenues;
     @FXML
+    private TableColumn<Revenues, String> codeRevenues;
+    @FXML
     private TableColumn<Revenues, String> unitPriceRevenues;
     @FXML
     private TableColumn<Revenues, String> descriptionRevenues;
@@ -89,6 +91,7 @@ public class RevenuesController {
         revenuesList.addListener((ListChangeListener<Revenues>) c -> adjustColumnWidths(elasticity));
 
         nameRevenues.setCellValueFactory(new PropertyValueFactory<>("name"));
+        codeRevenues.setCellValueFactory(new PropertyValueFactory<>("code"));
         unitPriceRevenues.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         descriptionRevenues.setCellValueFactory(new PropertyValueFactory<>("description"));
         categoryRevenues.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -129,10 +132,11 @@ public class RevenuesController {
         double tableWidth = tableRevenues.getWidth() - padding;
 
         nameRevenues.setPrefWidth(tableWidth * 0.2 * elasticity);
-        unitPriceRevenues.setPrefWidth(tableWidth * 0.15 * elasticity);
-        descriptionRevenues.setPrefWidth(tableWidth * 0.35 * elasticity);
-        categoryRevenues.setPrefWidth(tableWidth * 0.1 * elasticity);
-        statusRevenues.setPrefWidth(tableWidth * 0.1 * elasticity);
+        codeRevenues.setPrefWidth(tableWidth * 0.15 * elasticity);
+        unitPriceRevenues.setPrefWidth(tableWidth * 0.09 * elasticity);
+        descriptionRevenues.setPrefWidth(tableWidth * 0.3 * elasticity);
+        categoryRevenues.setPrefWidth(tableWidth * 0.08 * elasticity);
+        statusRevenues.setPrefWidth(tableWidth * 0.08 * elasticity);
         actionRevenues.setPrefWidth(tableWidth * 0.1 * elasticity);
     }
 
@@ -208,6 +212,7 @@ public class RevenuesController {
                 revenuesList.add(new Revenues(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
+                        resultSet.getString("code"),
                         resultSet.getString("unit_price").equals("1.00") ? "" : resultSet.getString("unit_price"),
                         resultSet.getString("description"),
                         resultSet.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện",

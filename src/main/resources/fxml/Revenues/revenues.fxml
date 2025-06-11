@@ -158,6 +158,7 @@
                 <TableView fx:id="tableRevenues" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="nameRevenues" prefWidth="246.3999481201172" text="Tên khoản thu" />
+                  <TableColumn fx:id="codeRevenues" prefWidth="246.3999481201172" text="Mã khoản thu" />
                         <TableColumn fx:id="unitPriceRevenues" prefWidth="198.4000244140625" text="Số tiền" />
                         <TableColumn fx:id="descriptionRevenues" prefWidth="250.39996337890625" text="Mô tả" />
                         <TableColumn fx:id="categoryRevenues" prefWidth="140" text="Loại" />

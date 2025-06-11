@@ -5,15 +5,17 @@ import java.time.LocalDate;
 public class CollectionPeriods {
     private int id;
     private String name;
+    private String code;
     private LocalDate startDate;
     private LocalDate endDate;
     private String type;
     private String totalAmount;
     private String totalPaidAmount;
 
-    public CollectionPeriods(int id, String name, String totalAmount, String totalPaidAmount, LocalDate startDate, LocalDate endDate, String type) {
+    public CollectionPeriods(int id, String name, String code, String totalAmount, String totalPaidAmount, LocalDate startDate, LocalDate endDate, String type) {
         this.id = id;
         this.name = name;
+        this.code = code;
         this.totalAmount = totalAmount;
         this.totalPaidAmount = totalPaidAmount;
         this.startDate = startDate;
@@ -28,6 +30,10 @@ public class CollectionPeriods {
 
     public String getName() {
         return name;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public LocalDate getStartDate() {
@@ -57,6 +63,10 @@ public class CollectionPeriods {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public void setStartDate(LocalDate startDate) {

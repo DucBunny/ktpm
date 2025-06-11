@@ -78,25 +78,7 @@
     -fx-background-color: #516089;
 }
 
-/**************************************** Combo box Editable ****************************************/
-.combo-box .text-field {
-    -fx-font-size: 18px;
-    -fx-background-color: #ffffff;
-    -fx-border-width: 0 0 1 0;
-    -fx-cursor: text;
-    -fx-padding: 0 0 0 12;
-}
-
-.combo-box .arrow-button {
-    -fx-background-color: #ffffff;
-}
-
-.combo-box .arrow-button:hover {
-    -fx-background-color: #F5F5F5;
-    -fx-cursor: hand;
-}
-
-/**************************************** Ngày, tháng, năm sinh ****************************************/
+/**************************************** Ngày, tháng, năm ****************************************/
 #dateBox .text {
     -fx-font-size: 14px;
 }

@@ -3,14 +3,16 @@ package com.app.models;
 public class Revenues {
     private int id;
     private String name;
+    private String code;
     private String status;
     private String unitPrice;
     private String description;
     private String category;
 
-    public Revenues(int id, String name, String unitPrice, String description, String category, String status) {
+    public Revenues(int id, String name, String code, String unitPrice, String description, String category, String status) {
         this.id = id;
         this.name = name;
+        this.code = code;
         this.status = status;
         this.unitPrice = unitPrice;
         this.description = description;
@@ -29,6 +31,10 @@ public class Revenues {
 
     public String getName() {
         return name;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public String getUnitPrice() {
@@ -50,6 +56,10 @@ public class Revenues {
     // Setters
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public void setUnitPrice(String unitPrice) {

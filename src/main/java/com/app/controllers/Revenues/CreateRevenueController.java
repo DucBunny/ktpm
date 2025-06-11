@@ -44,17 +44,18 @@ public class CreateRevenueController {
         unitPriceAnchorPane.setManaged(false);
 
         categoryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            Stage stage = (Stage) saveButton.getScene().getWindow();
-            if (newVal != null && newVal.getValue().equals("voluntary")) {
+            if (newVal != null && saveButton.getScene() != null) {
+                Stage stage = (Stage) saveButton.getScene().getWindow();
+                boolean isVoluntary = "voluntary".equals(newVal.getValue());
                 // height (FXML) + title bar (mặc định cao 35.5px)
-                stage.setHeight(533.5);
-                unitPriceAnchorPane.setVisible(false);
-                unitPriceAnchorPane.setManaged(false); // để layout co lại
-                unitPriceField.clear();
-            } else {
-                stage.setHeight(603.5);
-                unitPriceAnchorPane.setVisible(true);
-                unitPriceAnchorPane.setManaged(true);
+                unitPriceAnchorPane.setVisible(!isVoluntary);
+                unitPriceAnchorPane.setManaged(!isVoluntary);
+                if (isVoluntary) {
+                    unitPriceField.clear();
+                    stage.setHeight(603.5);
+                } else {
+                    stage.setHeight(673.5);
+                }
             }
         });
 
@@ -85,6 +86,18 @@ public class CreateRevenueController {
         return false;
     }
 
+    private boolean isValidUnitPrice(String unitPrice) {
+        if (unitPrice == null || unitPrice.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            double price = Double.parseDouble(unitPrice);
+            return price > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     private void setupSaveButton() {
         saveButton.setOnAction(e -> {
             if (areRequiredFieldsEmpty()) {
@@ -97,6 +110,12 @@ public class CreateRevenueController {
             String description = descriptionArea.getText().trim();
             String category = categoryBox.getValue().getValue();
             String unitPrice = category.equals("mandatory") ? unitPriceField.getText().trim() : "1";
+
+            // Kiểm tra định dạng unitPrice
+            if (category.equals("mandatory") && !isValidUnitPrice(unitPrice)) {
+                showErrorAlert("Đơn giá không hợp lệ. Vui lòng nhập số lớn hơn 0.");
+                return;
+            }
 
             try (Connection connection = DatabaseConnection.getConnection()) {
                 connection.setAutoCommit(false);
@@ -116,7 +135,7 @@ public class CreateRevenueController {
 
                     // Thêm khoản thu
                     String sql = "INSERT INTO revenue_items (name, unit_price, description, category, status, code) " +
-                            "VALUES (?, ?, ?, ?, ?)";
+                            "VALUES (?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setString(1, name);
                         stmt.setDouble(2, Double.parseDouble(unitPrice));

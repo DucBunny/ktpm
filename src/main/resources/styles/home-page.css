@@ -132,3 +132,33 @@
 .btnFooter:pressed {
     -fx-translate-y: 1px;
 }
+
+
+.chart-bar.series0 {
+    -fx-bar-fill: #4CAF50; /* màu xanh cho Tổng số tiền */
+    -fx-bar-width: 15;
+}
+
+.chart-bar.series1 {
+    -fx-bar-fill: #FF9800; /* màu cam cho Số tiền đã đóng */
+    -fx-bar-width: 15;
+}
+
+.chart-plot-background {
+    -fx-background-color: #fff;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+}
+
+.axis-label {
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+}
+
+.chart-title {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 16px;
+}

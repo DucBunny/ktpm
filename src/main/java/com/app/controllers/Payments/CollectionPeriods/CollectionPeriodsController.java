@@ -167,14 +167,6 @@ public class CollectionPeriodsController {
         controller.initialize(role, username);
     }
 
-    public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
-                event, true);
-
-        CollectionPeriodsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
     // Pop-up Button Cài đặt ---------------------------------------------------
     public void changeToSignUp() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
@@ -188,6 +180,15 @@ public class CollectionPeriodsController {
     }
 
     // Body --------------------------------------------------------------------
+    public void handleCreatePeriod() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/Payments/CollectionPeriods/create-period.fxml", "/styles/Payments/CollectionPeriods/crud-period.css", owner);
+
+        //  Reload lại bảng
+        collectionPeriodsList.clear();
+        loadCollectionPeriodsFromDatabase();
+    }
+
     private void openPeriodDetailScene(CollectionPeriods collectionPeriods) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         //        PaymentsController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
@@ -309,7 +310,7 @@ public class CollectionPeriodsController {
     private void handleEdit(CollectionPeriods collectionPeriods) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         EditCollectionPeriodsController.setCollectionPeriodsToEdit(collectionPeriods); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/CollectionPeriods/edit-resident.fxml", "/styles/CollectionPeriods/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Payments/CollectionPeriods/edit-period.fxml", "/styles/Payments/CollectionPeriods/crud-period.css", owner);
 
         // Sau khi sửa, làm mới lại bảng dữ liệu:
         collectionPeriodsList.clear();

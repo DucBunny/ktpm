@@ -112,7 +112,7 @@
                             <children>
                                 <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.5">
                                     <image>
-                                        <Image url="@../../images/avt-admin.png" />
+                                        <Image url="@../../../images/avt-admin.png" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -145,13 +145,21 @@
                                 <Font size="32.0" />
                             </font>
                         </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleCreatePeriod" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-period" text="Thêm đợt thu" textFill="WHITE" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Button>
                     </children>
                 </AnchorPane>
                 <TableView fx:id="tableCollectionPeriods" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="namePeriod" prefWidth="246.3999481201172" text="Đợt thu" />
                         <TableColumn fx:id="totalAmountPeriod" prefWidth="246.3999481201172" text="Tổng số tiền" />
-                  <TableColumn fx:id="totalPaidAmountPeriod" prefWidth="246.3999481201172" text="Số tiền đã thu" />
+                        <TableColumn fx:id="totalPaidAmountPeriod" prefWidth="246.3999481201172" text="Số tiền đã thu" />
                         <TableColumn fx:id="startDatePeriod" prefWidth="198.4000244140625" text="Ngày bắt đầu" />
                         <TableColumn fx:id="endDatePeriod" prefWidth="250.39996337890625" text="Ngày kết thúc" />
                         <TableColumn fx:id="typePeriod" prefWidth="140" text="Chu kì" />

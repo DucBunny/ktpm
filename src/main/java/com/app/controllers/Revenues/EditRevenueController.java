@@ -127,7 +127,7 @@ public class EditRevenueController {
                         }
                     }
 
-                    // Thêm cư dân
+                    // Cập nhật khoản thu
                     String sql = "UPDATE revenue_items SET name = ?, unit_price = ?, description = ?, status = ?, category = ? WHERE id = ?";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setString(1, name);

@@ -207,6 +207,7 @@ public class ResidentsController {
     }
 
     public void loadResidentsFromDatabase() {
+        residentsList.clear();
         try {
             Connection connection = DatabaseConnection.getConnection();
             String query = """
@@ -322,18 +323,18 @@ public class ResidentsController {
         loadResidentsFromDatabase();
     }
 
-    private void handleDelete(Residents residents) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", residents.getFullName());
+    private void handleDelete(Residents resident) throws IOException {
+        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", resident.getFullName());
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
                 String sql = "DELETE FROM residents WHERE id = ?";
                 PreparedStatement stmt = connection.prepareStatement(sql);
-                stmt.setInt(1, residents.getId());
+                stmt.setInt(1, resident.getId());
 
                 if (stmt.executeUpdate() > 0) {
-                    tableResidents.getItems().remove(residents);
-                    System.out.println("Đã xóa cư dân: " + residents.getFullName());
+                    tableResidents.getItems().remove(resident);
+                    System.out.println("Đã xóa cư dân: " + resident.getFullName());
                     CustomAlert.showSuccessAlert("Đã xóa cư dân thành công", true, 0.7);
                 } else {
                     CustomAlert.showErrorAlert("Không tìm thấy cư dân để xóa.");

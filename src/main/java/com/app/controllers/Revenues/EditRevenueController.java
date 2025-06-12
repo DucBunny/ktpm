@@ -51,28 +51,6 @@ public class EditRevenueController {
         initCategoryBox();
         initStatusBox();
 
-        // Hiển thị dữ liệu nếu có
-        if (revenueToEdit != null) {
-            nameField.setText(revenueToEdit.getName());
-            codeField.setText(revenueToEdit.getCode());
-            descriptionArea.setText(revenueToEdit.getDescription() != null ? revenueToEdit.getDescription() : "");
-            setComboBoxValue(categoryBox, revenueToEdit.getCategory(), true);
-            setComboBoxValue(statusBox, revenueToEdit.getStatus(), true);
-
-            // Gán giá trị unitPriceField và xử lý hiển thị unitPriceAnchorPane
-            boolean isVoluntary = revenueToEdit.getCategory().equals("voluntary");
-            if (isVoluntary) {
-                unitPriceField.clear();
-                unitPriceAnchorPane.setVisible(false);
-                unitPriceAnchorPane.setManaged(false);
-            } else {
-                String unitPrice = revenueToEdit.getUnitPrice();
-                unitPriceField.setText((unitPrice != null && !unitPrice.trim().isEmpty()) ? unitPrice : "");
-                unitPriceAnchorPane.setVisible(true);
-                unitPriceAnchorPane.setManaged(true);
-            }
-        }
-
         categoryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && saveButton.getScene() != null) {
                 Stage stage = (Stage) saveButton.getScene().getWindow();
@@ -88,12 +66,39 @@ public class EditRevenueController {
             }
         });
 
-        // Đặt chiều cao Stage sau khi Scene được khởi tạo
-        Platform.runLater(() -> {
-            if (saveButton.getScene() != null) {
+        // Hiển thị dữ liệu nếu có
+        if (revenueToEdit != null) {
+            nameField.setText(revenueToEdit.getName());
+            codeField.setText(revenueToEdit.getCode());
+            descriptionArea.setText(revenueToEdit.getDescription() != null ? revenueToEdit.getDescription() : "");
+            setComboBoxValue(categoryBox, revenueToEdit.getCategory(), true);
+            setComboBoxValue(statusBox, revenueToEdit.getStatus(), true);
+
+            // Gán giá trị unitPriceField
+            String unitPrice = revenueToEdit.getUnitPrice();
+            unitPriceField.setText((unitPrice != null && !unitPrice.trim().isEmpty()) ? unitPrice : "");
+
+            // Gọi lại UI update cho category hiện tại
+            Platform.runLater(() -> {
+                ComboBoxOption cat = categoryBox.getValue();
                 Stage stage = (Stage) saveButton.getScene().getWindow();
-                boolean isVoluntary = revenueToEdit != null && "voluntary".equals(revenueToEdit.getCategory());
-                stage.setHeight(isVoluntary ? 673.5 : 743.5);
+                boolean isVoluntary = cat != null && "voluntary".equals(cat.getValue());
+                unitPriceAnchorPane.setVisible(!isVoluntary);
+                unitPriceAnchorPane.setManaged(!isVoluntary);
+                if (isVoluntary) {
+                    unitPriceField.clear();
+                    stage.setHeight(673.5);
+                } else {
+                    stage.setHeight(743.5);
+                }
+            });
+        }
+
+        // Đặt chiều cao Stage nếu chưa có dữ liệu
+        Platform.runLater(() -> {
+            if (saveButton.getScene() != null && revenueToEdit == null) {
+                Stage stage = (Stage) saveButton.getScene().getWindow();
+                stage.setHeight(673.5);
             }
         });
 

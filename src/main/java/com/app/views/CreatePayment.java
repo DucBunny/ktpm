@@ -16,7 +16,7 @@ public class CreatePayment extends Application {
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/Payments/create-payment.css").toExternalForm());
+        scene.getStylesheets().add(CreateAccount.class.getResource("/styles/Payments/crud-payment.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT); // Cho phép bo góc
 
         primaryStage.setScene(scene);

@@ -86,6 +86,24 @@
 }
 
 /************************************************************ Body ************************************************************/
+.btn-create-payment {
+    -fx-font-family: "Raleway Bold";
+    -fx-font-weight: 700;
+    -fx-font-size: 20px;
+    -fx-background-color: #516089;
+    -fx-background-radius: 15;
+}
+
+.btn-create-payment:hover {
+    -fx-translate-y: -0.5px;
+    -fx-background-color: #424f70;
+    -fx-cursor: hand;
+}
+
+.btn-create-payment:pressed {
+    -fx-translate-y: 1px;
+}
+
 /********************************* Table *********************************/
 /* Định dạng chung cho toàn bảng */
 .table-view {
@@ -144,4 +162,37 @@
 
 .table-row-cell:hover .table-cell {
     -fx-text-fill: #516089;
+}
+
+/* Scroll bar của bảng */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: #ECEFF1;
+    -fx-pref-width: 13px;
+    -fx-cursor: hand;
+}
+
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #516089;
+}
+
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: #F5F5F5;
+}
+
+.table-view .scroll-bar:vertical .increment-button,
+.table-view .scroll-bar:vertical .decrement-button {
+    -fx-background-color: #ECEFF1;
+}
+
+.table-view .scroll-bar:vertical .increment-arrow,
+.table-view .scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: #516089;
+}
+
+.table-view .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    visibility: hidden;
 }

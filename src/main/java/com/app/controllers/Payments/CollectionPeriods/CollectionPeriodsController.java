@@ -1,6 +1,7 @@
 package com.app.controllers.Payments.CollectionPeriods;
 
 import com.app.controllers.HomePageController;
+import com.app.controllers.Payments.PaymentsController;
 import com.app.controllers.Residents.ResidentsController;
 import com.app.controllers.Revenues.RevenuesController;
 import com.app.controllers.Rooms.RoomsController;
@@ -99,7 +100,7 @@ public class CollectionPeriodsController {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() >= 2 && row.getItem() != null) {
                     try {
-                        openPeriodDetailScene(row.getItem());
+                        openPeriodDetailScene(row.getItem().getId(), row.getItem().getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -193,10 +194,12 @@ public class CollectionPeriodsController {
         loadCollectionPeriodsFromDatabase();
     }
 
-    private void openPeriodDetailScene(CollectionPeriods collectionPeriods) throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        //        PaymentsController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/Residents/resident-detail.fxml", "/styles/Residents/crud-resident.css", owner);
+    private void openPeriodDetailScene(int collectionPeriodId, String collectionPeriodName) throws IOException {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
+                tableCollectionPeriods);
+
+        PaymentsController controller = loader.getController();
+        controller.initialize(role, username, collectionPeriodId, collectionPeriodName);
     }
 
     public void loadCollectionPeriodsFromDatabase() {

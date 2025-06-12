@@ -167,7 +167,7 @@ public class CreateVehicleController {
                     connection.commit();
                     CustomAlert.showSuccessAlert("Thêm phương tiện thành công", true, 0.7);
                     if (callback != null) { // gọi callback
-                        callback.onVehicleCreated();
+                        callback.onVehicleCrud();
                     }
                     handleSave();
                 } catch (SQLException ex) {

@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="660.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Revenues.CreateRevenueController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="660.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Revenues.EditRevenueController">
     <children>
-        <Label alignment="CENTER" layoutX="485.0" layoutY="30.0" styleClass="boldText" text="Thêm khoản thu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.5">
+        <Label alignment="CENTER" layoutX="485.0" layoutY="30.0" prefWidth="150.0" styleClass="boldText" text="Cập nhật khoản thu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.5">
             <font>
                 <Font name="System Bold" size="36.0" />
             </font>
@@ -59,7 +59,7 @@
               </ComboBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="unitPriceAnchorPane" layoutX="10.0" layoutY="10.0" prefWidth="500.0" visible="false" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="80.0">
+      <AnchorPane fx:id="unitPriceAnchorPane" layoutX="10.0" layoutY="10.0" prefWidth="500.0" visible="false" AnchorPane.bottomAnchor="335.0" AnchorPane.leftAnchor="80.0">
          <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Số tiền" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
@@ -73,7 +73,7 @@
               </TextField>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="80.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.bottomAnchor="220.0" AnchorPane.leftAnchor="80.0">
          <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" styleClass="boldText" text="Mô tả" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
@@ -87,9 +87,23 @@
             </TextArea>
          </children>
       </AnchorPane>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="80.0">
+         <children>
+              <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Trạng thái" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <font>
+                      <Font name="System Bold" size="24.0" />
+                  </font>
+              </Label>
+              <ComboBox fx:id="statusBox" prefHeight="45.0" prefWidth="300.0" promptText="Chọn trạng thái" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.rightAnchor="0.0">
+                  <cursor>
+                      <Cursor fx:constant="HAND" />
+                  </cursor>
+              </ComboBox>
+         </children>
+      </AnchorPane>
       <HBox alignment="CENTER" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-              <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Thêm mới" textFill="WHITE">
+              <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Cập nhật" textFill="WHITE">
                   <font>
                       <Font size="20.0" />
                   </font>

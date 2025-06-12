@@ -45,8 +45,8 @@ public class EditPeriodController {
     private static CollectionPeriods periodToEdit;
     private boolean isInitializing = true; // Biến cờ để ngăn ChangeListener khi khởi tạo
 
-    public static void setPeriodToEdit(CollectionPeriods collectionPeriods) {
-        periodToEdit = collectionPeriods;
+    public static void setPeriodToEdit(CollectionPeriods collectionPeriod) {
+        periodToEdit = collectionPeriod;
     }
 
     @FXML

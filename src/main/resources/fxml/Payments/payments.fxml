@@ -75,7 +75,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button id="buttonActive" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Thống kê" textAlignment="CENTER" textFill="#424f70">
+                <Button id="buttonActive" mnemonicParsing="false" onAction="#changeToPayments" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Thống kê" textAlignment="CENTER" textFill="#424f70">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -140,12 +140,12 @@
             <children>
                 <AnchorPane prefHeight="77.0">
                     <children>
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" styleClass="boldText" text="CÁC HỘ ĐÃ ĐÓNG " textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Label fx:id="contentLabel" alignment="TOP_CENTER" contentDisplay="CENTER" styleClass="boldText" text="CÁC HỘ" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="32.0" />
                             </font>
                         </Label>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleCreatePeriod" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-period" text="Thu phí" textFill="WHITE" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleCreatePayment" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-payment" text="Thu phí" textFill="WHITE" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -155,13 +155,14 @@
                   </Button>
                     </children>
                 </AnchorPane>
-                <TableView fx:id="tablePaymentStatistics" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tablePayments" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="roomNumberPayment" prefWidth="246.3999481201172" text="Tên hộ" />
-                        <TableColumn fx:id="amountPayment" prefWidth="198.4000244140625" text="Số tiền đóng" />
-                        <TableColumn fx:id="datePayment" prefWidth="250.39996337890625" text="Ngày đóng" />
-                        <TableColumn fx:id="notePayment" prefWidth="140" text="Ghi chú" />
-                        <TableColumn fx:id="actionPayment" prefWidth="195.2000732421875" text="Thao tác" />
+                        <TableColumn fx:id="roomNumberPayments" prefWidth="246.3999481201172" text="Tên hộ" />
+                        <TableColumn fx:id="amountPayments" prefWidth="198.4000244140625" text="Số tiền đóng" />
+                        <TableColumn fx:id="datePayments" prefWidth="250.39996337890625" text="Ngày đóng" />
+                        <TableColumn fx:id="notePayments" prefWidth="140" text="Ghi chú" />
+                        <TableColumn fx:id="statusPayments" prefWidth="195.2000732421875" text="Trạng thái" />
+                  <TableColumn fx:id="actionPayments" prefWidth="195.2000732421875" text="Thao tác" />
                     </columns>
                     <VBox.margin>
                         <Insets />

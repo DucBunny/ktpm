@@ -99,7 +99,7 @@ public class HomePageController {
     // Footer Button -----------------------------------------------------------
     public void changeToCreatePayments() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Payments/create-payment.fxml", "/styles/Payments/create-payment.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Payments/create-payment.fxml", "/styles/Payments/crud-payment.css", owner);
     }
 
     public void changeToCreateRevenues() throws IOException {

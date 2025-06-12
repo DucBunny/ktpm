@@ -53,42 +53,6 @@
     -fx-text-fill: #516089;
 }
 
-/**************************************** Ngày, tháng, năm sinh ****************************************/
-#dateBox .text {
-    -fx-font-size: 14px;
-}
-
-#dateBoxEdit .text, #spinnerEdit .text-field {
-    -fx-font-size: 18px;
-}
-
-.spinner {
-    -fx-background-color: #FFFFFF;
-}
-
-.spinner .text-field {
-    -fx-font-size: 14px;
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #B3B3B3;
-    -fx-border-width: 0 0 1 0;
-}
-
-.spinner .increment-arrow-button {
-    -fx-background-color: #FFFFFF;
-}
-
-.spinner .decrement-arrow-button {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #B3B3B3;
-    -fx-border-width: 0 0 1 0;
-}
-
-.spinner .increment-arrow-button:hover,
-.spinner .decrement-arrow-button:hover {
-    -fx-background-color: #F5F5F5;
-    -fx-cursor: hand;
-}
-
 /**************************************** Scroll bar của ComboBox ****************************************/
 .combo-box .scroll-bar {
     -fx-background-color: #ECEFF1;
@@ -137,4 +101,58 @@
 .text-area .scroll-bar .increment-arrow,
 .text-area .scroll-bar .decrement-arrow {
     -fx-background-color: #516089;
+}
+
+/**************************************** Combo box Editable ****************************************/
+.combo-box .text-field {
+    -fx-font-size: 18px;
+    -fx-background-color: #ffffff;
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: text;
+    -fx-padding: 0 0 0 12;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: #ffffff;
+}
+
+.combo-box .arrow-button:hover {
+    -fx-background-color: #F5F5F5;
+    -fx-cursor: hand;
+}
+
+/**************************************** Ngày, tháng, năm ****************************************/
+#dateBox .text {
+    -fx-font-size: 14px;
+}
+
+#dateBoxEdit .text, #spinnerEdit .text-field {
+    -fx-font-size: 18px;
+}
+
+.spinner {
+    -fx-background-color: #FFFFFF;
+}
+
+.spinner .text-field {
+    -fx-font-size: 14px;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B3B3B3;
+    -fx-border-width: 0 0 1 0;
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #FFFFFF;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B3B3B3;
+    -fx-border-width: 0 0 1 0;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #F5F5F5;
+    -fx-cursor: hand;
 }

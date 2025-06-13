@@ -1,0 +1,495 @@
+package com.app.controllers;
+
+import com.app.models.CollectionItems;
+import com.app.utils.ComboBoxOption;
+import com.app.utils.CustomAlert;
+import com.app.utils.DatabaseConnection;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+public class ExportReportController {
+    @FXML
+    private ComboBox<ComboBoxOption> roomBox;
+    @FXML
+    private ComboBox<ComboBoxOption> periodBox;
+    @FXML
+    private TextField amountField;
+    @FXML
+    private TextArea noteArea;
+
+    @FXML
+    private AnchorPane periodAnchorPane;
+    @FXML
+    private AnchorPane amountAnchorPane;
+
+    @FXML
+    private Button saveButton;
+
+    private final ObservableList<ComboBoxOption> roomSuggestions = FXCollections.observableArrayList();
+    private final ObservableList<ComboBoxOption> allRooms = FXCollections.observableArrayList();
+
+    private final ObservableList<ComboBoxOption> periodSuggestions = FXCollections.observableArrayList();
+    private final ObservableList<ComboBoxOption> allPeriods = FXCollections.observableArrayList();
+
+    public void initialize() {
+        periodAnchorPane.setVisible(false);
+        periodAnchorPane.setManaged(false);
+        amountAnchorPane.setVisible(false);
+        amountAnchorPane.setManaged(false);
+
+        initRoomBox();
+
+        setupRoomBoxSearch();
+        setupPeriodBoxSearch();
+        setupSaveButton();
+    }
+
+    private void initRoomBox() {
+        roomBox.getItems().clear();
+        allRooms.clear();
+        roomSuggestions.clear();
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            String sql = "SELECT room_number, floor FROM rooms ORDER BY floor ASC, room_number ASC";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String roomNumber = rs.getString("room_number");
+                ComboBoxOption option = new ComboBoxOption("Phòng " + roomNumber, roomNumber);
+                allRooms.add(option);
+                roomSuggestions.add(option);
+            }
+            roomBox.setItems(roomSuggestions);
+
+            roomBox.setConverter(new StringConverter<ComboBoxOption>() {
+                @Override
+                public String toString(ComboBoxOption option) {
+                    return option != null ? option.getLabel() : "";
+                }
+
+                @Override
+                public ComboBoxOption fromString(String string) {
+                    if (string == null || string.trim().isEmpty()) {
+                        return null;
+                    }
+
+                    // Tìm mục khớp với văn bản nhập
+                    String lowerInput = string.trim().toLowerCase();
+                    for (ComboBoxOption room : allRooms) {
+                        if (room.getLabel().toLowerCase().equals(lowerInput)) {
+                            return room;
+                        }
+                    }
+                    return null; // Không cho phép String tự do
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Không thể tải danh sách phòng từ CSDL.");
+        }
+    }
+
+    private void loadPeriodsForSelectedRoom(String roomNumber) {
+        periodBox.getItems().clear();
+        allPeriods.clear();
+        periodSuggestions.clear();
+        if (roomNumber == null || roomNumber.isEmpty())
+            return;
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            String sql = """
+                    SELECT DISTINCT cp.name
+                    FROM collection_periods cp
+                    JOIN collection_items ci ON cp.id = ci.collection_period_id
+                    WHERE ci.room_number = ?
+                    ORDER BY cp.name ASC;
+                    """;
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, roomNumber);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String period = rs.getString("name");
+                ComboBoxOption option = new ComboBoxOption(period, period);
+                allPeriods.add(option);
+                periodSuggestions.add(option);
+            }
+            periodBox.setItems(periodSuggestions);
+
+            periodBox.setConverter(new StringConverter<ComboBoxOption>() {
+                @Override
+                public String toString(ComboBoxOption option) {
+                    return option != null ? option.getLabel() : "";
+                }
+
+                @Override
+                public ComboBoxOption fromString(String string) {
+                    if (string == null || string.trim().isEmpty()) {
+                        return null;
+                    }
+
+                    // Tìm mục khớp với văn bản nhập
+                    String lowerInput = string.trim().toLowerCase();
+                    for (ComboBoxOption period : allPeriods) {
+                        if (period.getLabel().toLowerCase().equals(lowerInput)) {
+                            return period;
+                        }
+                    }
+                    return null; // Không cho phép String tự do
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Không thể tải danh sách đợt thu từ CSDL.");
+        }
+    }
+
+    private void setupRoomBoxSearch() {
+        roomBox.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                String inputText = newValue.trim();
+                ObservableList<ComboBoxOption> filteredItems = FXCollections.observableArrayList();
+                if (inputText.isEmpty()) {
+                    filteredItems.addAll(allRooms);
+                } else {
+                    String lowerInput = inputText.toLowerCase();
+                    for (ComboBoxOption room : allRooms) {
+                        if (room.getLabel().toLowerCase().contains(lowerInput) ||
+                                room.getValue().toLowerCase().contains(lowerInput)) {
+                            filteredItems.add(room);
+                        }
+                    }
+                }
+                roomSuggestions.setAll(filteredItems);
+
+                // Hiển thị dropdown nếu có văn bản và có mục khớp
+                if (!inputText.isEmpty() && !filteredItems.isEmpty()) {
+                    roomBox.show();
+                } else {
+                    roomBox.hide();
+                }
+            }
+        });
+
+        // Khi chọn phòng, load periods cho phòng đó
+        roomBox.setOnAction(e -> {
+            ComboBoxOption selected = roomBox.getValue();
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            if (selected != null) {
+                roomBox.setValue(selected);
+                Platform.runLater(() -> roomBox.getEditor().setText(selected.getLabel()));
+
+                loadPeriodsForSelectedRoom(selected.getValue());
+
+                // Reset periodBox selection
+                periodBox.setValue(null);
+                periodBox.getEditor().setText("");
+
+                // Hiện periodBox
+                stage.setHeight(418.5);
+                periodAnchorPane.setVisible(true);
+                periodAnchorPane.setManaged(true);
+            } else {
+                stage.setHeight(348.5);
+                periodAnchorPane.setVisible(false);
+                periodAnchorPane.setManaged(false);
+            }
+        });
+    }
+
+    private void setupPeriodBoxSearch() {
+        periodBox.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                String inputText = newValue.trim();
+                ObservableList<ComboBoxOption> filteredItems = FXCollections.observableArrayList();
+                if (inputText.isEmpty()) {
+                    filteredItems.addAll(allPeriods);
+                } else {
+                    String lowerInput = inputText.toLowerCase();
+                    for (ComboBoxOption period : allPeriods) {
+                        if (period.getLabel().toLowerCase().contains(lowerInput) ||
+                                period.getValue().toLowerCase().contains(lowerInput)) {
+                            filteredItems.add(period);
+                        }
+                    }
+                }
+                periodSuggestions.setAll(filteredItems);
+
+                // Hiển thị dropdown nếu có văn bản và có mục khớp
+                if (!inputText.isEmpty() && !filteredItems.isEmpty()) {
+                    periodBox.show();
+                } else {
+                    periodBox.hide();
+                }
+            }
+        });
+
+        // Khi chọn period, hiện amount
+        periodBox.setOnAction(e -> {
+            ComboBoxOption selectedPeriod = periodBox.getValue();
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            if (selectedPeriod != null) {
+                periodBox.setValue(selectedPeriod);
+                Platform.runLater(() -> periodBox.getEditor().setText(selectedPeriod.getLabel()));
+
+                stage.setHeight(603.5);
+                amountAnchorPane.setVisible(true);
+                amountAnchorPane.setManaged(true);
+
+                ComboBoxOption roomSelected = roomBox.getValue();
+                if (roomSelected != null) {
+                    autoFillAmount(selectedPeriod.getValue(), roomSelected.getValue());
+                }
+            } else {
+                stage.setHeight(418.5);
+                amountAnchorPane.setVisible(false);
+                amountAnchorPane.setManaged(false);
+                amountField.clear();
+            }
+        });
+    }
+
+    private void autoFillAmount(String period, String roomNumber) {
+        if (period == null || period.isEmpty() || roomNumber == null || roomNumber.isEmpty()) {
+            amountField.clear();
+            return;
+        }
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = """
+                        SELECT SUM(total_amount) AS total
+                        FROM collection_items ci
+                        JOIN collection_periods cp ON ci.collection_period_id = cp.id
+                        WHERE cp.name = ? AND ci.room_number = ?
+                    """;
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, period);
+            stmt.setString(2, roomNumber);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                amountField.setText(String.valueOf(rs.getDouble("total")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Không thể lấy tổng số tiền từ CSDL.");
+        }
+    }
+
+    private boolean areRequiredFieldsEmpty() {
+        return Stream.of(
+                amountField.getText()
+        ).anyMatch(s -> s == null || s.trim().isEmpty()) ||
+                Stream.of(
+                        periodBox.getValue(),
+                        roomBox.getValue()
+                ).anyMatch(Objects::isNull);
+    }
+
+    private void setupSaveButton() {
+        saveButton.setOnAction(e -> {
+            if (areRequiredFieldsEmpty()) {
+                showErrorAlert("Vui lòng nhập đầy đủ thông tin.");
+                return;
+            }
+
+            String period = periodBox.getValue().getValue();
+            String roomNumber = roomBox.getValue().getValue();
+            String note = noteArea.getText().trim();
+            String amount = amountField.getText().trim();
+            
+            try {
+                // Xuất báo cáo PDF
+                generatePdfReport(roomNumber, period, amount, note);
+                CustomAlert.showSuccessAlert("Xuất báo cáo thành công", true, 0.7);
+                handleSave();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                showErrorAlert("Lỗi khi xuất báo cáo: " + ex.getMessage());
+            }
+        });
+    }
+
+    private void generatePdfReport(String roomNumber, String period, String totalAmount, String note) throws IOException {
+        // Tải dữ liệu collection_items
+        List<CollectionItems> items = fetchCollectionItemss(roomNumber, period);
+
+        // Tạo tài liệu PDF
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            PDType0Font font = PDType0Font.load(document, getClass().getResourceAsStream("/styles/fonts/Arial.ttf"));
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.setFont(font, 16);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(200, 750);
+                contentStream.showText("BÁO CÁO THANH TOÁN");
+                contentStream.endText();
+
+                contentStream.setFont(font, 12);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, 720);
+                contentStream.showText("Phòng: " + roomNumber);
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Đợt thu: " + period);
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Ngày xuất báo cáo: " + LocalDate.now().toString());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Tổng số tiền: " + totalAmount + " VND");
+                contentStream.endText();
+
+                // Vẽ bảng collection_items
+                float yPosition = 620;
+                float[] columnWidths = {200, 100, 100, 100};
+
+                // Tiêu đề bảng
+                contentStream.setFont(font, 12);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, yPosition);
+                contentStream.showText("Tên mục");
+                contentStream.newLineAtOffset(columnWidths[0], 0);
+                contentStream.showText("Số lượng");
+                contentStream.newLineAtOffset(columnWidths[1], 0);
+                contentStream.showText("Đơn giá");
+                contentStream.newLineAtOffset(columnWidths[2], 0);
+                contentStream.showText("Thành tiền");
+                contentStream.endText();
+
+                // Vẽ đường kẻ bảng
+                //                contentStream.setLineWidth(1f);
+                //                contentStream.moveTo(50, yPosition + 5);
+                //                contentStream.lineTo(50 + tableWidth, yPosition + 5);
+                //                contentStream.stroke();
+
+                yPosition -= 20;
+
+                // Dữ liệu bảng
+                for (CollectionItems item : items) {
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(50, yPosition);
+                    contentStream.showText(item.getName());
+                    contentStream.newLineAtOffset(columnWidths[0], 0);
+                    contentStream.showText(String.valueOf(item.getQuantity()));
+                    contentStream.newLineAtOffset(columnWidths[1], 0);
+                    contentStream.showText(String.valueOf(item.getUnitPrice()));
+                    contentStream.newLineAtOffset(columnWidths[2], 0);
+                    contentStream.showText(String.valueOf(item.getTotalAmount()));
+                    contentStream.endText();
+
+                    yPosition -= 20;
+                    //                    contentStream.moveTo(50, yPosition + 5);
+                    //                    contentStream.lineTo(50 + tableWidth, yPosition + 5);
+                    //                    contentStream.stroke();
+                }
+
+                // Ghi chú
+                if (!note.isEmpty()) {
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(50, yPosition - 20);
+                    contentStream.showText("Ghi chú: " + note);
+                    contentStream.endText();
+                }
+
+                // Mục Ký tên (góc phải dưới)
+                contentStream.beginText();
+                contentStream.newLineAtOffset(400, 400); // Góc phải dưới, cách lề phải 50pt, lề dưới 50pt
+                contentStream.showText("Ký tên người nộp");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(100, 400);
+                contentStream.showText("Ký tên kế toán");
+                contentStream.endText();
+            }
+
+
+            // Tạo thư mục reports nếu chưa tồn tại
+            String projectDir = System.getProperty("user.dir");
+            Path reportsDir = Paths.get(projectDir, "src", "main", "resources", "reports");
+            Files.createDirectories(reportsDir);
+
+            // Lưu file PDF vào thư mục reports
+            String safePeriod = period.replaceAll("[^a-zA-Z0-9-_]", "_"); // Thay ký tự không hợp lệ bằng '_'
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String fileName = "BaoCao_" + roomNumber + "_" + safePeriod + "_" + timestamp + ".pdf";
+            File outputFile = new File(reportsDir.toFile(), fileName);
+            document.save(outputFile);
+        }
+    }
+
+    private List<CollectionItems> fetchCollectionItemss(String roomNumber, String period) {
+        List<CollectionItems> items = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = """
+                    SELECT ri.name, ci.quantity, ci.unit_price, ci.total_amount
+                    FROM collection_items ci
+                    JOIN collection_periods cp ON ci.collection_period_id = cp.id
+                    JOIN revenue_items ri ON ci.revenue_item_id = ri.id
+                    WHERE ci.room_number = ? AND cp.name = ?
+                    """;
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, roomNumber);
+            stmt.setString(2, period);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                items.add(new CollectionItems(
+                        rs.getString("name"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("unit_price"),
+                        rs.getDouble("total_amount")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Không thể tải danh sách mục thu từ CSDL.");
+        }
+        return items;
+    }
+
+    private void handleSave() {
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
+    }
+
+    // Utils -------------------------------------------------------------------
+    private void showErrorAlert(String message) {
+        try {
+            CustomAlert.showErrorAlert(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

@@ -133,15 +133,14 @@
     -fx-translate-y: 1px;
 }
 
-
 .chart-bar.series0 {
-    -fx-bar-fill: #4CAF50; /* màu xanh cho Tổng số tiền */
-    -fx-bar-width: 15;
+    -fx-bar-fill: #42A5F5;; /* màu xanh cho Tổng số tiền */
+
 }
 
 .chart-bar.series1 {
-    -fx-bar-fill: #FF9800; /* màu cam cho Số tiền đã đóng */
-    -fx-bar-width: 15;
+    -fx-bar-fill: #66BB6A; /* màu cam cho Số tiền đã đóng */
+
 }
 
 .chart-plot-background {

@@ -107,12 +107,14 @@
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </Button>
+
                 <MenuButton id="btnHeaderMenu" alignment="CENTER"
                             mnemonicParsing="false" prefHeight="50.0"
                             prefWidth="130.0" style="-fx-background-radius: 20;"
                             styleClass="btnHeader" text="Cài đặt"
                             textAlignment="CENTER" textFill="WHITE">
                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#changeToPassword" text="Đổi mật khẩu" />
                         <MenuItem fx:id="MenuItem_SignUp"
                                   mnemonicParsing="false"
                                   onAction="#changeToSignUp"

@@ -41,6 +41,8 @@ public class CreatePeriodController {
     @FXML
     private Button saveButton;
 
+
+
     public void initialize() {
         initTypeBox();
 

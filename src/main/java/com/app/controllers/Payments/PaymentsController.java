@@ -336,4 +336,9 @@ public class PaymentsController {
             }
         }
     }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
+    }
 }

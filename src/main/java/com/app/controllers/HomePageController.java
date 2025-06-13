@@ -33,7 +33,7 @@ import java.util.Objects;
 public class HomePageController {
     private String role;
     private String username;
-    private String email;
+
 
     @FXML
     private Label roleLabel;
@@ -59,6 +59,7 @@ public class HomePageController {
     @FXML
     private Label labelTotalRevenues;
 
+    private String email;
     private static String userEmail;
 
     public static void setUserEmail(String email) {
@@ -320,5 +321,10 @@ public class HomePageController {
         }
     }
 
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        ChangePasswordController.setUserEmail(email);
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
+    }
 
 }

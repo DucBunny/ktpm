@@ -32,6 +32,8 @@ import java.util.Objects;
 public class RevenuesController {
     private String role;
     private String username;
+
+
     private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
@@ -313,5 +315,10 @@ public class RevenuesController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

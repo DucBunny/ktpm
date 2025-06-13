@@ -31,7 +31,6 @@ import java.util.Objects;
 public class CollectionPeriodsController {
     private String role;
     private String username;
-
     //    Header
     @FXML
     private Label roleLabel;
@@ -62,11 +61,11 @@ public class CollectionPeriodsController {
 
     private final ObservableList<CollectionPeriods> collectionPeriodsList = FXCollections.observableArrayList();
 
+
     @FXML
     public void initialize(String role, String username) {
         this.role = role;
         this.username = username;
-
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
@@ -346,5 +345,10 @@ public class CollectionPeriodsController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

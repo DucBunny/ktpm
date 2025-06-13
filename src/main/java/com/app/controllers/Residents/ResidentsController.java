@@ -1,5 +1,6 @@
 package com.app.controllers.Residents;
 
+import com.app.controllers.ChangePasswordController;
 import com.app.controllers.HomePageController;
 import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
 import com.app.controllers.Revenues.RevenuesController;
@@ -30,7 +31,6 @@ import java.util.Objects;
 public class ResidentsController {
     private String role;
     private String username;
-
     //    Header
     @FXML
     private Label roleLabel;
@@ -343,5 +343,10 @@ public class ResidentsController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

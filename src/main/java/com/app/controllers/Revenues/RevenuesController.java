@@ -82,7 +82,7 @@ public class RevenuesController {
             elasticity = 1;
         }
 
-        nameLabel.setText("Xin chào, " + username);
+        nameLabel.setText("Xin chào");
 
         tableRevenues.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 

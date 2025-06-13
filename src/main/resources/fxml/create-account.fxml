@@ -99,7 +99,7 @@
             </ImageView>
          </children>
       </AnchorPane>
-        <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="310.0" layoutY="431.0" prefWidth="500.0" text="Lỗi hiện ở đây" textFill="RED" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="315.0">
+        <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="310.0" layoutY="431.0" prefWidth="500.0" textFill="RED" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="315.0">
             <font>
                 <Font size="16.0" />
             </font>

@@ -77,7 +77,7 @@ public class ResidentsController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
-        nameLabel.setText("Xin chào, " + username);
+        nameLabel.setText("Xin chào");
 
         tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 

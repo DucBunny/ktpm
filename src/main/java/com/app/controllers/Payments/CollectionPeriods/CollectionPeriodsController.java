@@ -74,7 +74,7 @@ public class CollectionPeriodsController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
-        nameLabel.setText("Xin chào, " + username);
+        nameLabel.setText("Xin chào");
 
         tableCollectionPeriods.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 

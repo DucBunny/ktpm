@@ -17,11 +17,13 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class HomePageController {
     private String role;
     private String username;
+    private String email;
 
     @FXML
     private Label roleLabel;
@@ -34,9 +36,16 @@ public class HomePageController {
     @FXML
     private HBox footerBar;
 
-    public void initialize(String role, String username) {
+    private static String userEmail;
+
+    public static void setUserEmail(String email) {
+        userEmail = email;
+    }
+
+    public void initialize(String role, String username) throws SQLException {
         this.role = role;
         this.username = username;
+        this.email = userEmail;
 
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
@@ -48,7 +57,7 @@ public class HomePageController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
-        nameLabel.setText("Xin chào, " + username);
+        nameLabel.setText("Xin chào");
     }
 
     // Header Button -----------------------------------------------------------
@@ -88,6 +97,13 @@ public class HomePageController {
     public void changeToSignUp() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
         SceneNavigator.showPopupScene("/fxml/create-account.fxml",
+                "/styles/sign-in-create-account.css", owner);
+    }
+
+    public void changeToInfo() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        UserInfoController.setUserInfo(email); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/user-info.fxml",
                 "/styles/sign-in-create-account.css", owner);
     }
 

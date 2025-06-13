@@ -8,6 +8,7 @@ import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import com.app.utils.SceneNavigator;
 import com.app.utils.StageManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -184,6 +186,18 @@ public class HomePageController {
             chart1.setBarGap(2);
             chart1.setAnimated(false);
 
+            for (XYChart.Series<String, Number> series : chart1.getData()) {
+                for (XYChart.Data<String, Number> data : series.getData()) {
+                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
+                        if (newNode != null) {
+                            Tooltip tooltip = new Tooltip(series.getName() + ": " + String.format("%,d", data.getYValue().intValue()));
+                            Tooltip.install(newNode, tooltip);
+                        }
+                    });
+                }
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             CustomAlert.showErrorAlert("Không thể tải dữ liệu doanh thu tháng từ CSDL.");
@@ -239,6 +253,13 @@ public class HomePageController {
             chart2.setCategoryGap(10);
             chart2.setBarGap(2);
             chart2.setAnimated(false);
+
+            for (XYChart.Series<String, Number> series : chart2.getData()) {
+                for (XYChart.Data<String, Number> data : series.getData()) {
+                    Tooltip tooltip = new Tooltip(series.getName() + ": " + String.format("%,d", data.getYValue().intValue()));
+                    Tooltip.install(data.getNode(), tooltip);
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

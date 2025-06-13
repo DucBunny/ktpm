@@ -30,6 +30,7 @@ import java.util.Objects;
 public class ResidentsController {
     private String role;
     private String username;
+    private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
     @FXML
@@ -38,6 +39,9 @@ public class ResidentsController {
     private Label nameLabel;
     @FXML
     private MenuItem MenuItem_SignUp;
+
+    @FXML
+    private Button btnCreate;
 
     //    Body
     @FXML
@@ -73,8 +77,11 @@ public class ResidentsController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
+            elasticity = 1;       // ẩn cột action 10%
+            btnCreate.setVisible(true);
         } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
         }
 
         nameLabel.setText("Xin chào");
@@ -133,16 +140,16 @@ public class ResidentsController {
         double padding = (totalRowsHeight > tableContentHeight) ? 18 : 0;
         double tableWidth = tableResidents.getWidth() - padding;
 
-        nameResidents.setPrefWidth(tableWidth * 0.2);
-        dateOfBirthResidents.setPrefWidth(tableWidth * 0.08);
-        genderResidents.setPrefWidth(tableWidth * 0.07);
-        phoneResidents.setPrefWidth(tableWidth * 0.1);
-        idCardNumberResidents.setPrefWidth(tableWidth * 0.11);
-        roomResidents.setPrefWidth(tableWidth * 0.07);
-        relationshipResidents.setPrefWidth(tableWidth * 0.08);
-        residenceStatusResidents.setPrefWidth(tableWidth * 0.1);
-        statusResidents.setPrefWidth(tableWidth * 0.09);
-        actionResidents.setPrefWidth(tableWidth * 0.1);
+        nameResidents.setPrefWidth(tableWidth * 0.2 * elasticity);
+        dateOfBirthResidents.setPrefWidth(tableWidth * 0.08 * elasticity);
+        genderResidents.setPrefWidth(tableWidth * 0.07 * elasticity);
+        phoneResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
+        idCardNumberResidents.setPrefWidth(tableWidth * 0.11 * elasticity);
+        roomResidents.setPrefWidth(tableWidth * 0.07 * elasticity);
+        relationshipResidents.setPrefWidth(tableWidth * 0.08 * elasticity);
+        residenceStatusResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
+        statusResidents.setPrefWidth(tableWidth * 0.09 * elasticity);
+        actionResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
     }
 
     // Header Button -----------------------------------------------------------
@@ -343,5 +350,10 @@ public class ResidentsController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

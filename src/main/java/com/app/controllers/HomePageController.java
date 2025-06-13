@@ -81,7 +81,6 @@ public class HomePageController {
         }
 
         nameLabel.setText("Xin chào");
-
         initMonthlyRevenueChart();
         initQuarterlyRevenueChart();
         setValueToItem();
@@ -139,52 +138,23 @@ public class HomePageController {
                 event, false);
     }
 
-    // Body --------------------------------------------------------------------
-    public void setValueToItem() throws IOException {
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            // Lấy tổng số phòng
-            String queryRooms = "SELECT COUNT(*) AS total_rooms FROM rooms";
-            PreparedStatement stmtRooms = connection.prepareStatement(queryRooms);
-            ResultSet rsRooms = stmtRooms.executeQuery();
-            if (rsRooms.next()) {
-                int totalRooms = rsRooms.getInt("total_rooms");
-                labelTotalRooms.setText(String.valueOf(totalRooms));
-            }
+    // Footer Button -----------------------------------------------------------
+    public void changeToCreatePayments() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/Payments/create-payment.fxml", "/styles/Payments/crud-payment.css", owner);
+    }
 
-            // Lấy tổng số cư dân
-            String queryResidents = "SELECT COUNT(*) AS total_residents FROM residents";
-            PreparedStatement stmtResidents = connection.prepareStatement(queryResidents);
-            ResultSet rsResidents = stmtResidents.executeQuery();
-            if (rsResidents.next()) {
-                int totalResidents = rsResidents.getInt("total_residents");
-                labelTotalResidents.setText(String.valueOf(totalResidents));
-            }
-
-            // Lấy tổng doanh thu
-            String queryRevenues = """
-                        SELECT COALESCE(SUM(p.amount), 0) AS total_revenue
-                        FROM payments p
-                    """;
-            PreparedStatement stmtRevenues = connection.prepareStatement(queryRevenues);
-            ResultSet rsRevenues = stmtRevenues.executeQuery();
-            if (rsRevenues.next()) {
-                int totalRevenues = rsRevenues.getInt("total_revenue");
-                // Chuyển sang đơn vị 'k'
-                String revenueText = String.format("%,d k", totalRevenues / 1000);
-                labelTotalRevenues.setText(revenueText);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            CustomAlert.showErrorAlert("Không thể tải dữ liệu dashboard từ CSDL.");
-        }
+    public void changeToCreateRevenues() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/crud-revenue.css", owner);
     }
 
     public void initMonthlyRevenueChart() throws IOException {
         XYChart.Series<String, Number> seriesTotal = new XYChart.Series<>();
         XYChart.Series<String, Number> seriesPaid = new XYChart.Series<>();
 
-        seriesTotal.setName("Tổng số tiền phải thu");
-        seriesPaid.setName("Số tiền đã thu");
+        seriesTotal.setName("Tổng số tiền");
+        seriesPaid.setName("Số tiền đã đóng");
 
         ObservableList<String> categories = FXCollections.observableArrayList();
 
@@ -238,18 +208,21 @@ public class HomePageController {
                     });
                 }
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             CustomAlert.showErrorAlert("Không thể tải dữ liệu doanh thu tháng từ CSDL.");
         }
     }
 
+
     public void initQuarterlyRevenueChart() throws IOException {
         XYChart.Series<String, Number> seriesTotal = new XYChart.Series<>();
         XYChart.Series<String, Number> seriesPaid = new XYChart.Series<>();
 
-        seriesTotal.setName("Tổng số tiền phải thu");
-        seriesPaid.setName("Số tiền đã thu");
+        seriesTotal.setName("Tổng số tiền");
+        seriesPaid.setName("Số tiền đã đóng");
 
         ObservableList<String> categories = FXCollections.observableArrayList();
 
@@ -299,21 +272,58 @@ public class HomePageController {
                     Tooltip.install(data.getNode(), tooltip);
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             CustomAlert.showErrorAlert("Không thể tải dữ liệu doanh thu quý từ CSDL.");
         }
     }
 
-    // Footer Button -----------------------------------------------------------
-    public void changeToCreatePayments() throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Payments/create-payment.fxml", "/styles/Payments/crud-payment.css", owner);
+
+    public void setValueToItem() throws IOException {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            // Lấy tổng số phòng
+            String queryRooms = "SELECT COUNT(*) AS total_rooms FROM rooms";
+            PreparedStatement stmtRooms = connection.prepareStatement(queryRooms);
+            ResultSet rsRooms = stmtRooms.executeQuery();
+            if (rsRooms.next()) {
+                int totalRooms = rsRooms.getInt("total_rooms");
+                labelTotalRooms.setText(String.valueOf(totalRooms));
+            }
+
+            // Lấy tổng số cư dân
+            String queryResidents = "SELECT COUNT(*) AS total_residents FROM residents";
+            PreparedStatement stmtResidents = connection.prepareStatement(queryResidents);
+            ResultSet rsResidents = stmtResidents.executeQuery();
+            if (rsResidents.next()) {
+                int totalResidents = rsResidents.getInt("total_residents");
+                labelTotalResidents.setText(String.valueOf(totalResidents));
+            }
+
+            // Lấy tổng doanh thu
+            String queryRevenues = """
+                        SELECT COALESCE(SUM(p.amount), 0) AS total_revenue
+                        FROM payments p
+                    """;
+            PreparedStatement stmtRevenues = connection.prepareStatement(queryRevenues);
+            ResultSet rsRevenues = stmtRevenues.executeQuery();
+            if (rsRevenues.next()) {
+                int totalRevenues = rsRevenues.getInt("total_revenue");
+                // Chuyển sang đơn vị 'k'
+                String revenueText = String.format("%,d k", totalRevenues / 1000);
+                labelTotalRevenues.setText(revenueText);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            CustomAlert.showErrorAlert("Không thể tải dữ liệu dashboard từ CSDL.");
+        }
     }
 
-    public void changeToCreateRevenues() throws IOException {
+    public void changeToPassword(ActionEvent event) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Revenues/create-revenue.fxml", "/styles/Revenues/crud-revenue.css", owner);
+        ChangePasswordController.setUserEmail(email);
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 
     public void exportReport() throws IOException {

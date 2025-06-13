@@ -32,6 +32,7 @@ public class PaymentsController {
     private String username;
     private int collectionPeriodId;
     private String collectionPeriodName;
+    private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
     @FXML
@@ -44,6 +45,8 @@ public class PaymentsController {
     @FXML
     private Label contentLabel;
 
+    @FXML
+    private Button btnCreate;
     //    Body
     @FXML
     private TableView<Payments> tablePayments;
@@ -72,8 +75,12 @@ public class PaymentsController {
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
         } else if (Objects.equals(role, "accountant")) {
+            btnCreate.setVisible(true);
+            actionPayments.setVisible(true);
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
+            elasticity = 1;
         }
 
         nameLabel.setText("Xin chào");
@@ -114,12 +121,12 @@ public class PaymentsController {
         double padding = (totalRowsHeight > tableContentHeight) ? 18 : 0;
         double tableWidth = tablePayments.getWidth() - padding;
 
-        roomNumberPayments.setPrefWidth(tableWidth * 0.15);
-        amountPayments.setPrefWidth(tableWidth * 0.15);
-        datePayments.setPrefWidth(tableWidth * 0.15);
-        notePayments.setPrefWidth(tableWidth * 0.3);
-        statusPayments.setPrefWidth(tableWidth * 0.15);
-        actionPayments.setPrefWidth(tableWidth * 0.1);
+        roomNumberPayments.setPrefWidth(tableWidth * 0.15 * elasticity);
+        amountPayments.setPrefWidth(tableWidth * 0.15 * elasticity);
+        datePayments.setPrefWidth(tableWidth * 0.15 * elasticity);
+        notePayments.setPrefWidth(tableWidth * 0.3 * elasticity);
+        statusPayments.setPrefWidth(tableWidth * 0.15 * elasticity);
+        actionPayments.setPrefWidth(tableWidth * 0.1 * elasticity);
     }
 
     // Header Button -----------------------------------------------------------
@@ -335,5 +342,10 @@ public class PaymentsController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

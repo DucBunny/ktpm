@@ -1,5 +1,6 @@
 package com.app.controllers.Rooms;
 
+import com.app.controllers.ChangePasswordController;
 import com.app.controllers.HomePageController;
 import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
 import com.app.controllers.Residents.ResidentsController;
@@ -311,5 +312,10 @@ public class RoomsController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

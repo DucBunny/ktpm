@@ -113,6 +113,7 @@
                             styleClass="btnHeader" text="Cài đặt"
                             textAlignment="CENTER" textFill="WHITE">
                     <items>
+                        <MenuItem mnemonicParsing="false" text="Đổi mật khẩu"/>
                         <MenuItem fx:id="MenuItem_SignUp"
                                   mnemonicParsing="false"
                                   onAction="#changeToSignUp"

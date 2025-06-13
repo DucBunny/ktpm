@@ -140,8 +140,7 @@ public class EditVehicleController {
         return Stream.of(
                 plateNumberField.getText(),
                 brandField.getText(),
-                colorField.getText(),
-                noteField.getText()
+                colorField.getText()
         ).anyMatch(s -> s == null || s.trim().isEmpty()) ||
                 Stream.of(
                         typeBox.getValue(),

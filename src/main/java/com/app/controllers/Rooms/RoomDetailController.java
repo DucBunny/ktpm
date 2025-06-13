@@ -33,6 +33,7 @@ import java.util.Objects;
 public class RoomDetailController {
     private String role;
     private String username;
+    private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
     @FXML
@@ -44,6 +45,9 @@ public class RoomDetailController {
 
     // Body
     private String roomNumber;
+
+    @FXML
+    private Button btnCreateResident;
 
     @FXML
     private VBox ownerBox;
@@ -84,9 +88,13 @@ public class RoomDetailController {
 
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
+            btnCreateResident.setVisible(true);
             MenuItem_SignUp.setVisible(true);
+            actionResidents.setVisible(true);
+            elasticity = 1;
         } else if (Objects.equals(role, "accountant")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
         }
 
         nameLabel.setText("Xin chào");
@@ -143,14 +151,14 @@ public class RoomDetailController {
         double padding = (totalRowsHeight > tableContentHeight) ? 15 : 0;
         double tableWidth = tableResidents.getWidth() - padding;
 
-        nameResidents.setPrefWidth(tableWidth * 0.2);
-        dateOfBirthResidents.setPrefWidth(tableWidth * 0.1);
-        genderResidents.setPrefWidth(tableWidth * 0.1);
-        phoneResidents.setPrefWidth(tableWidth * 0.15);
-        idCardNumberResidents.setPrefWidth(tableWidth * 0.15);
-        relationshipResidents.setPrefWidth(tableWidth * 0.1);
-        residenceStatusResidents.setPrefWidth(tableWidth * 0.1);
-        actionResidents.setPrefWidth(tableWidth * 0.1);
+        nameResidents.setPrefWidth(tableWidth * 0.2 * elasticity);
+        dateOfBirthResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
+        genderResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
+        phoneResidents.setPrefWidth(tableWidth * 0.15 * elasticity);
+        idCardNumberResidents.setPrefWidth(tableWidth * 0.15 * elasticity);
+        relationshipResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
+        residenceStatusResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
+        actionResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
     }
 
     // Header Butron -----------------------------------------------------------
@@ -221,7 +229,7 @@ public class RoomDetailController {
         FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/vehicles.fxml", "/styles/Rooms/vehicles.css", owner);
 
         VehiclesController controller = loader.getController();
-        controller.initialize(roomNumber);
+        controller.initialize(username, role, roomNumber);
     }
 
     public void openResidentDetailScene(Residents resident) throws IOException {

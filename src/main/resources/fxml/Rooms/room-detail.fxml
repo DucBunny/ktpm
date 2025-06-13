@@ -1,174 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.*?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0"
-      xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.app.controllers.Rooms.RoomDetailController">
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Rooms.RoomDetailController">
     <children>
         <AnchorPane>
             <children>
-                <Label fx:id="roleLabel" alignment="CENTER"
-                       contentDisplay="CENTER" prefWidth="600.0"
-                       text="Bạn đang đăng nhập với quyền ..."
-                       textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
-                       AnchorPane.rightAnchor="0.0">
+                <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Bạn đang đăng nhập với quyền ..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
             </children>
         </AnchorPane>
-        <HBox alignment="CENTER" prefHeight="70.0" spacing="40.0"
-              style="-fx-background-color: #586995; -fx-background-radius: 20;">
+        <HBox alignment="CENTER" prefHeight="70.0" spacing="40.0" style="-fx-background-color: #586995; -fx-background-radius: 20;">
             <children>
-                <Button mnemonicParsing="false" onAction="#changeToHomePage"
-                        prefHeight="50.0" prefWidth="130.0"
-                        style="-fx-background-radius: 20;"
-                        styleClass="btnHeader" text="Trang chủ"
-                        textAlignment="CENTER" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToHomePage" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Trang chủ" textAlignment="CENTER" textFill="WHITE">
                     <HBox.margin>
-                        <Insets left="55.0"/>
+                        <Insets left="55.0" />
                     </HBox.margin>
                     <font>
-                        <Font name="System Bold" size="18.0"/>
+                        <Font name="System Bold" size="18.0" />
                     </font>
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button id="buttonActive" mnemonicParsing="false"
-                        onAction="#changeToRooms" prefHeight="50.0"
-                        prefWidth="130.0" style="-fx-background-radius: 20;"
-                        styleClass="btnHeader" text="Căn hộ"
-                        textAlignment="CENTER" textFill="#424f70">
+                <Button id="buttonActive" mnemonicParsing="false" onAction="#changeToRooms" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Căn hộ" textAlignment="CENTER" textFill="#424f70">
                     <font>
-                        <Font name="System Bold" size="18.0"/>
+                        <Font name="System Bold" size="18.0" />
                     </font>
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button mnemonicParsing="false" onAction="#changeToResidents"
-                        prefHeight="50.0" prefWidth="130.0"
-                        style="-fx-background-radius: 20;"
-                        styleClass="btnHeader" text="Cư dân"
-                        textAlignment="CENTER" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToResidents" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cư dân" textAlignment="CENTER" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="18.0"/>
+                        <Font name="System Bold" size="18.0" />
                     </font>
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button mnemonicParsing="false" onAction="#changeToRevenues"
-                        prefHeight="50.0" prefWidth="130.0"
-                        style="-fx-background-radius: 20;"
-                        styleClass="btnHeader" text="Khoản thu"
-                        textAlignment="CENTER" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToRevenues" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Khoản thu" textAlignment="CENTER" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="18.0"/>
+                        <Font name="System Bold" size="18.0" />
                     </font>
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button mnemonicParsing="false" onAction="#changeToPayments"
-                        prefHeight="50.0" prefWidth="130.0"
-                        style="-fx-background-radius: 20;"
-                        styleClass="btnHeader" text="Thống kê"
-                        textAlignment="CENTER" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#changeToPayments" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Thống kê" textAlignment="CENTER" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="18.0"/>
+                        <Font name="System Bold" size="18.0" />
                     </font>
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <MenuButton id="btnHeaderMenu" alignment="CENTER"
-                            mnemonicParsing="false" prefHeight="50.0"
-                            prefWidth="130.0" style="-fx-background-radius: 20;"
-                            styleClass="btnHeader" text="Cài đặt"
-                            textAlignment="CENTER" textFill="WHITE">
+                <MenuButton id="btnHeaderMenu" alignment="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 20;" styleClass="btnHeader" text="Cài đặt" textAlignment="CENTER" textFill="WHITE">
                     <items>
-                        <MenuItem fx:id="MenuItem_SignUp"
-                                  mnemonicParsing="false"
-                                  onAction="#changeToSignUp"
-                                  text="Tạo tài khoản" visible="false"/>
-                        <MenuItem mnemonicParsing="false"
-                                  onAction="#changeToSignIn" text="Đăng xuất"/>
+                        <MenuItem mnemonicParsing="false" text="Đổi mật khẩu" />
+                        <MenuItem fx:id="MenuItem_SignUp" mnemonicParsing="false" onAction="#changeToSignUp" text="Tạo tài khoản" visible="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#changeToSignIn" text="Đăng xuất" />
                     </items>
                     <font>
-                        <Font name="System Bold" size="18.0"/>
+                        <Font name="System Bold" size="18.0" />
                     </font>
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </MenuButton>
-                <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0"
-                      style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
+                <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
                     <children>
-                        <Label fx:id="nameLabel" prefHeight="50.0"
-                               prefWidth="170.0" text="Xin chào">
+                        <Label fx:id="nameLabel" prefHeight="50.0" prefWidth="170.0" text="Xin chào">
                             <font>
-                                <Font size="18.0"/>
+                                <Font size="18.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="20.0"/>
+                                <Insets left="20.0" />
                             </HBox.margin>
                         </Label>
-                        <AnchorPane prefHeight="40.0" prefWidth="40.0"
-                                    style="-fx-background-color: #FFFFFF; -fx-background-radius: 100%;">
+                        <AnchorPane prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 100%;">
                             <children>
-                                <ImageView fitHeight="40.0" fitWidth="40.0"
-                                           pickOnBounds="true"
-                                           preserveRatio="true"
-                                           AnchorPane.leftAnchor="0.0"
-                                           AnchorPane.rightAnchor="0.0"
-                                           AnchorPane.topAnchor="-0.5">
+                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.5">
                                     <image>
-                                        <Image url="@../../images/avt-admin.png"/>
+                                        <Image url="@../../images/avt-admin.png" />
                                     </image>
                                 </ImageView>
                             </children>
                             <HBox.margin>
-                                <Insets bottom="5.0" right="10.0" top="5.0"/>
+                                <Insets bottom="5.0" right="10.0" top="5.0" />
                             </HBox.margin>
                             <opaqueInsets>
-                                <Insets/>
+                                <Insets />
                             </opaqueInsets>
                         </AnchorPane>
                     </children>
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                 </HBox>
             </children>
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <VBox.margin>
-                <Insets left="10.0" right="10.0" top="3.0"/>
+                <Insets left="10.0" right="10.0" top="3.0" />
             </VBox.margin>
         </HBox>
         <VBox VBox.vgrow="ALWAYS">
@@ -176,19 +140,12 @@
 
                 <AnchorPane>
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER"
-                               layoutX="308.0" layoutY="28.0" prefHeight="77.0"
-                               styleClass="boldText"
-                               text="THÔNG TIN CHI TIẾT CỦA CĂN HỘ"
-                               textAlignment="CENTER"
-                               AnchorPane.leftAnchor="0.0"
-                               AnchorPane.rightAnchor="0.0"
-                               AnchorPane.topAnchor="0.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="308.0" layoutY="28.0" prefHeight="77.0" styleClass="boldText" text="THÔNG TIN CHI TIẾT CỦA CĂN HỘ" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <font>
-                                <Font size="32.0"/>
+                                <Font size="32.0" />
                             </font>
                             <padding>
-                                <Insets bottom="30.0"/>
+                                <Insets bottom="30.0" />
                             </padding>
                         </Label>
                     </children>
@@ -196,69 +153,49 @@
 
                 <HBox VBox.vgrow="ALWAYS">
                     <children>
-                        <VBox fx:id="ownerBox" alignment="TOP_CENTER"
-                              maxWidth="-Infinity" minWidth="-Infinity"
-                              prefWidth="250.0" spacing="14.0">
+                        <VBox fx:id="ownerBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" spacing="14.0">
                             <children>
-                                <ImageView fitHeight="160.0" fitWidth="160.0"
-                                           pickOnBounds="true"
-                                           preserveRatio="true">
+                                <ImageView fitHeight="160.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../images/avt-owner.png"/>
+                                        <Image url="@../../images/avt-owner.png" />
                                     </image>
                                     <clip>
-                                        <Circle centerX="80.0" centerY="80.0"
-                                                radius="80.0"/>
+                                        <Circle centerX="80.0" centerY="80.0" radius="80.0" />
                                     </clip>
                                 </ImageView>
-                                <Label fx:id="ownerNameField"
-                                       alignment="TOP_CENTER"
-                                       textAlignment="CENTER" wrapText="true">
+                                <Label fx:id="ownerNameField" alignment="TOP_CENTER" textAlignment="CENTER" wrapText="true">
                                     <font>
-                                        <Font size="20.0"/>
+                                        <Font size="20.0" />
                                     </font>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" />
                                     </padding>
                                 </Label>
                             </children>
                             <VBox.margin>
-                                <Insets left="20.0" top="20.0"/>
+                                <Insets left="20.0" top="20.0" />
                             </VBox.margin>
                             <padding>
-                                <Insets top="14.0"/>
+                                <Insets top="14.0" />
                             </padding>
                         </VBox>
 
                         <VBox spacing="20.0" HBox.hgrow="ALWAYS">
-                            <VBox spacing="10.0"
-                                  style="-fx-border-color: #d1d1d1; -fx-border-radius: 15; -fx-background-radius: 15; -fx-background-color: #FFFFFF;">
+                            <VBox spacing="10.0" style="-fx-border-color: #d1d1d1; -fx-border-radius: 15; -fx-background-radius: 15; -fx-background-color: #FFFFFF;">
                                 <children>
                                     <AnchorPane>
                                         <children>
-                                            <Label text="Thông tin căn hộ"
-                                                   AnchorPane.bottomAnchor="0.0"
-                                                   AnchorPane.leftAnchor="0.0"
-                                                   AnchorPane.topAnchor="0.0">
+                                            <Label text="Thông tin căn hộ" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                 <font>
-                                                    <Font name="System Bold"
-                                                          size="24.0"/>
+                                                    <Font name="System Bold" size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Button alignment="CENTER"
-                                                    mnemonicParsing="false"
-                                                    onAction="#openVehicleScene"
-                                                    prefHeight="45.0"
-                                                    prefWidth="235.0"
-                                                    styleClass="btn-edit-room"
-                                                    text="Quản lý phương tiện"
-                                                    textFill="WHITE"
-                                                    AnchorPane.rightAnchor="0.0">
+                                            <Button alignment="CENTER" mnemonicParsing="false" onAction="#openVehicleScene" prefHeight="45.0" prefWidth="235.0" styleClass="btn-edit-room" text="Quản lý phương tiện" textFill="WHITE" AnchorPane.rightAnchor="0.0">
                                                 <font>
-                                                    <Font size="20.0"/>
+                                                    <Font size="20.0" />
                                                 </font>
                                                 <cursor>
-                                                    <Cursor fx:constant="HAND"/>
+                                                    <Cursor fx:constant="HAND" />
                                                 </cursor>
                                             </Button>
                                         </children>
@@ -267,12 +204,12 @@
                                         <children>
                                             <Label text="Số căn hộ: ">
                                                 <font>
-                                                    <Font size="18.0"/>
+                                                    <Font size="18.0" />
                                                 </font>
                                             </Label>
                                             <Label fx:id="roomNumberLabel">
                                                 <font>
-                                                    <Font size="18.0"/>
+                                                    <Font size="18.0" />
                                                 </font>
                                             </Label>
                                         </children>
@@ -281,136 +218,96 @@
                                         <children>
                                             <Label text="Diện tích: ">
                                                 <font>
-                                                    <Font size="18.0"/>
+                                                    <Font size="18.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="roomAreaLabel"
-                                                   text=" m">
+                                            <Label fx:id="roomAreaLabel" text=" m">
                                                 <font>
-                                                    <Font size="18.0"/>
+                                                    <Font size="18.0" />
                                                 </font>
                                             </Label>
-                                            <Label text="2"/>
+                                            <Label text="2" />
                                         </children>
                                     </HBox>
                                     <HBox>
                                         <children>
                                             <Label text="Tình trạng: ">
                                                 <font>
-                                                    <Font size="18.0"/>
+                                                    <Font size="18.0" />
                                                 </font>
                                             </Label>
                                             <Label fx:id="roomStatusLabel">
                                                 <font>
-                                                    <Font size="18.0"/>
+                                                    <Font size="18.0" />
                                                 </font>
                                             </Label>
                                         </children>
                                     </HBox>
                                 </children>
                                 <padding>
-                                    <Insets bottom="20.0" left="20.0"
-                                            right="20.0" top="10.0"/>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                                 </padding>
                                 <VBox.margin>
-                                    <Insets/>
+                                    <Insets />
                                 </VBox.margin>
                             </VBox>
 
-                            <VBox spacing="10.0"
-                                  style="-fx-border-color: #d1d1d1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: #f9f9f9;">
+                            <VBox spacing="10.0" style="-fx-border-color: #d1d1d1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: #f9f9f9;">
                                 <children>
                                     <AnchorPane>
                                         <children>
-                                            <Label prefHeight="30.0"
-                                                   text="Thông tin cư dân đang ở"
-                                                   AnchorPane.bottomAnchor="0.0"
-                                                   AnchorPane.leftAnchor="0.0"
-                                                   AnchorPane.topAnchor="0.0">
+                                            <Label prefHeight="30.0" text="Thông tin cư dân đang ở" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                 <font>
-                                                    <Font name="System Bold"
-                                                          size="24.0"/>
+                                                    <Font name="System Bold" size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Button alignment="CENTER"
-                                                    mnemonicParsing="false"
-                                                    onAction="#handleCreateResident"
-                                                    prefHeight="45.0"
-                                                    prefWidth="200.0"
-                                                    styleClass="btn-edit-room"
-                                                    text="Thêm thành viên"
-                                                    textFill="WHITE"
-                                                    AnchorPane.rightAnchor="0.0">
+                                            <Button fx:id="btnCreateResident" alignment="CENTER" mnemonicParsing="false" onAction="#handleCreateResident" prefHeight="45.0" prefWidth="200.0" styleClass="btn-edit-room" text="Thêm thành viên" textFill="WHITE" visible="false" AnchorPane.rightAnchor="0.0">
                                                 <font>
-                                                    <Font size="20.0"/>
+                                                    <Font size="20.0" />
                                                 </font>
                                                 <cursor>
-                                                    <Cursor fx:constant="HAND"/>
+                                                    <Cursor fx:constant="HAND" />
                                                 </cursor>
                                             </Button>
                                         </children>
                                     </AnchorPane>
 
-                                    <TableView fx:id="tableResidents"
-                                               VBox.vgrow="ALWAYS">
+                                    <TableView fx:id="tableResidents" VBox.vgrow="ALWAYS">
                                         <columns>
-                                            <TableColumn fx:id="nameResidents"
-                                                         prefWidth="200.0"
-                                                         text="Họ và tên"/>
-                                            <TableColumn
-                                                    fx:id="dateOfBirthResidents"
-                                                    prefWidth="120.0"
-                                                    text="Ngày sinh"/>
-                                            <TableColumn fx:id="genderResidents"
-                                                         prefWidth="80.0"
-                                                         text="Giới tính"/>
-                                            <TableColumn fx:id="phoneResidents"
-                                                         minWidth="0.0"
-                                                         prefWidth="117.5999755859375"
-                                                         text="Số điện thoại"/>
-                                            <TableColumn
-                                                    fx:id="idCardNumberResidents"
-                                                    prefWidth="180.0"
-                                                    text="Căn cước"/>
-                                            <TableColumn
-                                                    fx:id="relationshipResidents"
-                                                    prefWidth="180.0"
-                                                    text="Quan hệ"/>
-                                            <TableColumn
-                                                    fx:id="residenceStatusResidents"
-                                                    prefWidth="180.0"
-                                                    text="Loại cư trú"/>
-                                            <TableColumn fx:id="actionResidents"
-                                                         prefWidth="119.199951171875"
-                                                         text="Thao tác"/>
+                                            <TableColumn fx:id="nameResidents" prefWidth="200.0" text="Họ và tên" />
+                                            <TableColumn fx:id="dateOfBirthResidents" prefWidth="120.0" text="Ngày sinh" />
+                                            <TableColumn fx:id="genderResidents" prefWidth="80.0" text="Giới tính" />
+                                            <TableColumn fx:id="phoneResidents" minWidth="0.0" prefWidth="117.5999755859375" text="Số điện thoại" />
+                                            <TableColumn fx:id="idCardNumberResidents" prefWidth="180.0" text="Căn cước" />
+                                            <TableColumn fx:id="relationshipResidents" prefWidth="180.0" text="Quan hệ" />
+                                            <TableColumn fx:id="residenceStatusResidents" prefWidth="180.0" text="Loại cư trú" />
+                                            <TableColumn fx:id="actionResidents" prefWidth="119.199951171875" text="Thao tác" visible="false" />
                                         </columns>
                                         <columnResizePolicy>
-                                            <TableView
-                                                    fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                         </columnResizePolicy>
                                     </TableView>
                                 </children>
                                 <padding>
-                                    <Insets bottom="20.0" left="20.0"
-                                            right="20.0" top="10.0"/>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                                 </padding>
                             </VBox>
                             <HBox.margin>
-                                <Insets/>
+                                <Insets />
                             </HBox.margin>
                         </VBox>
                     </children>
                     <VBox.margin>
-                        <Insets bottom="10.0"/>
+                        <Insets bottom="10.0" />
                     </VBox.margin>
                 </HBox>
             </children>
             <VBox.margin>
-                <Insets top="30.0"/>
+                <Insets top="30.0" />
             </VBox.margin>
         </VBox>
     </children>
     <padding>
-        <Insets bottom="10.0" left="15.0" right="15.0"/>
+        <Insets bottom="10.0" left="15.0" right="15.0" />
     </padding>
 </VBox>

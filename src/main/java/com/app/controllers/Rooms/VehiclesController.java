@@ -20,9 +20,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class VehiclesController {
+    private String role;
+    private String username;
     private String roomNumber;
+    private double elasticity;      // co giãn (nếu ẩn cột)
+
+    @FXML
+    private Button btnCreate;
 
     @FXML
     private TableView<Vehicles> tableVehicles;
@@ -46,8 +53,17 @@ public class VehiclesController {
     private final ObservableList<Vehicles> vehiclesList = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize(String roomNumber) {
+    public void initialize(String username, String role, String roomNumber) {
+        this.role = role;
+        this.username = username;
         this.roomNumber = roomNumber;
+
+        if (Objects.equals(role, "admin")) {
+            btnCreate.setVisible(true);
+            elasticity = 1;
+        } else if (Objects.equals(role, "accountant")) {
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
+        }
 
         tableVehicles.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -101,14 +117,14 @@ public class VehiclesController {
         double padding = (totalRowsHeight > tableContentHeight) ? 18 : 0;
         double tableWidth = tableVehicles.getWidth() - padding;
 
-        typeVehicles.setPrefWidth(tableWidth * 0.2);
-        plateNumberVehicles.setPrefWidth(tableWidth * 0.1);
-        brandVehicles.setPrefWidth(tableWidth * 0.1);
-        colorVehicles.setPrefWidth(tableWidth * 0.1);
-        registrationDateVehicles.setPrefWidth(tableWidth * 0.15);
-        noteVehicles.setPrefWidth(tableWidth * 0.15);
-        isActiveVehicles.setPrefWidth(tableWidth * 0.1);
-        actionVehicles.setPrefWidth(tableWidth * 0.1);
+        typeVehicles.setPrefWidth(tableWidth * 0.2 * elasticity);
+        plateNumberVehicles.setPrefWidth(tableWidth * 0.1 * elasticity);
+        brandVehicles.setPrefWidth(tableWidth * 0.1 * elasticity);
+        colorVehicles.setPrefWidth(tableWidth * 0.1 * elasticity);
+        registrationDateVehicles.setPrefWidth(tableWidth * 0.15 * elasticity);
+        noteVehicles.setPrefWidth(tableWidth * 0.15 * elasticity);
+        isActiveVehicles.setPrefWidth(tableWidth * 0.1 * elasticity);
+        actionVehicles.setPrefWidth(tableWidth * 0.1 * elasticity);
     }
 
     // Body --------------------------------------------------------------------

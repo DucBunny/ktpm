@@ -32,6 +32,8 @@ public class CollectionPeriodsController {
     private String role;
     private String username;
 
+    private double elasticity;      // co giãn (nếu ẩn cột)
+
     //    Header
     @FXML
     private Label roleLabel;
@@ -39,6 +41,9 @@ public class CollectionPeriodsController {
     private Label nameLabel;
     @FXML
     private MenuItem MenuItem_SignUp;
+
+    @FXML
+    private Button btnCreate;
 
     //    Body
     @FXML
@@ -62,16 +67,20 @@ public class CollectionPeriodsController {
 
     private final ObservableList<CollectionPeriods> collectionPeriodsList = FXCollections.observableArrayList();
 
+
     @FXML
     public void initialize(String role, String username) {
         this.role = role;
         this.username = username;
-
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
             MenuItem_SignUp.setVisible(true);
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
         } else if (Objects.equals(role, "accountant")) {
+            btnCreate.setVisible(true);
+            actionPeriod.setVisible(true);
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
+            elasticity = 1;
         }
 
         nameLabel.setText("Xin chào");
@@ -129,14 +138,14 @@ public class CollectionPeriodsController {
         double padding = (totalRowsHeight > tableContentHeight) ? 18 : 0;
         double tableWidth = tableCollectionPeriods.getWidth() - padding;
 
-        namePeriod.setPrefWidth(tableWidth * 0.2);
-        codePeriod.setPrefWidth(tableWidth * 0.1);
-        totalAmountPeriod.setPrefWidth(tableWidth * 0.15);
-        totalPaidAmountPeriod.setPrefWidth(tableWidth * 0.15);
-        startDatePeriod.setPrefWidth(tableWidth * 0.11);
-        endDatePeriod.setPrefWidth(tableWidth * 0.11);
-        typePeriod.setPrefWidth(tableWidth * 0.08);
-        actionPeriod.setPrefWidth(tableWidth * 0.1);
+        namePeriod.setPrefWidth(tableWidth * 0.2 * elasticity);
+        codePeriod.setPrefWidth(tableWidth * 0.1 * elasticity);
+        totalAmountPeriod.setPrefWidth(tableWidth * 0.15 * elasticity);
+        totalPaidAmountPeriod.setPrefWidth(tableWidth * 0.15 * elasticity);
+        startDatePeriod.setPrefWidth(tableWidth * 0.11 * elasticity);
+        endDatePeriod.setPrefWidth(tableWidth * 0.11 * elasticity);
+        typePeriod.setPrefWidth(tableWidth * 0.08 * elasticity);
+        actionPeriod.setPrefWidth(tableWidth * 0.1 * elasticity);
     }
 
     // Header Button -----------------------------------------------------------
@@ -346,5 +355,10 @@ public class CollectionPeriodsController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void changeToPassword(ActionEvent event) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

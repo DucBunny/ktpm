@@ -1,6 +1,7 @@
 package com.app.controllers.Payments.CollectionPeriods;
 
 import com.app.controllers.HomePageController;
+import com.app.controllers.Payments.PaymentsController;
 import com.app.controllers.Residents.ResidentsController;
 import com.app.controllers.Revenues.RevenuesController;
 import com.app.controllers.Rooms.RoomsController;
@@ -45,6 +46,8 @@ public class CollectionPeriodsController {
     @FXML
     private TableColumn<CollectionPeriods, String> namePeriod;
     @FXML
+    private TableColumn<CollectionPeriods, String> codePeriod;
+    @FXML
     private TableColumn<CollectionPeriods, String> totalAmountPeriod;
     @FXML
     private TableColumn<CollectionPeriods, String> totalPaidAmountPeriod;
@@ -71,7 +74,7 @@ public class CollectionPeriodsController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
-        nameLabel.setText("Xin chào, " + username);
+        nameLabel.setText("Xin chào");
 
         tableCollectionPeriods.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -80,6 +83,7 @@ public class CollectionPeriodsController {
         collectionPeriodsList.addListener((ListChangeListener<CollectionPeriods>) c -> adjustColumnWidths());
 
         namePeriod.setCellValueFactory(new PropertyValueFactory<>("name"));
+        codePeriod.setCellValueFactory(new PropertyValueFactory<>("code"));
         totalAmountPeriod.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
         totalPaidAmountPeriod.setCellValueFactory(new PropertyValueFactory<>("totalPaidAmount"));
         startDatePeriod.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -96,7 +100,7 @@ public class CollectionPeriodsController {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() >= 2 && row.getItem() != null) {
                     try {
-                        openPeriodDetailScene(row.getItem());
+                        openPeriodDetailScene(row.getItem().getId(), row.getItem().getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -126,11 +130,12 @@ public class CollectionPeriodsController {
         double tableWidth = tableCollectionPeriods.getWidth() - padding;
 
         namePeriod.setPrefWidth(tableWidth * 0.2);
+        codePeriod.setPrefWidth(tableWidth * 0.1);
         totalAmountPeriod.setPrefWidth(tableWidth * 0.15);
         totalPaidAmountPeriod.setPrefWidth(tableWidth * 0.15);
-        startDatePeriod.setPrefWidth(tableWidth * 0.15);
-        endDatePeriod.setPrefWidth(tableWidth * 0.15);
-        typePeriod.setPrefWidth(tableWidth * 0.1);
+        startDatePeriod.setPrefWidth(tableWidth * 0.11);
+        endDatePeriod.setPrefWidth(tableWidth * 0.11);
+        typePeriod.setPrefWidth(tableWidth * 0.08);
         actionPeriod.setPrefWidth(tableWidth * 0.1);
     }
 
@@ -167,14 +172,6 @@ public class CollectionPeriodsController {
         controller.initialize(role, username);
     }
 
-    public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
-                event, true);
-
-        CollectionPeriodsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
     // Pop-up Button Cài đặt ---------------------------------------------------
     public void changeToSignUp() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
@@ -188,10 +185,21 @@ public class CollectionPeriodsController {
     }
 
     // Body --------------------------------------------------------------------
-    private void openPeriodDetailScene(CollectionPeriods collectionPeriods) throws IOException {
+    public void handleCreatePeriod() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        //        PaymentsController.setResidentDetail(resident); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/Residents/resident-detail.fxml", "/styles/Residents/crud-resident.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Payments/CollectionPeriods/create-period.fxml", "/styles/Payments/CollectionPeriods/crud-period.css", owner);
+
+        //  Reload lại bảng
+        collectionPeriodsList.clear();
+        loadCollectionPeriodsFromDatabase();
+    }
+
+    private void openPeriodDetailScene(int collectionPeriodId, String collectionPeriodName) throws IOException {
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/payments.fxml", "/styles/Payments/payments.css",
+                tableCollectionPeriods);
+
+        PaymentsController controller = loader.getController();
+        controller.initialize(role, username, collectionPeriodId, collectionPeriodName);
     }
 
     public void loadCollectionPeriodsFromDatabase() {
@@ -202,6 +210,7 @@ public class CollectionPeriodsController {
                         SELECT
                            cp.id,
                            cp.name,
+                           cp.code, 
                            cp.start_date,
                            cp.end_date,
                            cp.type,
@@ -216,7 +225,7 @@ public class CollectionPeriodsController {
                        LEFT JOIN
                            collection_items ci ON cp.id = ci.collection_period_id
                        GROUP BY
-                           cp.id, cp.name, cp.start_date, cp.end_date, cp.type
+                           cp.id, cp.name, cp.code, cp.start_date, cp.end_date, cp.type
                        ORDER BY
                            cp.start_date DESC;
                     """;
@@ -235,6 +244,7 @@ public class CollectionPeriodsController {
                 collectionPeriodsList.add(new CollectionPeriods(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
+                        resultSet.getString("code"),
                         resultSet.getString("total_amount"),
                         resultSet.getString("total_paid_amount"),
                         resultSet.getDate("start_date").toLocalDate(),
@@ -308,29 +318,29 @@ public class CollectionPeriodsController {
 
     private void handleEdit(CollectionPeriods collectionPeriods) throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        EditCollectionPeriodsController.setCollectionPeriodsToEdit(collectionPeriods); // Hàm static để tạm giữ dữ liệu
-        SceneNavigator.showPopupScene("/fxml/CollectionPeriods/edit-resident.fxml", "/styles/CollectionPeriods/crud-resident.css", owner);
+        EditPeriodController.setPeriodToEdit(collectionPeriods); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/Payments/CollectionPeriods/edit-period.fxml", "/styles/Payments/CollectionPeriods/crud-period.css", owner);
 
         // Sau khi sửa, làm mới lại bảng dữ liệu:
         collectionPeriodsList.clear();
         loadCollectionPeriodsFromDatabase();
     }
 
-    private void handleDelete(CollectionPeriods CollectionPeriods) throws IOException {
-        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa cư dân này?", CollectionPeriods.getName());
+    private void handleDelete(CollectionPeriods collectionPeriods) throws IOException {
+        boolean result = CustomAlert.showConfirmAlert("Bạn có chắc chắn muốn xóa đợt thu này?", collectionPeriods.getName());
         if (result) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
-                String sql = "DELETE FROM CollectionPeriods WHERE id = ?";
+                String sql = "DELETE FROM collection_periods WHERE id = ?";
                 PreparedStatement stmt = connection.prepareStatement(sql);
-                stmt.setInt(1, CollectionPeriods.getId());
+                stmt.setInt(1, collectionPeriods.getId());
 
                 if (stmt.executeUpdate() > 0) {
-                    tableCollectionPeriods.getItems().remove(CollectionPeriods);
-                    System.out.println("Đã xóa cư dân: " + CollectionPeriods.getName());
-                    CustomAlert.showSuccessAlert("Đã xóa cư dân thành công", true, 0.7);
+                    tableCollectionPeriods.getItems().remove(collectionPeriods);
+                    System.out.println("Đã xóa đợt thu: " + collectionPeriods.getName());
+                    CustomAlert.showSuccessAlert("Đã xóa đợt thu thành công", true, 0.7);
                 } else {
-                    CustomAlert.showErrorAlert("Không tìm thấy cư dân để xóa.");
+                    CustomAlert.showErrorAlert("Không tìm thấy đợt thu để xóa.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

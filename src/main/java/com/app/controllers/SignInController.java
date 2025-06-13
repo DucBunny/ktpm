@@ -64,7 +64,7 @@ public class SignInController {
     public void changeToHomePage(ActionEvent event, String role, String username) throws Exception {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
                 , "/styles/home-page.css", event, true);
-
+        HomePageController.setUserEmail(emailField.getText().trim());
         HomePageController controller = loader.getController();
         controller.initialize(role, username);
     }

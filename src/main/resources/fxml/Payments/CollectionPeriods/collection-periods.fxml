@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
       minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
       prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.app.controllers.Payments.PaymentDetailController">
+      fx:controller="com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController">
     <children>
         <AnchorPane>
             <children>
@@ -101,8 +93,8 @@
                     </cursor>
                 </Button>
                 <Button id="buttonActive" mnemonicParsing="false"
-                        onAction="#changeToPayments" prefHeight="50.0"
-                        prefWidth="130.0" style="-fx-background-radius: 20;"
+                        prefHeight="50.0" prefWidth="130.0"
+                        style="-fx-background-radius: 20;"
                         styleClass="btnHeader" text="Thống kê"
                         textAlignment="CENTER" textFill="#424f70">
                     <font>
@@ -139,7 +131,7 @@
                       style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
                     <children>
                         <Label fx:id="nameLabel" prefHeight="50.0"
-                               prefWidth="170.0" text="Xin chào, username">
+                               prefWidth="170.0" text="Xin chào">
                             <font>
                                 <Font size="18.0"/>
                             </font>
@@ -157,7 +149,7 @@
                                            AnchorPane.rightAnchor="0.0"
                                            AnchorPane.topAnchor="-0.5">
                                     <image>
-                                        <Image url="@../../images/avt-admin.png"/>
+                                        <Image url="@../../../images/avt-admin.png"/>
                                     </image>
                                 </ImageView>
                             </children>
@@ -186,8 +178,8 @@
                 <AnchorPane prefHeight="77.0">
                     <children>
                         <Label alignment="TOP_CENTER" contentDisplay="CENTER"
-                               prefWidth="600.0" styleClass="boldText"
-                               text="DANH SÁCH NGƯỜI ĐÓNG"
+                               styleClass="boldText"
+                               text="THỐNG KÊ THEO ĐỢT THU"
                                textAlignment="CENTER"
                                AnchorPane.leftAnchor="0.0"
                                AnchorPane.rightAnchor="0.0"
@@ -196,33 +188,47 @@
                                 <Font size="32.0"/>
                             </font>
                         </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER"
+                                layoutX="10.0" layoutY="10.0"
+                                mnemonicParsing="false"
+                                onAction="#handleCreatePeriod" prefHeight="55.0"
+                                prefWidth="200.0" styleClass="btn-create-period"
+                                text="Thêm đợt thu" textFill="WHITE"
+                                AnchorPane.rightAnchor="30.0"
+                                AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="24.0"/>
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
+                        </Button>
                     </children>
                 </AnchorPane>
-                <TableView fx:id="tablePaymentDetail" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tableCollectionPeriods" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="nameResident"
+                        <TableColumn fx:id="namePeriod"
                                      prefWidth="246.3999481201172"
-                                     text="Họ và tên"/>
-                        <TableColumn fx:id="amount"
+                                     text="Đợt thu"/>
+                        <TableColumn fx:id="codePeriod"
+                                     prefWidth="246.3999481201172"
+                                     text="Mã đợt thu"/>
+                        <TableColumn fx:id="totalAmountPeriod"
+                                     prefWidth="246.3999481201172"
+                                     text="Tổng số tiền"/>
+                        <TableColumn fx:id="totalPaidAmountPeriod"
+                                     prefWidth="246.3999481201172"
+                                     text="Số tiền đã thu"/>
+                        <TableColumn fx:id="startDatePeriod"
                                      prefWidth="198.4000244140625"
-                                     text="Số tiền"/>
-                        <TableColumn fx:id="nameRevenue"
-                                     maxWidth="1.7976931348623157E308"
-                                     minWidth="-Infinity"
-                                     prefWidth="138.4000244140625"
-                                     text="Khoản thu"/>
-                        <TableColumn fx:id="note" prefWidth="250.39996337890625"
-                                     text="Ghi chú"/>
-                        <TableColumn fx:id="date" prefWidth="140"
-                                     text="Ngày đóng"/>
-                        <TableColumn fx:id="roomNumber"
-                                     prefWidth="195.2000732421875"
-                                     text="Căn hộ"/>
-                        <TableColumn fx:id="actionPaymentDetail"
-                                     maxWidth="1.7976931348623157E308"
-                                     minWidth="-Infinity"
-                                     prefWidth="138.4000244140625"
-                                     text="Sửa/Xóa"/>
+                                     text="Ngày bắt đầu"/>
+                        <TableColumn fx:id="endDatePeriod"
+                                     prefWidth="250.39996337890625"
+                                     text="Ngày kết thúc"/>
+                        <TableColumn fx:id="typePeriod" prefWidth="140"
+                                     text="Chu kì"/>
+                        <TableColumn fx:id="actionPeriod" prefWidth="140"
+                                     text="Thao tác"/>
                     </columns>
                     <VBox.margin>
                         <Insets/>

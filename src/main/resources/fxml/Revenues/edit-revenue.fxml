@@ -33,6 +33,20 @@
       </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="188.0">
          <children>
+            <Label alignment="BOTTOM_LEFT" styleClass="boldText" text="Mã khoản thu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="codeField" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="258.0">
+         <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Loại" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
                       <Font name="System Bold" size="24.0" />
@@ -45,7 +59,7 @@
               </ComboBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="258.0">
+      <AnchorPane fx:id="unitPriceAnchorPane" layoutX="10.0" layoutY="10.0" prefWidth="500.0" visible="false" AnchorPane.bottomAnchor="335.0" AnchorPane.leftAnchor="80.0">
          <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Số tiền" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
@@ -59,7 +73,7 @@
               </TextField>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="328.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.bottomAnchor="220.0" AnchorPane.leftAnchor="80.0">
          <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" styleClass="boldText" text="Mô tả" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
@@ -73,7 +87,7 @@
             </TextArea>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="443.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="80.0">
          <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Trạng thái" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
@@ -87,7 +101,7 @@
               </ComboBox>
          </children>
       </AnchorPane>
-      <HBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="533.0">
+      <HBox alignment="CENTER" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
               <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" style="-fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.2, 0, 4);" text="Cập nhật" textFill="WHITE">
                   <font>

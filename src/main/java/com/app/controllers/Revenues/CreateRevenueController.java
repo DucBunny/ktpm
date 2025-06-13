@@ -22,6 +22,8 @@ public class CreateRevenueController {
     @FXML
     private TextField nameField;
     @FXML
+    private TextField codeField;
+    @FXML
     private TextField unitPriceField;
     @FXML
     private TextArea descriptionArea;
@@ -42,17 +44,18 @@ public class CreateRevenueController {
         unitPriceAnchorPane.setManaged(false);
 
         categoryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            Stage stage = (Stage) saveButton.getScene().getWindow();
-            if (newVal != null && newVal.getValue().equals("voluntary")) {
+            if (newVal != null && saveButton.getScene() != null) {
+                Stage stage = (Stage) saveButton.getScene().getWindow();
+                boolean isVoluntary = "voluntary".equals(newVal.getValue());
                 // height (FXML) + title bar (mặc định cao 35.5px)
-                stage.setHeight(533.5);
-                unitPriceAnchorPane.setVisible(false);
-                unitPriceAnchorPane.setManaged(false); // để layout co lại
-                unitPriceField.clear();
-            } else {
-                stage.setHeight(603.5);
-                unitPriceAnchorPane.setVisible(true);
-                unitPriceAnchorPane.setManaged(true);
+                unitPriceAnchorPane.setVisible(!isVoluntary);
+                unitPriceAnchorPane.setManaged(!isVoluntary);
+                if (isVoluntary) {
+                    unitPriceField.clear();
+                    stage.setHeight(603.5);
+                } else {
+                    stage.setHeight(673.5);
+                }
             }
         });
 
@@ -68,9 +71,10 @@ public class CreateRevenueController {
 
     private boolean areRequiredFieldsEmpty() {
         String name = nameField.getText();
+        String code = codeField.getText();
         ComboBoxOption category = categoryBox.getValue();
 
-        if (name == null || name.trim().isEmpty() || category == null) {
+        if (name == null || name.trim().isEmpty() || code == null || code.trim().isEmpty() || category == null) {
             return true;
         }
 
@@ -82,6 +86,18 @@ public class CreateRevenueController {
         return false;
     }
 
+    private boolean isValidUnitPrice(String unitPrice) {
+        if (unitPrice == null || unitPrice.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            double price = Double.parseDouble(unitPrice);
+            return price > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     private void setupSaveButton() {
         saveButton.setOnAction(e -> {
             if (areRequiredFieldsEmpty()) {
@@ -90,35 +106,43 @@ public class CreateRevenueController {
             }
 
             String name = nameField.getText().trim();
+            String code = codeField.getText().trim();
             String description = descriptionArea.getText().trim();
             String category = categoryBox.getValue().getValue();
             String unitPrice = category.equals("mandatory") ? unitPriceField.getText().trim() : "1";
+
+            // Kiểm tra định dạng unitPrice
+            if (category.equals("mandatory") && !isValidUnitPrice(unitPrice)) {
+                showErrorAlert("Đơn giá không hợp lệ. Vui lòng nhập số lớn hơn 0.");
+                return;
+            }
 
             try (Connection connection = DatabaseConnection.getConnection()) {
                 connection.setAutoCommit(false);
 
                 try {
-                    // Kiểm tra tên khoản thu trùng lặp
-                    String checkSql = "SELECT id FROM revenue_items WHERE name = ?";
+                    // Kiểm tra mã khoản thu trùng lặp
+                    String checkSql = "SELECT id FROM revenue_items WHERE code = ?";
                     try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
-                        checkStmt.setString(1, name);
+                        checkStmt.setString(1, code);
                         ResultSet rs = checkStmt.executeQuery();
                         if (rs.next()) {
-                            showErrorAlert("Tên khoản thu đã tồn tại trong hệ thống.");
+                            showErrorAlert("Mã khoản thu đã tồn tại trong hệ thống.");
                             connection.rollback();
                             return;
                         }
                     }
 
-                    // Thêm cư dân
-                    String sql = "INSERT INTO revenue_items (name, unit_price, description, category, status) " +
-                            "VALUES (?, ?, ?, ?, ?)";
+                    // Thêm khoản thu
+                    String sql = "INSERT INTO revenue_items (name, unit_price, description, category, status, code) " +
+                            "VALUES (?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setString(1, name);
                         stmt.setDouble(2, Double.parseDouble(unitPrice));
                         stmt.setString(3, description);
                         stmt.setString(4, category);
                         stmt.setString(5, "active");
+                        stmt.setString(6, code);
 
                         stmt.executeUpdate();
                     }
@@ -128,8 +152,8 @@ public class CreateRevenueController {
                     handleSave();
                 } catch (SQLException ex) {
                     connection.rollback();
-                    if (ex.getSQLState().equals("23000") && ex.getMessage().contains("unique_name")) {
-                        showErrorAlert("Tên khoản thu đã tồn tại trong hệ thống.");
+                    if (ex.getSQLState().equals("23000") && ex.getMessage().contains("unique_code")) {
+                        showErrorAlert("Mã khoản thu đã tồn tại trong hệ thống.");
                     } else {
                         ex.printStackTrace();
                         showErrorAlert("Lỗi SQL: " + ex.getMessage());

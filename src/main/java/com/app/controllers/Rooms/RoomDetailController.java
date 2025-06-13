@@ -89,7 +89,7 @@ public class RoomDetailController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
-        nameLabel.setText("Xin chào, " + username);
+        nameLabel.setText("Xin chào");
 
         tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -187,7 +187,7 @@ public class RoomDetailController {
     }
 
     public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/CollectionPeriods/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
                 event, true);
 
         CollectionPeriodsController controller = loader.getController();

@@ -27,6 +27,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,6 +36,7 @@ import java.util.Objects;
 public class HomePageController {
     private String role;
     private String username;
+    private String email;
 
     @FXML
     private Label roleLabel;
@@ -60,10 +62,16 @@ public class HomePageController {
     @FXML
     private Label labelTotalRevenues;
 
+    private static String userEmail;
+
+    public static void setUserEmail(String email) {
+        userEmail = email;
+    }
 
     public void initialize(String role, String username) throws IOException {
         this.role = role;
         this.username = username;
+        this.email = userEmail;
 
         if (Objects.equals(role, "admin")) {
             roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
@@ -75,10 +83,10 @@ public class HomePageController {
             roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
         }
 
-        nameLabel.setText("Xin chào, " + username);
+        nameLabel.setText("Xin chào");
+        setValueToItem();
         initMonthlyRevenueChart();
         initQuarterlyRevenueChart();
-        setValueToItem();
     }
 
     // Header Button -----------------------------------------------------------
@@ -107,7 +115,7 @@ public class HomePageController {
     }
 
     public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
+        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/CollectionPeriods/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
                 event, true);
 
         CollectionPeriodsController controller = loader.getController();
@@ -121,6 +129,13 @@ public class HomePageController {
                 "/styles/sign-in-create-account.css", owner);
     }
 
+    public void changeToInfo() throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        UserInfoController.setUserInfo(email); // Hàm static để tạm giữ dữ liệu
+        SceneNavigator.showPopupScene("/fxml/user-info.fxml",
+                "/styles/sign-in-create-account.css", owner);
+    }
+
     public void changeToSignIn(ActionEvent event) throws Exception {
         SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
                 event, false);
@@ -129,7 +144,7 @@ public class HomePageController {
     // Footer Button -----------------------------------------------------------
     public void changeToCreatePayments() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/Payments/create-payment.fxml", "/styles/Payments/create-payment.css", owner);
+        SceneNavigator.showPopupScene("/fxml/Payments/create-payment.fxml", "/styles/Payments/crud-payment.css", owner);
     }
 
     public void changeToCreateRevenues() throws IOException {

@@ -121,7 +121,6 @@ public class SceneNavigator {
             popupStage.initOwner(owner);
         }
 
-        popupStage.setUserData(loader);
         popupStage.show(); // Dùng show => không tự reload bảng => Dùng interface Callback
 
         return loader;

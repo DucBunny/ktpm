@@ -129,7 +129,7 @@
                       style="-fx-background-color: #C2C9DB; -fx-border-radius: 15; -fx-background-radius: 25;">
                     <children>
                         <Label fx:id="nameLabel" prefHeight="50.0"
-                               prefWidth="170.0" text="Xin chào, username">
+                               prefWidth="170.0" text="Xin chào">
                             <font>
                                 <Font size="18.0"/>
                             </font>

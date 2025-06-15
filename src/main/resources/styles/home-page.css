@@ -23,82 +23,6 @@
     -fx-font-weight: 700;
 }
 
-/******************************************************** Btn Header ********************************************************/
-#buttonActive {
-    -fx-background-color: #E9B880;
-    -fx-text-fill: #424f70;
-}
-
-.btnHeader {
-    -fx-font-family: "Raleway Bold";
-    -fx-font-weight: 700;
-    -fx-font-size: 20px;
-    -fx-background-color: #586995;
-    -fx-text-fill: #ffffff;
-}
-
-.btnHeader:hover {
-    -fx-translate-y: -0.5px;
-    -fx-text-fill: #424f70;
-    -fx-background-color: #E9B880;
-}
-
-.btnHeader:pressed {
-    -fx-translate-y: 1px;
-}
-
-/* Do MenuButton không đổi màu chữ như Button bình thường*/
-#btnHeaderMenu .label {
-    -fx-text-fill: #ffffff;
-}
-
-#btnHeaderMenu .label:hover {
-    -fx-text-fill: #424f70;
-}
-
-/* Ẩn phần chứa mũi tên */
-#btnHeaderMenu > .arrow-button {
-    -fx-padding: 0;
-    -fx-background-color: transparent;
-    -fx-shape: "";
-    -fx-pref-width: 0;
-    -fx-min-width: 0;
-    -fx-max-width: 0;
-}
-
-/* Ẩn mũi tên */
-#btnHeaderMenu > .arrow-button > .arrow {
-    -fx-shape: "";
-    -fx-background-color: transparent;
-    -fx-padding: 0;
-    -fx-pref-width: 0;
-    -fx-min-width: 0;
-    -fx-max-width: 0;
-}
-
-/* Menu Context (pop up) đổ xuống */
-.context-menu {
-    -fx-background-color: #586995;
-    -fx-background-radius: 0 0 15 15;
-    -fx-padding: 10 6 6 6;
-}
-
-.menu-item {
-    -fx-font-family: "Raleway Bold";
-    -fx-font-weight: 700;
-    -fx-font-size: 14px;
-    -fx-background-color: transparent;
-    -fx-padding: 16 7 0 16;
-    -fx-text-fill: #ffffff;
-    -fx-cursor: hand;
-}
-
-.menu-item:hover {
-    -fx-background-radius: 10;
-    -fx-background-color: #E9B880;
-    -fx-text-fill: #424f70;
-}
-
 /******************************************************** Body ********************************************************/
 .btnLabel {
     -fx-font-family: "Raleway Medium";
@@ -113,23 +37,6 @@
 }
 
 .btnLabel:pressed {
-    -fx-translate-y: 1px;
-}
-
-/******************************************************** Btn Footer ********************************************************/
-.btnFooter {
-    -fx-font-family: "Raleway SemiBold";
-    -fx-font-weight: 600;
-    -fx-font-size: 20px;
-    -fx-background-color: #516089;
-}
-
-.btnFooter:hover {
-    -fx-translate-y: -0.5px;
-    -fx-background-color: #424f70;
-}
-
-.btnFooter:pressed {
     -fx-translate-y: 1px;
 }
 
@@ -161,3 +68,21 @@
     -fx-text-fill: #2c3e50;
     -fx-font-size: 16px;
 }
+
+/******************************************************** Btn Footer ********************************************************/
+.btnFooter {
+    -fx-font-family: "Raleway SemiBold";
+    -fx-font-weight: 600;
+    -fx-font-size: 20px;
+    -fx-background-color: #516089;
+}
+
+.btnFooter:hover {
+    -fx-translate-y: -0.5px;
+    -fx-background-color: #424f70;
+}
+
+.btnFooter:pressed {
+    -fx-translate-y: 1px;
+}
+

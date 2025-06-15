@@ -23,8 +23,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class VehiclesController {
-    private String role;
-    private String username;
     private String roomNumber;
     private double elasticity;      // co giãn (nếu ẩn cột)
 
@@ -53,14 +51,13 @@ public class VehiclesController {
     private final ObservableList<Vehicles> vehiclesList = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize(String username, String role, String roomNumber) {
-        this.role = role;
-        this.username = username;
+    public void initialize(String role, String roomNumber) {
         this.roomNumber = roomNumber;
 
         if (Objects.equals(role, "admin")) {
             btnCreate.setVisible(true);
             elasticity = 1;
+            addActionButtonsToTable();
         } else if (Objects.equals(role, "accountant")) {
             elasticity = (double) 10 / 9;       // ẩn cột action 10%
         }
@@ -98,7 +95,6 @@ public class VehiclesController {
         });
 
         loadVehiclesFromDatabase();
-        addActionButtonsToTable();
     }
 
     private void adjustColumnWidths() {
@@ -205,7 +201,7 @@ public class VehiclesController {
                             }
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 40; -fx-font-size: 12");
+                        btnDelete.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 40; -fx-font-size: 12");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Vehicles data = getTableView().getItems().get(getIndex());
                             try {

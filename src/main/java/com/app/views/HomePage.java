@@ -12,7 +12,7 @@ import java.io.IOException;
 public class HomePage extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/home-page.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Homepage/home-page.fxml"));
 
         // Tạo Scene và gán stylesheet
         Scene scene = new Scene(root);

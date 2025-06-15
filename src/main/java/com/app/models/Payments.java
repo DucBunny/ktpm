@@ -6,15 +6,20 @@ public class Payments {
     private int id;
     private String roomNumber;
     private String collectionPeriod;
-    private String amount;
+    private String totalAmount;
+    private String paidAmount;
+    private String debtAmount;
+    private String excessAmount;
     private LocalDate paymentDate;
     private String note;
     private String status;
 
-    public Payments(int id, String roomNumber, String amount, LocalDate paymentDate, String note, String status) {
+    // Payments
+    public Payments(int id, String roomNumber, String totalAmount, String paidAmount, LocalDate paymentDate, String note, String status) {
         this.id = id;
         this.roomNumber = roomNumber;
-        this.amount = amount;
+        this.totalAmount = totalAmount;
+        this.paidAmount = paidAmount;
         this.paymentDate = paymentDate;
         this.note = note;
         this.status = status;
@@ -33,8 +38,20 @@ public class Payments {
         return collectionPeriod;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public String getPaidAmount() {
+        return paidAmount;
+    }
+
+    public String getDebtAmount() {
+        return debtAmount;
+    }
+
+    public String getExcessAmount() {
+        return excessAmount;
     }
 
     public LocalDate getPaymentDate() {
@@ -62,8 +79,20 @@ public class Payments {
         this.collectionPeriod = collectionPeriod;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public void setPaidAmount(String paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public void setDebtAmount(String debtAmount) {
+        this.debtAmount = debtAmount;
+    }
+
+    public void setExcessAmount(String excessAmount) {
+        this.excessAmount = excessAmount;
     }
 
     public void setPaymentDate(LocalDate paymentDate) {

@@ -28,6 +28,8 @@ public class EditRevenueController {
     @FXML
     private TextField unitPriceField;
     @FXML
+    private TextField quantityUnitField;
+    @FXML
     private TextArea descriptionArea;
     @FXML
     private ComboBox<ComboBoxOption> statusBox;
@@ -59,9 +61,9 @@ public class EditRevenueController {
                 unitPriceAnchorPane.setManaged(!isVoluntary);
                 if (isVoluntary) {
                     unitPriceField.clear();
-                    stage.setHeight(673.5);
-                } else {
                     stage.setHeight(743.5);
+                } else {
+                    stage.setHeight(813.5);
                 }
             }
         });
@@ -70,6 +72,7 @@ public class EditRevenueController {
         if (revenueToEdit != null) {
             nameField.setText(revenueToEdit.getName());
             codeField.setText(revenueToEdit.getCode());
+            quantityUnitField.setText(revenueToEdit.getQuantityUnit() != null ? revenueToEdit.getQuantityUnit() : "");
             descriptionArea.setText(revenueToEdit.getDescription() != null ? revenueToEdit.getDescription() : "");
             setComboBoxValue(categoryBox, revenueToEdit.getCategory(), true);
             setComboBoxValue(statusBox, revenueToEdit.getStatus(), true);
@@ -87,9 +90,9 @@ public class EditRevenueController {
                 unitPriceAnchorPane.setManaged(!isVoluntary);
                 if (isVoluntary) {
                     unitPriceField.clear();
-                    stage.setHeight(673.5);
-                } else {
                     stage.setHeight(743.5);
+                } else {
+                    stage.setHeight(813.5);
                 }
             });
         }
@@ -98,7 +101,7 @@ public class EditRevenueController {
         Platform.runLater(() -> {
             if (saveButton.getScene() != null && revenueToEdit == null) {
                 Stage stage = (Stage) saveButton.getScene().getWindow();
-                stage.setHeight(673.5);
+                stage.setHeight(743.5);
             }
         });
 
@@ -170,6 +173,7 @@ public class EditRevenueController {
 
             String name = nameField.getText().trim();
             String code = codeField.getText().trim();
+            String quantityUnit = quantityUnitField.getText().trim();
             String description = descriptionArea.getText().trim();
             String category = categoryBox.getValue().getValue();
             String status = statusBox.getValue().getValue();
@@ -199,7 +203,7 @@ public class EditRevenueController {
                     }
 
                     // Cập nhật khoản thu
-                    String sql = "UPDATE revenue_items SET name = ?, unit_price = ?, description = ?, status = ?, category = ?, code = ? WHERE id = ?";
+                    String sql = "UPDATE revenue_items SET name = ?, unit_price = ?, description = ?, status = ?, category = ?, code = ?, quantity_unit = ? WHERE id = ?";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setString(1, name);
                         stmt.setDouble(2, Double.parseDouble(unitPrice));
@@ -207,7 +211,8 @@ public class EditRevenueController {
                         stmt.setString(4, status);
                         stmt.setString(5, category);
                         stmt.setString(6, code);
-                        stmt.setInt(7, revenueToEdit.getId());
+                        stmt.setString(7, quantityUnit);
+                        stmt.setInt(8, revenueToEdit.getId());
 
                         if (stmt.executeUpdate() == 0) {
                             showErrorAlert("Không tìm thấy khoản thu để cập nhật.");

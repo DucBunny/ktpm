@@ -6,6 +6,7 @@ public class Rooms {
     private float area;
     private String status;
 
+    // Rooms
     public Rooms(String roomNumber, int floor, float area, String status) {
         this.roomNumber = roomNumber;
         this.floor = floor;

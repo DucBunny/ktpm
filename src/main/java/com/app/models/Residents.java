@@ -18,25 +18,6 @@ public class Residents {
     private String roomNumber;
     private String status;
 
-    public Residents(int id, String fullName, LocalDate dateOfBirth, String placeOfBirth, String ethnicity,
-                     String occupation, String hometown, String idCardNumber, String residenceStatus,
-                     String phone, String gender, String relationshipToOwner, String roomNumber, String status) {
-        this.id = id;
-        this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
-        this.placeOfBirth = placeOfBirth;
-        this.ethnicity = ethnicity;
-        this.occupation = occupation;
-        this.hometown = hometown;
-        this.idCardNumber = idCardNumber;
-        this.residenceStatus = residenceStatus;
-        this.phone = phone;
-        this.gender = gender;
-        this.relationshipToOwner = relationshipToOwner;
-        this.roomNumber = roomNumber;
-        this.status = status;
-    }
-
     // Residents
     public Residents(int id, String fullName, LocalDate dateOfBirth, String gender, String phone,
                      String idCardNumber, String roomNumber, String relationshipToOwner, String residenceStatus, String status) {
@@ -63,12 +44,6 @@ public class Residents {
         this.idCardNumber = idCardNumber;
         this.relationshipToOwner = relationshipToOwner;
         this.residenceStatus = residenceStatus;
-    }
-
-    public Residents(int id, String fullName, String roomNumber) {
-        this.id = id;
-        this.fullName = fullName;
-        this.roomNumber = roomNumber;
     }
 
     // Getters

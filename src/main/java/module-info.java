@@ -24,9 +24,15 @@ module com.app {
     exports com.app.controllers.Revenues;
     opens com.app.controllers.Revenues to javafx.fxml;
 
-    exports com.app.controllers.Payments;
-    opens com.app.controllers.Payments to javafx.fxml;
-
     exports com.app.controllers.Payments.CollectionPeriods;
     opens com.app.controllers.Payments.CollectionPeriods to javafx.fxml;
+
+    exports com.app.controllers.Payments.PaymentDetail;
+    opens com.app.controllers.Payments.PaymentDetail to javafx.fxml;
+
+    exports com.app.controllers.HeaderUtils;
+    opens com.app.controllers.HeaderUtils to javafx.fxml;
+
+    exports com.app.controllers.Homepage;
+    opens com.app.controllers.Homepage to javafx.fxml;
 }

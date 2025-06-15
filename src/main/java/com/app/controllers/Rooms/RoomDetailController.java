@@ -1,18 +1,14 @@
 package com.app.controllers.Rooms;
 
-import com.app.controllers.HomePageController;
-import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
+import com.app.controllers.HeaderUtils.HeaderController;
 import com.app.controllers.Residents.EditResidentController;
 import com.app.controllers.Residents.ResidentDetailController;
-import com.app.controllers.Residents.ResidentsController;
-import com.app.controllers.Revenues.RevenuesController;
 import com.app.models.Residents;
 import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -27,21 +23,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class RoomDetailController {
-    private String role;
-    private String username;
     private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
     @FXML
-    private Label roleLabel;
+    private VBox headerPane; // Tiêm nút gốc của header.fxml
     @FXML
-    private Label nameLabel;
-    @FXML
-    private MenuItem MenuItem_SignUp;
+    private HeaderController headerPaneController; // Tiêm controller của header.fxml
 
     // Body
     private String roomNumber;
@@ -81,23 +74,36 @@ public class RoomDetailController {
 
     private final ObservableList<Residents> residentsList = FXCollections.observableArrayList();
 
-    public void initialize(String role, String username, String roomNumber) {
-        this.role = role;
-        this.username = username;
+    public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
+    }
 
-        if (Objects.equals(role, "admin")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
-            btnCreateResident.setVisible(true);
-            MenuItem_SignUp.setVisible(true);
-            actionResidents.setVisible(true);
-            elasticity = 1;
-        } else if (Objects.equals(role, "accountant")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
-            elasticity = (double) 10 / 9;       // ẩn cột action 10%
+    public void initializeHeader() {
+        if (headerPaneController != null) {
+            headerPaneController.setUserInfo(UserSession.getEmail(), UserSession.getRole(), UserSession.getUsername());
+            try {
+                headerPaneController.initialize();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("headerPaneController is null in HomePageController!");
+        }
+    }
+
+    public void initialize(String role) {
+        if (StageManager.getPrimaryStage().getScene() != null) {
+            StageManager.getPrimaryStage().getScene().getRoot().getProperties().put("controller", this);
         }
 
-        nameLabel.setText("Xin chào");
+        if (Objects.equals(role, "admin")) {
+            btnCreateResident.setVisible(true);
+            actionResidents.setVisible(true);
+            elasticity = 1;
+            addActionButtonsToTable();
+        } else if (Objects.equals(role, "accountant")) {
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
+        }
 
         tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -132,7 +138,6 @@ public class RoomDetailController {
         });
 
         loadRoomData();
-        addActionButtonsToTable();
     }
 
     private void adjustColumnWidths() {
@@ -161,59 +166,6 @@ public class RoomDetailController {
         actionResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
     }
 
-    // Header Butron -----------------------------------------------------------
-    public void changeToHomePage(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
-                , "/styles/home-page.css", event, true);
-
-        HomePageController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToRooms(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
-                event, true);
-
-        RoomsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToResidents(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
-                event, true);
-
-        ResidentsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToRevenues(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Revenues/revenues.fxml", "/styles/Revenues/revenues.css",
-                event, true);
-
-        RevenuesController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/CollectionPeriods/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
-                event, true);
-
-        CollectionPeriodsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    // Pop-up Button Cài đặt ---------------------------------------------------
-    public void changeToSignUp() throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                "/styles/sign-in-create-account.css", owner);
-    }
-
-    public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
-                event, false);
-    }
-
     // Body --------------------------------------------------------------------
     public void handleCreateResident() throws IOException {
         Stage owner = StageManager.getPrimaryStage();
@@ -229,7 +181,7 @@ public class RoomDetailController {
         FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Rooms/vehicles.fxml", "/styles/Rooms/vehicles.css", owner);
 
         VehiclesController controller = loader.getController();
-        controller.initialize(username, role, roomNumber);
+        controller.initialize(UserSession.getRole(), roomNumber);
     }
 
     public void openResidentDetailScene(Residents resident) throws IOException {
@@ -338,7 +290,7 @@ public class RoomDetailController {
                             }
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 40; -fx-font-size: 12");
+                        btnDelete.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 40; -fx-font-size: 12");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Residents data = getTableView().getItems().get(getIndex());
                             try {

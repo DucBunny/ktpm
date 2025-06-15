@@ -6,22 +6,29 @@ public class Revenues {
     private String code;
     private String status;
     private String unitPrice;
+    private String quantityUnit;
     private String description;
     private String category;
 
-    public Revenues(int id, String name, String code, String unitPrice, String description, String category, String status) {
+    // Revenues
+    public Revenues(int id, String name, String code, String unitPrice, String quantityUnit, String description, String category, String status) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.status = status;
         this.unitPrice = unitPrice;
+        this.quantityUnit = quantityUnit;
         this.description = description;
         this.category = category;
     }
 
-    public Revenues(int id, String name) {
+    // Revenues Periods
+    public Revenues(int id, String name, String unitPrice, String quantityUnit, String category) {
         this.id = id;
         this.name = name;
+        this.unitPrice = unitPrice;
+        this.quantityUnit = quantityUnit;
+        this.category = category;
     }
 
     // Getters
@@ -39,6 +46,10 @@ public class Revenues {
 
     public String getUnitPrice() {
         return unitPrice;
+    }
+
+    public String getQuantityUnit() {
+        return quantityUnit;
     }
 
     public String getDescription() {
@@ -64,6 +75,10 @@ public class Revenues {
 
     public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public void setQuantityUnit(String quantityUnit) {
+        this.quantityUnit = quantityUnit;
     }
 
     public void setDescription(String description) {

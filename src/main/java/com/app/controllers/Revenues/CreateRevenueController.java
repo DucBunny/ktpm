@@ -26,6 +26,8 @@ public class CreateRevenueController {
     @FXML
     private TextField unitPriceField;
     @FXML
+    private TextField quantityUnitField;
+    @FXML
     private TextArea descriptionArea;
     @FXML
     private ComboBox<ComboBoxOption> categoryBox;
@@ -52,9 +54,9 @@ public class CreateRevenueController {
                 unitPriceAnchorPane.setManaged(!isVoluntary);
                 if (isVoluntary) {
                     unitPriceField.clear();
-                    stage.setHeight(603.5);
-                } else {
                     stage.setHeight(673.5);
+                } else {
+                    stage.setHeight(743.5);
                 }
             }
         });
@@ -107,6 +109,7 @@ public class CreateRevenueController {
 
             String name = nameField.getText().trim();
             String code = codeField.getText().trim();
+            String quantityUnit = quantityUnitField.getText().trim();
             String description = descriptionArea.getText().trim();
             String category = categoryBox.getValue().getValue();
             String unitPrice = category.equals("mandatory") ? unitPriceField.getText().trim() : "1";
@@ -134,7 +137,7 @@ public class CreateRevenueController {
                     }
 
                     // Thêm khoản thu
-                    String sql = "INSERT INTO revenue_items (name, unit_price, description, category, status, code) " +
+                    String sql = "INSERT INTO revenue_items (name, unit_price, description, category, status, code, quantity_unit) " +
                             "VALUES (?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setString(1, name);
@@ -143,6 +146,7 @@ public class CreateRevenueController {
                         stmt.setString(4, category);
                         stmt.setString(5, "active");
                         stmt.setString(6, code);
+                        stmt.setString(7, quantityUnit);
 
                         stmt.executeUpdate();
                     }

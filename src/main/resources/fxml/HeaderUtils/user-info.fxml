@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="348.0" prefWidth="660.0"
+            style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.app.controllers.HeaderUtils.UserInfoController">
+    <children>
+        <AnchorPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="32.5">
+            <children>
+                <Label alignment="CENTER" prefWidth="150.0"
+                       styleClass="boldText" text="Thông tin người dùng"
+                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="36.0"/>
+                    </font>
+                </Label>
+                <Button alignment="CENTER" mnemonicParsing="false"
+                        onAction="#changeToEditInfo"
+                        style="-fx-border-radius: 10; -fx-background-radius: 10;"
+                        AnchorPane.bottomAnchor="2.5"
+                        AnchorPane.rightAnchor="20.0"
+                        AnchorPane.topAnchor="2.5">
+                    <graphic>
+                        <ImageView fitWidth="26.0" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../../images/user-pen-solid.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                    <padding>
+                        <Insets left="16.0" right="12.0"/>
+                    </padding>
+                </Button>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefWidth="500.0" AnchorPane.leftAnchor="80.0"
+                    AnchorPane.topAnchor="118.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" styleClass="boldText"
+                       text="Email" AnchorPane.bottomAnchor="0.0"
+                       AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="emailField" alignment="BOTTOM_LEFT"
+                           editable="false" prefHeight="45.0" prefWidth="300.0"
+                           style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;"
+                           AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0"
+                           AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                </TextField>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0"
+                    AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="188.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefHeight="35.0"
+                       prefWidth="250.0" styleClass="boldText"
+                       text="Tên người dùng" AnchorPane.bottomAnchor="0.0"
+                       AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="userNameField" alignment="BOTTOM_LEFT"
+                           editable="false" layoutX="10.0" layoutY="10.0"
+                           prefHeight="45.0" prefWidth="300.0"
+                           style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;"
+                           AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0"
+                           AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                </TextField>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="500.0"
+                    AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="258.0">
+            <children>
+                <Label alignment="BOTTOM_LEFT" prefHeight="35.0"
+                       prefWidth="250.0" styleClass="boldText" text="Quyền"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="roleField" alignment="BOTTOM_LEFT"
+                           editable="false" layoutX="10.0" layoutY="10.0"
+                           prefHeight="45.0" prefWidth="300.0"
+                           style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;"
+                           AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0"
+                           AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                </TextField>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

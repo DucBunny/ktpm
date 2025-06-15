@@ -13,19 +13,6 @@ public class Vehicles {
     private String isActive;
     private String note;
 
-    public Vehicles(int id, String roomNumber, String plateNumber, String type, String brand,
-                    String color, LocalDate registrationDate, String isActive, String note) {
-        this.id = id;
-        this.roomNumber = roomNumber;
-        this.plateNumber = plateNumber;
-        this.type = type;
-        this.brand = brand;
-        this.color = color;
-        this.registrationDate = registrationDate;
-        this.isActive = isActive;
-        this.note = note;
-    }
-
     // Vehicles
     public Vehicles(int id, String type, String plateNumber, String brand, String color,
                     LocalDate registrationDate, String isActive, String note) {

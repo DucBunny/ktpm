@@ -1,25 +1,18 @@
 package com.app.controllers.Revenues;
 
-import com.app.controllers.HomePageController;
-import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
-import com.app.controllers.Residents.ResidentsController;
-import com.app.controllers.Rooms.RoomsController;
+import com.app.controllers.HeaderUtils.HeaderController;
 import com.app.models.Revenues;
-import com.app.utils.CustomAlert;
-import com.app.utils.DatabaseConnection;
-import com.app.utils.SceneNavigator;
-import com.app.utils.StageManager;
+import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -27,22 +20,17 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class RevenuesController {
-    private String role;
-    private String username;
-
-
     private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
     @FXML
-    private Label roleLabel;
+    private VBox headerPane; // Tiêm nút gốc của header.fxml
     @FXML
-    private Label nameLabel;
-    @FXML
-    private MenuItem MenuItem_SignUp;
+    private HeaderController headerPaneController; // Tiêm controller của header.fxml
 
     //    Body
     @FXML
@@ -57,6 +45,8 @@ public class RevenuesController {
     @FXML
     private TableColumn<Revenues, String> unitPriceRevenues;
     @FXML
+    private TableColumn<Revenues, String> quantityUnitRevenues;
+    @FXML
     private TableColumn<Revenues, String> descriptionRevenues;
     @FXML
     private TableColumn<Revenues, String> categoryRevenues;
@@ -67,24 +57,33 @@ public class RevenuesController {
 
     private final ObservableList<Revenues> revenuesList = FXCollections.observableArrayList();
 
-    @FXML
-    public void initialize(String role, String username) throws IOException {
-        this.role = role;
-        this.username = username;
+    public void initializeHeader() {
+        if (headerPaneController != null) {
+            headerPaneController.setUserInfo(UserSession.getEmail(), UserSession.getRole(), UserSession.getUsername());
+            try {
+                headerPaneController.initialize();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("headerPaneController is null in HomePageController!");
+        }
+    }
 
-        if (Objects.equals(role, "admin")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
-            MenuItem_SignUp.setVisible(true);
-            elasticity = (double) 10 / 9;       // ẩn cột action 10%
-        } else if (Objects.equals(role, "accountant")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
-            btnCreate.setVisible(true);
-            actionRevenues.setVisible(true);
-            addActionButtonsToTable();
-            elasticity = 1;
+    @FXML
+    public void initialize(String role) throws IOException {
+        if (StageManager.getPrimaryStage().getScene() != null) {
+            StageManager.getPrimaryStage().getScene().getRoot().getProperties().put("controller", this);
         }
 
-        nameLabel.setText("Xin chào");
+        if (Objects.equals(role, "admin")) {
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
+        } else if (Objects.equals(role, "accountant")) {
+            btnCreate.setVisible(true);
+            actionRevenues.setVisible(true);
+            elasticity = 1;
+            addActionButtonsToTable();
+        }
 
         tableRevenues.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -95,6 +94,7 @@ public class RevenuesController {
         nameRevenues.setCellValueFactory(new PropertyValueFactory<>("name"));
         codeRevenues.setCellValueFactory(new PropertyValueFactory<>("code"));
         unitPriceRevenues.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        quantityUnitRevenues.setCellValueFactory(new PropertyValueFactory<>("quantityUnit"));
         descriptionRevenues.setCellValueFactory(new PropertyValueFactory<>("description"));
         categoryRevenues.setCellValueFactory(new PropertyValueFactory<>("category"));
         statusRevenues.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -136,55 +136,11 @@ public class RevenuesController {
         nameRevenues.setPrefWidth(tableWidth * 0.2 * elasticity);
         codeRevenues.setPrefWidth(tableWidth * 0.15 * elasticity);
         unitPriceRevenues.setPrefWidth(tableWidth * 0.09 * elasticity);
-        descriptionRevenues.setPrefWidth(tableWidth * 0.3 * elasticity);
+        quantityUnitRevenues.setPrefWidth(tableWidth * 0.08 * elasticity);
+        descriptionRevenues.setPrefWidth(tableWidth * 0.22 * elasticity);
         categoryRevenues.setPrefWidth(tableWidth * 0.08 * elasticity);
         statusRevenues.setPrefWidth(tableWidth * 0.08 * elasticity);
         actionRevenues.setPrefWidth(tableWidth * 0.1 * elasticity);
-    }
-
-    // Header Button -----------------------------------------------------------
-    public void changeToHomePage(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
-                , "/styles/home-page.css", event, true);
-
-        HomePageController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToRooms(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
-                event, true);
-
-        RoomsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
-                event, true);
-
-        ResidentsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/CollectionPeriods/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
-                event, true);
-
-        CollectionPeriodsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    // Pop-up Button Cài đặt ---------------------------------------------------
-    public void changeToSignUp() throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                "/styles/sign-in-create-account.css", owner);
-    }
-
-    public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
-                event, false);
     }
 
     // Body --------------------------------------------------------------------
@@ -211,11 +167,24 @@ public class RevenuesController {
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
+                String quantityUnitRaw = resultSet.getString("quantity_unit");
+                String quantityUnitRawDisplay = switch (quantityUnitRaw == null ? "" : quantityUnitRaw) {
+                    case "car" -> "Ô tô";
+                    case "motorbike" -> "Xe máy";
+                    case "package" -> "Gói";
+                    case "totalResident" -> "Nhân khẩu";
+                    case "kWh" -> "kWh";
+                    case "m2" -> "m2";
+                    case "m3" -> "m3";
+                    default -> "";
+                };
+
                 revenuesList.add(new Revenues(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getString("code"),
                         resultSet.getString("unit_price").equals("1.00") ? "" : resultSet.getString("unit_price"),
+                        quantityUnitRawDisplay,
                         resultSet.getString("description"),
                         resultSet.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện",
                         resultSet.getString("status").equals("active") ? "Mở" : "Đóng"
@@ -252,7 +221,7 @@ public class RevenuesController {
                             }
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnDelete.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Revenues data = getTableView().getItems().get(getIndex());
                             try {
@@ -315,10 +284,5 @@ public class RevenuesController {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void changeToPassword(ActionEvent event) throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

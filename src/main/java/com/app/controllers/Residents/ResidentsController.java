@@ -1,22 +1,18 @@
 package com.app.controllers.Residents;
 
-import com.app.controllers.HomePageController;
-import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
-import com.app.controllers.Revenues.RevenuesController;
-import com.app.controllers.Rooms.RoomsController;
+import com.app.controllers.HeaderUtils.HeaderController;
 import com.app.models.Residents;
 import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -24,21 +20,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class ResidentsController {
-    private String role;
-    private String username;
     private double elasticity;      // co giãn (nếu ẩn cột)
 
     //    Header
     @FXML
-    private Label roleLabel;
+    private VBox headerPane; // Tiêm nút gốc của header.fxml
     @FXML
-    private Label nameLabel;
-    @FXML
-    private MenuItem MenuItem_SignUp;
+    private HeaderController headerPaneController; // Tiêm controller của header.fxml
 
     @FXML
     private Button btnCreate;
@@ -69,22 +62,33 @@ public class ResidentsController {
 
     private final ObservableList<Residents> residentsList = FXCollections.observableArrayList();
 
-    @FXML
-    public void initialize(String role, String username) {
-        this.role = role;
-        this.username = username;
+    public void initializeHeader() {
+        if (headerPaneController != null) {
+            headerPaneController.setUserInfo(UserSession.getEmail(), UserSession.getRole(), UserSession.getUsername());
+            try {
+                headerPaneController.initialize();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("headerPaneController is null in HomePageController!");
+        }
+    }
 
-        if (Objects.equals(role, "admin")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
-            MenuItem_SignUp.setVisible(true);
-            elasticity = 1;       // ẩn cột action 10%
-            btnCreate.setVisible(true);
-        } else if (Objects.equals(role, "accountant")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
-            elasticity = (double) 10 / 9;       // ẩn cột action 10%
+    @FXML
+    public void initialize(String role) {
+        if (StageManager.getPrimaryStage().getScene() != null) {
+            StageManager.getPrimaryStage().getScene().getRoot().getProperties().put("controller", this);
         }
 
-        nameLabel.setText("Xin chào");
+        if (Objects.equals(role, "admin")) {
+            btnCreate.setVisible(true);
+            actionResidents.setVisible(true);
+            elasticity = 1;
+            addActionButtonsToTable();
+        } else if (Objects.equals(role, "accountant")) {
+            elasticity = (double) 10 / 9;       // ẩn cột action 10%
+        }
 
         tableResidents.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -121,7 +125,6 @@ public class ResidentsController {
         });
 
         loadResidentsFromDatabase();
-        addActionButtonsToTable();
     }
 
     private void adjustColumnWidths() {
@@ -150,51 +153,6 @@ public class ResidentsController {
         residenceStatusResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
         statusResidents.setPrefWidth(tableWidth * 0.09 * elasticity);
         actionResidents.setPrefWidth(tableWidth * 0.1 * elasticity);
-    }
-
-    // Header Button -----------------------------------------------------------
-    public void changeToHomePage(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
-                , "/styles/home-page.css", event, true);
-
-        HomePageController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToRooms(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/rooms.fxml", "/styles/Rooms/rooms.css",
-                event, true);
-
-        RoomsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToRevenues(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Revenues/revenues.fxml", "/styles/Revenues/revenues.css",
-                event, true);
-
-        RevenuesController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/CollectionPeriods/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
-                event, true);
-
-        CollectionPeriodsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    // Pop-up Button Cài đặt ---------------------------------------------------
-    public void changeToSignUp() throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                "/styles/sign-in-create-account.css", owner);
-    }
-
-    public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
-                event, false);
     }
 
     // Body --------------------------------------------------------------------
@@ -287,7 +245,7 @@ public class ResidentsController {
                             }
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnDelete.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Residents data = getTableView().getItems().get(getIndex());
                             try {
@@ -350,10 +308,5 @@ public class ResidentsController {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void changeToPassword(ActionEvent event) throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

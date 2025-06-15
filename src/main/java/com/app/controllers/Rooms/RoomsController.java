@@ -1,25 +1,22 @@
 package com.app.controllers.Rooms;
 
-import com.app.controllers.ChangePasswordController;
-import com.app.controllers.HomePageController;
-import com.app.controllers.Payments.CollectionPeriods.CollectionPeriodsController;
-import com.app.controllers.Residents.ResidentsController;
-import com.app.controllers.Revenues.RevenuesController;
+import com.app.controllers.HeaderUtils.HeaderController;
 import com.app.models.Rooms;
 import com.app.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,16 +26,11 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class RoomsController {
-    private String role;
-    private String username;
-
     //    Header
     @FXML
-    private Label roleLabel;
+    private VBox headerPane; // Tiêm nút gốc của header.fxml
     @FXML
-    private Label nameLabel;
-    @FXML
-    private MenuItem MenuItem_SignUp;
+    private HeaderController headerPaneController; // Tiêm controller của header.fxml
 
     //    Body
     @FXML
@@ -54,19 +46,28 @@ public class RoomsController {
 
     private final ObservableList<Rooms> filteredRoomList = FXCollections.observableArrayList();
 
-    @FXML
-    public void initialize(String role, String username) throws IOException {
-        this.role = role;
-        this.username = username;
+    public void initializeHeader() {
+        if (headerPaneController != null) {
+            headerPaneController.setUserInfo(UserSession.getEmail(), UserSession.getRole(), UserSession.getUsername());
+            try {
+                headerPaneController.initialize();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("headerPaneController is null in HomePageController!");
+        }
+    }
 
-        if (Objects.equals(role, "admin")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Quản trị viên.");
-            MenuItem_SignUp.setVisible(true);
-        } else if (Objects.equals(role, "accountant")) {
-            roleLabel.setText("Bạn đang đăng nhập với quyền Kế toán.");
+    @FXML
+    public void initialize(String role) throws IOException {
+        if (StageManager.getPrimaryStage().getScene() != null) {
+            StageManager.getPrimaryStage().getScene().getRoot().getProperties().put("controller", this);
         }
 
-        nameLabel.setText("Xin chào");
+        if (Objects.equals(role, "admin")) {
+        } else if (Objects.equals(role, "accountant")) {
+        }
 
         initFloorBox();
         initStatusBox();
@@ -108,58 +109,15 @@ public class RoomsController {
         ));
     }
 
-    // Header Burton -----------------------------------------------------------
-    public void changeToHomePage(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/home-page.fxml"
-                , "/styles/home-page.css", event, true);
-
-        HomePageController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToResidents(ActionEvent event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Residents/residents.fxml", "/styles/Residents/residents.css",
-                event, true);
-
-        ResidentsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToRevenues(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Revenues/revenues.fxml", "/styles/Revenues/revenues.css",
-                event, true);
-
-        RevenuesController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    public void changeToPayments(Event event) throws Exception {
-        FXMLLoader loader = SceneNavigator.switchScene("/fxml/Payments/CollectionPeriods/collection-periods.fxml", "/styles/Payments/CollectionPeriods/collection-periods.css",
-                event, true);
-
-        CollectionPeriodsController controller = loader.getController();
-        controller.initialize(role, username);
-    }
-
-    // Pop-up Button Cài đặt ---------------------------------------------------
-    public void changeToSignUp() throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/create-account.fxml",
-                "/styles/sign-in-create-account.css", owner);
-    }
-
-    public void changeToSignIn(ActionEvent event) throws Exception {
-        SceneNavigator.switchScene("/fxml/sign-in.fxml", "/styles/sign-in-create-account.css",
-                event, false);
-    }
-
     // Body --------------------------------------------------------------------
     public void openRoomDetailScene(Event event, String roomNumber) throws IOException {
         FXMLLoader loader = SceneNavigator.switchScene("/fxml/Rooms/room-detail.fxml", "/styles/Rooms/room-detail.css",
                 event, true);
 
         RoomDetailController controller = loader.getController();
-        controller.initialize(role, username, roomNumber);
+        controller.setRoomNumber(roomNumber);
+        controller.initialize(UserSession.getRole());
+        controller.initializeHeader();
     }
 
     public void loadRoomsFromDatabase() {
@@ -312,10 +270,5 @@ public class RoomsController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void changeToPassword(ActionEvent event) throws IOException {
-        Stage owner = StageManager.getPrimaryStage();
-        SceneNavigator.showPopupScene("/fxml/change-password.fxml", "/styles/change-password.css", owner);
     }
 }

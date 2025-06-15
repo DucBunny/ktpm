@@ -42,7 +42,6 @@ public class CreatePeriodController {
     private Button saveButton;
 
 
-
     public void initialize() {
         initTypeBox();
 
@@ -288,6 +287,7 @@ public class CreatePeriodController {
         stage.close();
     }
 
+    // Utils -------------------------------------------------------------------
     private void showErrorAlert(String message) {
         try {
             CustomAlert.showErrorAlert(message);

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="630.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Revenues.RevenueDetailController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="630.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Revenues.RevenueDetailController">
     <children>
         <Label alignment="CENTER" layoutX="485.0" layoutY="30.0" prefWidth="150.0" styleClass="boldText" text="Thông tin chi tiết" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.5">
             <font>
@@ -33,6 +33,23 @@
       </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="188.0">
          <children>
+            <Label alignment="BOTTOM_LEFT" styleClass="boldText" text="Mã khoản thu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="codeField" alignment="BOTTOM_LEFT" editable="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </TextField>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="258.0">
+         <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Loại" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
                       <Font name="System Bold" size="24.0" />
@@ -48,7 +65,7 @@
             </TextField>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="258.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="328.0">
          <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Số tiền" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>
@@ -65,24 +82,41 @@
               </TextField>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="328.0">
+      <AnchorPane layoutX="20.0" layoutY="20.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="398.0">
          <children>
-              <Label alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" styleClass="boldText" text="Mô tả" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <font>
-                      <Font name="System Bold" size="24.0" />
-                  </font>
-              </Label>
-            <TextArea fx:id="descriptionArea" editable="false" prefHeight="90.0" prefWidth="300.0" wrapText="true" AnchorPane.rightAnchor="0.0">
+            <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Thu theo" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="quantityUnitField" alignment="BOTTOM_LEFT" editable="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #B3B3B3; -fx-border-width: 0 0 1 0;" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font size="18.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
+            </TextField>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="468.0">
+         <children>
+              <Label alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" styleClass="boldText" text="Mô tả" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <font>
+                      <Font name="System Bold" size="24.0" />
+                  </font>
+              </Label>
+            <TextArea fx:id="descriptionArea" disable="true" editable="false" prefHeight="90.0" prefWidth="300.0" style="-fx-border-color: #B3B3B3;" wrapText="true" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DISAPPEAR" />
+               </cursor>
             </TextArea>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="443.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefWidth="470.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="583.0">
          <children>
               <Label alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="250.0" styleClass="boldText" text="Trạng thái" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <font>

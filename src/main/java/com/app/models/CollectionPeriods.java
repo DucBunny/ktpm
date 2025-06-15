@@ -11,8 +11,10 @@ public class CollectionPeriods {
     private String type;
     private String totalAmount;
     private String totalPaidAmount;
+    private String totalRoom;
 
-    public CollectionPeriods(int id, String name, String code, String totalAmount, String totalPaidAmount, LocalDate startDate, LocalDate endDate, String type) {
+    // Collection Periods
+    public CollectionPeriods(int id, String name, String code, String totalAmount, String totalPaidAmount, LocalDate startDate, LocalDate endDate, String type, String totalRoom) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -21,6 +23,7 @@ public class CollectionPeriods {
         this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
+        this.totalRoom = totalRoom;
     }
 
     // Getters
@@ -56,6 +59,10 @@ public class CollectionPeriods {
         return totalPaidAmount;
     }
 
+    public String getTotalRoom() {
+        return totalRoom;
+    }
+
     // Setters
     public void setId(int id) {
         this.id = id;
@@ -87,6 +94,10 @@ public class CollectionPeriods {
 
     public void setTotalPaidAmount(String totalPaidAmount) {
         this.totalPaidAmount = totalPaidAmount;
+    }
+
+    public void setTotalRoom(String totalRoom) {
+        this.totalRoom = totalRoom;
     }
 
     @Override

@@ -9,7 +9,11 @@ public class RevenueDetailController {
     @FXML
     private TextField nameField;
     @FXML
+    private TextField codeField;
+    @FXML
     private TextField unitPriceField;
+    @FXML
+    private TextField quantityUnitField;
     @FXML
     private TextArea descriptionArea;
     @FXML
@@ -31,7 +35,9 @@ public class RevenueDetailController {
 
         // Set dữ liệu
         nameField.setText(revenueDetail.getName());
+        codeField.setText(revenueDetail.getCode());
         unitPriceField.setText(revenueDetail.getUnitPrice());
+        quantityUnitField.setText(revenueDetail.getQuantityUnit());
         descriptionArea.setText(revenueDetail.getDescription());
         categoryField.setText(mapCategory(revenueDetail.getCategory()));
         statusField.setText(mapStatus(revenueDetail.getStatus()));

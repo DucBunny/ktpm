@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controllers.Payments.PaymentDetail.PaymentsController">
+    <children>
+        <fx:include fx:id="headerPane" source="../../HeaderUtils/header.fxml" />
+
+        <VBox VBox.vgrow="ALWAYS">
+            <children>
+                <AnchorPane prefHeight="77.0">
+                    <children>
+                        <Label fx:id="contentLabel" alignment="TOP_CENTER" contentDisplay="CENTER" styleClass="boldText" text="CÁC HỘ" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="32.0" />
+                            </font>
+                        </Label>
+                        <Button fx:id="btnCreate" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleCreatePayment" prefHeight="55.0" prefWidth="200.0" styleClass="btn-create-payment" text="Thu phí" textFill="WHITE" visible="false" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Button>
+                    </children>
+                </AnchorPane>
+                <TableView fx:id="tablePayments" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="roomNumberPayments" prefWidth="246.3999481201172" text="Tên hộ" />
+                  <TableColumn fx:id="totalAmountPayments" prefWidth="198.4000244140625" text="Tổng tiền" />
+                        <TableColumn fx:id="paidAmountPayments" prefWidth="198.4000244140625" text="Đã đóng" />
+                        <TableColumn fx:id="datePayments" prefWidth="250.39996337890625" text="Ngày đóng" />
+                        <TableColumn fx:id="notePayments" prefWidth="140" text="Ghi chú" />
+                        <TableColumn fx:id="statusPayments" prefWidth="195.2000732421875" text="Trạng thái" />
+                        <TableColumn fx:id="actionPayments" prefWidth="195.2000732421875" text="Thao tác" visible="false" />
+                    </columns>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </TableView>
+            </children>
+            <VBox.margin>
+                <Insets bottom="20.0" top="30.0" />
+            </VBox.margin>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="15.0" right="15.0" />
+    </padding>
+</VBox>

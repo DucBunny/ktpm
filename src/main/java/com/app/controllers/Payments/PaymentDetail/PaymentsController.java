@@ -86,7 +86,7 @@ public class PaymentsController {
         }
 
         if (Objects.equals(role, "admin")) {
-            elasticity = (double) 10 / 9;       // ẩn cột action 10%
+            elasticity = (double) 100 / 88;       // ẩn cột action 12%
         } else if (Objects.equals(role, "accountant")) {
             btnCreate.setVisible(true);
             actionPayments.setVisible(true);
@@ -151,8 +151,8 @@ public class PaymentsController {
         paidAmountPayments.setPrefWidth(tableWidth * 0.1 * elasticity);
         datePayments.setPrefWidth(tableWidth * 0.1 * elasticity);
         notePayments.setPrefWidth(tableWidth * 0.3 * elasticity);
-        statusPayments.setPrefWidth(tableWidth * 0.1 * elasticity);
-        actionPayments.setPrefWidth(tableWidth * 0.1 * elasticity);
+        statusPayments.setPrefWidth(tableWidth * 0.08 * elasticity);
+        actionPayments.setPrefWidth(tableWidth * 0.12 * elasticity);
     }
 
     // Body --------------------------------------------------------------------
@@ -246,6 +246,8 @@ public class PaymentsController {
                     private final Button btnEdit = new Button("Sửa");
                     private final Button btnCancel = new Button("Hủy");
                     private final Button btnDelete = new Button("Xóa");
+                    private final Button btnSet = new Button("Đặt");
+                    private final Button btnSet2 = new Button("Đặt");
 
                     {
                         btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
@@ -268,7 +270,7 @@ public class PaymentsController {
                             }
                         });
 
-                        btnDelete.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 70; -fx-font-size: 14");
+                        btnDelete.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
                         btnDelete.setOnAction((ActionEvent event) -> {
                             Payments data = getTableView().getItems().get(getIndex());
                             try {
@@ -277,17 +279,36 @@ public class PaymentsController {
                                 throw new RuntimeException(e);
                             }
                         });
+
+                        btnSet.setStyle("-fx-background-color: #f9d567; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnSet.setOnAction((ActionEvent event) -> {
+                            Payments data = getTableView().getItems().get(getIndex());
+                            try {
+                                handleSet(data.getRoomNumber(), data.getCollectionPeriod());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
+                        btnSet2.setStyle("-fx-background-color: #f9d567; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-pref-width: 50; -fx-font-size: 14");
+                        btnSet2.setOnAction((ActionEvent event) -> {
+                            Payments data = getTableView().getItems().get(getIndex());
+                            try {
+                                handleSet(data.getRoomNumber(), data.getCollectionPeriod());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     }
 
-                    private final HBox panePaid = new HBox(10, btnEdit, btnCancel);
-                    private final HBox paneUnpaid = new HBox(btnDelete);
+                    private final HBox panePaid = new HBox(6, btnSet, btnEdit, btnCancel);
+                    private final HBox paneUnpaid = new HBox(10, btnSet2, btnDelete);
 
                     {
                         panePaid.setAlignment(Pos.CENTER);
                         paneUnpaid.setAlignment(Pos.CENTER);
                     }
 
-                    // Chỉ hiển thị 2 nút khi trạng thái "Đã đóng tiền"
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -367,5 +388,20 @@ public class PaymentsController {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void handleSet(String roomNumber, String collectionPeriodName) throws IOException {
+        Stage owner = StageManager.getPrimaryStage();
+        FXMLLoader loader = SceneNavigator.showPopupSceneFXML("/fxml/Payments/PaymentDetail/revenues-room-detail.fxml", "/styles/Payments/CollectionPeriods/crud-period.css", owner);
+
+        RevenuesPeriodsDetailController controller = loader.getController();
+        controller.setDetail(roomNumber, collectionPeriodName);
+
+        //  Reload lại bảng
+        controller.setCallback(() -> {
+            // Chỉ reload khi thực sự thêm mới thành công!
+            paymentsList.clear();
+            loadPaymentsFromDatabase();
+        });
     }
 }

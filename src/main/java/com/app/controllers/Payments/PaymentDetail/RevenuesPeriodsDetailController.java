@@ -1,8 +1,7 @@
-package com.app.controllers.Payments.CollectionPeriods;
+package com.app.controllers.Payments.PaymentDetail;
 
 import com.app.models.CollectionItems;
 import com.app.models.Revenues;
-import com.app.utils.ComboBoxOption;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
 import javafx.collections.FXCollections;
@@ -12,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 
 import java.io.IOException;
@@ -23,18 +21,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RevenuesPeriodsController {
-    private int collectionPeriodId;
+public class RevenuesPeriodsDetailController {
+    private String roomNumber;
     private String collectionPeriodName;
+    private int collectionPeriodId;
 
-    private CollectionPeriodsReloadCallback callback;
+    private PaymentReloadCallback callback;
 
     @FXML
     private TextField periodField;
     @FXML
-    private ComboBox<ComboBoxOption> roomBox;
-    @FXML
-    private CheckBox applyAllRoomsCheckBox;
+    private TextField roomField;
     @FXML
     private ListView<String> revenueListView;
     @FXML
@@ -51,42 +48,29 @@ public class RevenuesPeriodsController {
     private TableColumn<CollectionItems, String> quantityUnit;
     @FXML
     private TableColumn<CollectionItems, String> category;
-    @FXML
-    private TableColumn<CollectionItems, String> roomNumber;
 
     @FXML
     private Button saveButton;
 
-    public void setCallback(CollectionPeriodsReloadCallback callback) {
+    public void setCallback(PaymentReloadCallback callback) {
         this.callback = callback;
     }
 
     private final List<Revenues> revenueItems = new ArrayList<>();
-    private final ObservableList<ComboBoxOption> roomSuggestions = FXCollections.observableArrayList();
-    private final ObservableList<ComboBoxOption> allRooms = FXCollections.observableArrayList();
     private final ObservableList<CollectionItems> setRevenuesTableList = FXCollections.observableArrayList();
 
-    public void setCollectionPeriod(int collectionPeriodId, String collectionPeriodName) {
-        this.collectionPeriodId = collectionPeriodId;
+    public void setDetail(String roomNumber, String collectionPeriodName) {
+        this.roomNumber = roomNumber.replace("Phòng ", "");
         this.collectionPeriodName = collectionPeriodName;
         periodField.setText(collectionPeriodName);
-
+        roomField.setText(roomNumber);
+        loadCollectionPeriodId();
+        loadExistingCollectionItems(); // Tải các collection_items hiện có
     }
 
     public void initialize() {
-        initRoomBox();
         loadRevenueItems();
-
-        setupRoomBoxSearch();
         setupSaveButton();
-
-        // Vô hiệu hóa chọn căn hộ khi áp dụng tất cả
-        applyAllRoomsCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
-            roomBox.setDisable(newVal);
-            if (newVal)
-                roomBox.getSelectionModel().clearSelection();
-            updateTableView(); // Cập nhật bảng khi thay đổi trạng thái checkbox
-        });
 
         setRevenuesTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -98,7 +82,6 @@ public class RevenuesPeriodsController {
         quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         quantityUnit.setCellValueFactory(new PropertyValueFactory<>("quantityUnit"));
         category.setCellValueFactory(new PropertyValueFactory<>("category"));
-        roomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
 
         // Cho phép chỉnh sửa quantity
         quantity.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
@@ -139,95 +122,28 @@ public class RevenuesPeriodsController {
         double padding = (totalRowsHeight > tableContentHeight) ? 15 : 0;
         double tableWidth = setRevenuesTable.getWidth() - padding;
 
-        revenueName.setPrefWidth(tableWidth * 0.3);
+        revenueName.setPrefWidth(tableWidth * 0.4);
         quantity.setPrefWidth(tableWidth * 0.2);
         quantityUnit.setPrefWidth(tableWidth * 0.2);
         category.setPrefWidth(tableWidth * 0.2);
-        roomNumber.setPrefWidth(tableWidth * 0.1);
     }
 
-    private void initRoomBox() {
-        roomBox.getItems().clear();
-        allRooms.clear();
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            String sql = "SELECT floor, room_number FROM rooms ORDER BY floor ASC, room_number ASC ";
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                String roomNumber = rs.getString("room_number");
-                ComboBoxOption option = new ComboBoxOption("Phòng " + roomNumber, roomNumber);
-                allRooms.add(option);
-                roomSuggestions.add(option);
+    private void loadCollectionPeriodId() {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "SELECT id FROM collection_periods WHERE name = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, collectionPeriodName);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    collectionPeriodId = rs.getInt("id");
+                } else {
+                    showErrorAlert("Không tìm thấy đợt thu trong hệ thống.");
+                }
             }
-            roomBox.setItems(roomSuggestions);
-
-            roomBox.setConverter(new StringConverter<ComboBoxOption>() {
-                @Override
-                public String toString(ComboBoxOption option) {
-                    return option != null ? option.getLabel() : "";
-                }
-
-                @Override
-                public ComboBoxOption fromString(String string) {
-                    if (string == null || string.trim().isEmpty()) {
-                        return null;
-                    }
-
-                    // Tìm mục khớp với văn bản nhập
-                    String lowerInput = string.trim().toLowerCase();
-                    for (ComboBoxOption room : allRooms) {
-                        if (room.getLabel().toLowerCase().equals(lowerInput)) {
-                            return room;
-                        }
-                    }
-
-                    return null; // Không cho phép String tự do
-                }
-            });
         } catch (SQLException e) {
             e.printStackTrace();
-            showErrorAlert("Không thể tải danh sách phòng từ CSDL.");
+            showErrorAlert("Lỗi khi tải thông tin đợt thu: " + e.getMessage());
         }
-    }
-
-    private void setupRoomBoxSearch() {
-        roomBox.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
-            if (newValue != null) {
-                String inputText = newValue.trim();
-                ObservableList<ComboBoxOption> filteredItems = FXCollections.observableArrayList();
-                if (inputText.isEmpty()) {
-                    filteredItems.addAll(allRooms);
-                } else {
-                    String lowerInput = inputText.toLowerCase();
-                    for (ComboBoxOption room : allRooms) {
-                        if (room.getLabel().toLowerCase().contains(lowerInput) ||
-                                room.getValue().toLowerCase().contains(lowerInput)) {
-                            filteredItems.add(room);
-                        }
-                    }
-                }
-                roomSuggestions.setAll(filteredItems);
-
-                // Hiển thị dropdown nếu có văn bản và có mục khớp
-                if (!inputText.isEmpty() && !filteredItems.isEmpty()) {
-                    roomBox.show();
-                } else {
-                    roomBox.hide();
-                }
-            }
-        });
-
-        // Xử lý khi chọn mục
-        roomBox.setOnAction(e -> {
-            ComboBoxOption selected = roomBox.getValue();
-            if (selected != null) {
-                roomBox.setValue(selected);
-                roomBox.getEditor().setText(selected.getLabel());
-            }
-            updateTableView(); // Cập nhật bảng khi chọn phòng
-        });
     }
 
     private void loadRevenueItems() {
@@ -253,6 +169,43 @@ public class RevenuesPeriodsController {
         } catch (SQLException e) {
             e.printStackTrace();
             showErrorAlert("Không thể tải danh sách khoản thu từ CSDL.");
+        }
+    }
+
+    private void loadExistingCollectionItems() {
+        setRevenuesTableList.clear();
+        revenueListView.getSelectionModel().clearSelection();
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = """
+                    SELECT ci.revenue_item_id, ci.quantity, ci.quantity_unit, ci.unit_price, ci.total_amount,
+                           ri.name, ri.category
+                    FROM collection_items ci
+                    JOIN revenue_items ri ON ci.revenue_item_id = ri.id
+                    WHERE ci.collection_period_id = ? AND ci.room_number = ?
+                    """;
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, collectionPeriodId);
+                stmt.setString(2, roomNumber);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    Revenues revenue = new Revenues(
+                            rs.getInt("revenue_item_id"),
+                            rs.getString("name"),
+                            rs.getString("unit_price"),
+                            rs.getString("quantity_unit"),
+                            rs.getString("category").equals("mandatory") ? "Bắt buộc" : "Tự nguyện"
+                    );
+                    CollectionItems collectionItem = new CollectionItems(revenue, roomNumber);
+                    collectionItem.setQuantity(rs.getDouble("quantity"));
+                    setRevenuesTableList.add(collectionItem);
+                    revenueListView.getSelectionModel().select(revenue.getName());
+                }
+                setRevenuesTable.refresh();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Lỗi khi tải danh sách khoản thu hiện có: " + e.getMessage());
         }
     }
 
@@ -302,24 +255,28 @@ public class RevenuesPeriodsController {
     }
 
     private void updateTableView() {
+        ObservableList<CollectionItems> tempList = FXCollections.observableArrayList(setRevenuesTableList);
+
         setRevenuesTableList.clear();
 
-        List<String> selectedRooms;
-        if (applyAllRoomsCheckBox.isSelected()) {
-            selectedRooms = allRooms.stream().map(ComboBoxOption::getValue).toList();
-        } else {
-            selectedRooms = roomBox.getValue() != null ? List.of(roomBox.getValue().getValue()) : List.of();
-        }
+        for (String selectedName : revenueListView.getSelectionModel().getSelectedItems()) {
+            Revenues item = revenueItems.stream()
+                    .filter(r -> r.getName().equals(selectedName))
+                    .findFirst()
+                    .orElse(null);
 
-        for (String roomNumber : selectedRooms) {
-            for (String selectedName : revenueListView.getSelectionModel().getSelectedItems()) {
-                Revenues item = revenueItems.stream()
-                        .filter(r -> r.getName().equals(selectedName))
+            if (item != null) {
+                // Kiểm tra xem khoản thu đã có trong tempList chưa
+                CollectionItems existingItem = tempList.stream()
+                        .filter(ci -> ci.getName().equals(selectedName))
                         .findFirst()
                         .orElse(null);
 
-                if (item != null) {
-                    CollectionItems collectionItem = new CollectionItems(item, roomNumber);
+                CollectionItems collectionItem = new CollectionItems(item, roomNumber);
+                if (existingItem != null) {
+                    // Giữ quantity đã chỉnh sửa
+                    collectionItem.setQuantity(existingItem.getQuantity());
+                } else {
                     // Gán quantity tự động cho các khoản thu cụ thể
                     switch (item.getQuantityUnit() == null ? "" : item.getQuantityUnit()) {
                         case "m2":
@@ -338,8 +295,8 @@ public class RevenuesPeriodsController {
                             collectionItem.setQuantity(0.0); // Giá trị mặc định cho các khoản khác
                             break;
                     }
-                    setRevenuesTableList.add(collectionItem);
                 }
+                setRevenuesTableList.add(collectionItem);
             }
         }
         setRevenuesTable.refresh();
@@ -347,7 +304,7 @@ public class RevenuesPeriodsController {
 
     private boolean areRequiredFieldsEmpty() {
         return periodField.getText().isEmpty() ||
-                (!applyAllRoomsCheckBox.isSelected() && roomBox.getValue() == null) ||
+                roomNumber.isEmpty() ||
                 revenueListView.getSelectionModel().getSelectedItems().isEmpty();
     }
 
@@ -359,12 +316,10 @@ public class RevenuesPeriodsController {
             }
 
             // Kiểm tra quantity của tất cả các khoản thu
-            if (!applyAllRoomsCheckBox.isSelected()) {
-                for (CollectionItems item : setRevenuesTableList) {
-                    if (item.getQuantity() <= 0) {
-                        showErrorAlert("Vui lòng nhập đầy đủ số lượng: \n" + item.getName());
-                        return;
-                    }
+            for (CollectionItems item : setRevenuesTableList) {
+                if (item.getQuantity() <= 0) {
+                    showErrorAlert("Vui lòng nhập đầy đủ số lượng: \n" + item.getName());
+                    return;
                 }
             }
 
@@ -372,6 +327,15 @@ public class RevenuesPeriodsController {
                 connection.setAutoCommit(false);
 
                 try {
+                    // Xóa các collection_items cũ của phòng trong đợt thu này
+                    String deleteSql = "DELETE FROM collection_items WHERE collection_period_id = ? AND room_number = ?";
+                    try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSql)) {
+                        deleteStmt.setInt(1, collectionPeriodId);
+                        deleteStmt.setString(2, roomNumber);
+                        deleteStmt.executeUpdate();
+                    }
+
+                    // Thêm các collection_items mới
                     String sql = "INSERT INTO collection_items (collection_period_id, room_number, revenue_item_id, quantity, quantity_unit, unit_price, total_amount)" +
                             "VALUES (?, ?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -391,7 +355,7 @@ public class RevenuesPeriodsController {
                     connection.commit();
                     CustomAlert.showSuccessAlert("Thiết lập khoản thu thành công", true, 0.7);
                     if (callback != null) { // gọi callback
-                        callback.onPeriodCrud();
+                        callback.onPaymentCrud();
                     }
                 } catch (SQLException ex) {
                     connection.rollback();

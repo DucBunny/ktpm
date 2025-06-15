@@ -326,10 +326,13 @@ public class CollectionPeriodsController {
 
         RevenuesPeriodsController controller = loader.getController();
         controller.setCollectionPeriod(collectionPeriodId, collectionPeriodName);
-        controller.initialize();
 
-        // Sau khi sửa, làm mới lại bảng dữ liệu:
-        loadCollectionPeriodsFromDatabase();
+        //  Reload lại bảng
+        controller.setCallback(() -> {
+            // Chỉ reload khi thực sự thêm mới thành công!
+            collectionPeriodsList.clear();
+            loadCollectionPeriodsFromDatabase();
+        });
     }
 
     private void handleEdit(CollectionPeriods collectionPeriods) throws IOException {

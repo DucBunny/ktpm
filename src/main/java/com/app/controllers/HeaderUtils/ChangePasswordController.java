@@ -6,7 +6,10 @@ import com.app.utils.HashPassword;
 import com.app.utils.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,12 +24,87 @@ public class ChangePasswordController {
     private TextField newPasswordField;
     @FXML
     private TextField confirmPasswordField;
+    @FXML
+    private PasswordField oldPasswordField2;
+    @FXML
+    private PasswordField newPasswordField2;
+    @FXML
+    private PasswordField confirmPasswordField2;
+
+    @FXML
+    private ImageView eyeIconOld;
+    @FXML
+    private ImageView eyeIconNew;
+    @FXML
+    private ImageView eyeIconConfirm;
 
     @FXML
     private Button saveButton;
 
+    // Trạng thái hiện tại của password
+    private boolean isPasswordOldVisible = false;
+    private boolean isPasswordNewVisible = false;
+    private boolean isConfirmPasswordVisible = false;
+
+    Image show = new Image(getClass().getResourceAsStream("/images/eye-solid.png"));
+    Image hide = new Image(getClass().getResourceAsStream("/images/eye-slash-solid.png"));
+
     public void initialize() {
         handleChangePassword();
+        eyeIconOld.setImage(hide);
+        eyeIconNew.setImage(hide);
+        eyeIconConfirm.setImage(hide);
+    }
+
+    @FXML
+    private void togglePasswordOld() {
+        if (isPasswordOldVisible) {
+            eyeIconOld.setImage(hide);
+            oldPasswordField2.setText(oldPasswordField.getText());
+            oldPasswordField2.setVisible(true);
+            oldPasswordField.setVisible(false);
+            isPasswordOldVisible = false;
+        } else {
+            eyeIconOld.setImage(show);
+            oldPasswordField.setText(oldPasswordField2.getText());
+            oldPasswordField.setVisible(true);
+            oldPasswordField2.setVisible(false);
+            isPasswordOldVisible = true;
+        }
+    }
+
+    @FXML
+    private void togglePasswordNew() {
+        if (isPasswordNewVisible) {
+            eyeIconNew.setImage(hide);
+            newPasswordField2.setText(newPasswordField.getText());
+            newPasswordField2.setVisible(true);
+            newPasswordField.setVisible(false);
+            isPasswordNewVisible = false;
+        } else {
+            eyeIconNew.setImage(show);
+            newPasswordField.setText(newPasswordField2.getText());
+            newPasswordField.setVisible(true);
+            newPasswordField2.setVisible(false);
+            isPasswordNewVisible = true;
+        }
+    }
+
+    @FXML
+    private void toggleConfirmPassword() {
+        if (isConfirmPasswordVisible) {
+            eyeIconConfirm.setImage(hide);
+            confirmPasswordField2.setText(confirmPasswordField.getText());
+            confirmPasswordField2.setVisible(true);
+            confirmPasswordField.setVisible(false);
+            isConfirmPasswordVisible = false;
+        } else {
+            eyeIconConfirm.setImage(show);
+            confirmPasswordField.setText(confirmPasswordField2.getText());
+            confirmPasswordField.setVisible(true);
+            confirmPasswordField2.setVisible(false);
+            isConfirmPasswordVisible = true;
+        }
     }
 
     public void handleChangePassword() {

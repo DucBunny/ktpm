@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -21,7 +23,42 @@ public class SignInController {
     @FXML
     private PasswordField passwordField;
     @FXML
+    private TextField textPasswordField;
+    @FXML
     private Label errorLabel;
+
+
+    @FXML
+    private ImageView eyeIcon;
+
+    // Trạng thái hiện tại của password
+    private boolean isPasswordVisible = false;
+    private boolean isConfirmPasswordVisible = false;
+
+    Image show = new Image(getClass().getResourceAsStream("/images/eye-solid.png"));
+    Image hide = new Image(getClass().getResourceAsStream("/images/eye-slash-solid.png"));
+
+    @FXML
+    private void initialize() {
+        eyeIcon.setImage(hide);
+    }
+
+    @FXML
+    private void togglePassword() {
+        if (isPasswordVisible) {
+            eyeIcon.setImage(hide);
+            passwordField.setText(textPasswordField.getText());
+            passwordField.setVisible(true);
+            textPasswordField.setVisible(false);
+            isPasswordVisible = false;
+        } else {
+            eyeIcon.setImage(show);
+            textPasswordField.setText(passwordField.getText());
+            textPasswordField.setVisible(true);
+            passwordField.setVisible(false);
+            isPasswordVisible = true;
+        }
+    }
 
     @FXML
     private void handleSignIn(ActionEvent event) {

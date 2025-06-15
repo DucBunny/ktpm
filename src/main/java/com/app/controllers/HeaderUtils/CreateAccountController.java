@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -21,31 +22,23 @@ public class CreateAccountController {
 
     @FXML
     private TextField emailField;
-
     @FXML
     private TextField userNameField;
-
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private TextField textPasswordField;
-
     @FXML
     private PasswordField confirmPasswordField;
-
     @FXML
     private TextField confirmTextPasswordField;
-
     @FXML
     private Label errorLabel;
-
     @FXML
     private Button createButton;
 
     @FXML
     private ImageView eyeIcon;
-
     @FXML
     private ImageView eyeIconConfirm;
 
@@ -53,14 +46,25 @@ public class CreateAccountController {
     private boolean isPasswordVisible = false;
     private boolean isConfirmPasswordVisible = false;
 
+    Image show = new Image(getClass().getResourceAsStream("/images/eye-solid.png"));
+    Image hide = new Image(getClass().getResourceAsStream("/images/eye-slash-solid.png"));
+
+    @FXML
+    private void initialize() {
+        eyeIcon.setImage(hide);
+        eyeIconConfirm.setImage(hide);
+    }
+
     @FXML
     private void togglePassword() {
         if (isPasswordVisible) {
+            eyeIcon.setImage(hide);
             passwordField.setText(textPasswordField.getText());
             passwordField.setVisible(true);
             textPasswordField.setVisible(false);
             isPasswordVisible = false;
         } else {
+            eyeIcon.setImage(show);
             textPasswordField.setText(passwordField.getText());
             textPasswordField.setVisible(true);
             passwordField.setVisible(false);
@@ -71,11 +75,13 @@ public class CreateAccountController {
     @FXML
     private void toggleConfirmPassword() {
         if (isConfirmPasswordVisible) {
+            eyeIconConfirm.setImage(hide);
             confirmPasswordField.setText(confirmTextPasswordField.getText());
             confirmPasswordField.setVisible(true);
             confirmTextPasswordField.setVisible(false);
             isConfirmPasswordVisible = false;
         } else {
+            eyeIconConfirm.setImage(show);
             confirmTextPasswordField.setText(confirmPasswordField.getText());
             confirmTextPasswordField.setVisible(true);
             confirmPasswordField.setVisible(false);

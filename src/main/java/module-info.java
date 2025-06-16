@@ -5,6 +5,8 @@ module com.app {
     requires jbcrypt;
     requires java.desktop;
     requires org.apache.pdfbox;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
 
     exports com.app;
     exports com.app.controllers;

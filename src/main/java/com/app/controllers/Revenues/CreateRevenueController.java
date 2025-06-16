@@ -138,7 +138,7 @@ public class CreateRevenueController {
 
                     // Thêm khoản thu
                     String sql = "INSERT INTO revenue_items (name, unit_price, description, category, status, code, quantity_unit) " +
-                            "VALUES (?, ?, ?, ?, ?, ?)";
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setString(1, name);
                         stmt.setDouble(2, Double.parseDouble(unitPrice));

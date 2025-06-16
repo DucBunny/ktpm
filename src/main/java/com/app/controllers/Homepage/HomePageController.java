@@ -153,11 +153,11 @@ public class HomePageController {
     }
 
     public void initMonthlyRevenueChart() throws IOException {
-        XYChart.Series<String, Number> seriesTotal = new XYChart.Series<>();
         XYChart.Series<String, Number> seriesPaid = new XYChart.Series<>();
+        XYChart.Series<String, Number> seriesTotal = new XYChart.Series<>();
 
-        seriesTotal.setName("Tổng số tiền");
-        seriesPaid.setName("Số tiền đã đóng");
+        seriesTotal.setName("Tổng số tiền phải thu");
+        seriesPaid.setName("Số tiền đã thu");
 
         ObservableList<String> categories = FXCollections.observableArrayList();
 
@@ -179,7 +179,7 @@ public class HomePageController {
                     GROUP BY
                         cp.id, cp.name, cp.start_date, cp.end_date, cp.type
                     ORDER BY
-                        cp.start_date DESC;
+                        cp.start_date ASC;
                     """;
 
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -196,7 +196,7 @@ public class HomePageController {
             }
 
             chart1.getData().clear();
-            chart1.getData().addAll(seriesTotal, seriesPaid);
+            chart1.getData().addAll(seriesPaid, seriesTotal);
             chart1.setCategoryGap(10);
             chart1.setBarGap(2);
             chart1.setAnimated(false);
@@ -211,8 +211,6 @@ public class HomePageController {
                     });
                 }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
             CustomAlert.showErrorAlert("Không thể tải dữ liệu doanh thu tháng từ CSDL.");
@@ -220,11 +218,11 @@ public class HomePageController {
     }
 
     public void initQuarterlyRevenueChart() throws IOException {
-        XYChart.Series<String, Number> seriesTotal = new XYChart.Series<>();
         XYChart.Series<String, Number> seriesPaid = new XYChart.Series<>();
+        XYChart.Series<String, Number> seriesTotal = new XYChart.Series<>();
 
-        seriesTotal.setName("Tổng số tiền");
-        seriesPaid.setName("Số tiền đã đóng");
+        seriesTotal.setName("Tổng số tiền phải thu");
+        seriesPaid.setName("Số tiền đã thu");
 
         ObservableList<String> categories = FXCollections.observableArrayList();
 
@@ -246,7 +244,7 @@ public class HomePageController {
                     GROUP BY
                         cp.id, cp.name, cp.start_date, cp.end_date, cp.type
                     ORDER BY
-                        cp.start_date DESC;
+                        cp.start_date ASC;
                     """;
 
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -263,7 +261,7 @@ public class HomePageController {
             }
 
             chart2.getData().clear();
-            chart2.getData().addAll(seriesTotal, seriesPaid);
+            chart2.getData().addAll(seriesPaid, seriesTotal);
             chart2.setCategoryGap(10);
             chart2.setBarGap(2);
             chart2.setAnimated(false);
@@ -274,7 +272,6 @@ public class HomePageController {
                     Tooltip.install(data.getNode(), tooltip);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             CustomAlert.showErrorAlert("Không thể tải dữ liệu doanh thu quý từ CSDL.");

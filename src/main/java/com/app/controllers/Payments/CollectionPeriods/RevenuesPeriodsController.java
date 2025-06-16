@@ -5,6 +5,7 @@ import com.app.models.Revenues;
 import com.app.utils.ComboBoxOption;
 import com.app.utils.CustomAlert;
 import com.app.utils.DatabaseConnection;
+import com.app.utils.ExcelReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -12,16 +13,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RevenuesPeriodsController {
     private int collectionPeriodId;
@@ -55,16 +59,24 @@ public class RevenuesPeriodsController {
     private TableColumn<CollectionItems, String> roomNumber;
 
     @FXML
+    private Button openFolderButton;
+
+    @FXML
     private Button saveButton;
 
-    public void setCallback(CollectionPeriodsReloadCallback callback) {
-        this.callback = callback;
-    }
+    private final Map<String, File> selectedFiles = new HashMap<>(); // Lưu file Excel được chọn
+    private static final int ELECTRICITY_REVENUE_ID = 5; // ID của "Tiền điện"
+    private static final int WATER_REVENUE_ID = 6; // ID của "Tiền nước"
+    private static final int INTERNET_REVENUE_ID = 7; // ID của "Tiền internet"
 
     private final List<Revenues> revenueItems = new ArrayList<>();
     private final ObservableList<ComboBoxOption> roomSuggestions = FXCollections.observableArrayList();
     private final ObservableList<ComboBoxOption> allRooms = FXCollections.observableArrayList();
     private final ObservableList<CollectionItems> setRevenuesTableList = FXCollections.observableArrayList();
+
+    public void setCallback(CollectionPeriodsReloadCallback callback) {
+        this.callback = callback;
+    }
 
     public void setCollectionPeriod(int collectionPeriodId, String collectionPeriodName) {
         this.collectionPeriodId = collectionPeriodId;
@@ -347,8 +359,8 @@ public class RevenuesPeriodsController {
 
     private boolean areRequiredFieldsEmpty() {
         return periodField.getText().isEmpty() ||
-                (!applyAllRoomsCheckBox.isSelected() && roomBox.getValue() == null) ||
-                revenueListView.getSelectionModel().getSelectedItems().isEmpty();
+                revenueListView.getSelectionModel().getSelectedItems().isEmpty() ||
+                setRevenuesTableList.isEmpty();
     }
 
     private void setupSaveButton() {
@@ -372,6 +384,20 @@ public class RevenuesPeriodsController {
                 connection.setAutoCommit(false);
 
                 try {
+                    // Xóa các collection_items cũ cho các phòng được chọn
+                    String deleteSql = "DELETE FROM collection_items WHERE collection_period_id = ? AND room_number = ?";
+                    try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSql)) {
+                        List<String> selectedRooms = applyAllRoomsCheckBox.isSelected()
+                                ? allRooms.stream().map(ComboBoxOption::getValue).toList()
+                                : roomBox.getValue() != null ? List.of(roomBox.getValue().getValue()) : List.of();
+                        for (String room : selectedRooms) {
+                            deleteStmt.setInt(1, collectionPeriodId);
+                            deleteStmt.setString(2, room);
+                            deleteStmt.addBatch();
+                        }
+                        deleteStmt.executeBatch();
+                    }
+
                     String sql = "INSERT INTO collection_items (collection_period_id, room_number, revenue_item_id, quantity, quantity_unit, unit_price, total_amount)" +
                             "VALUES (?, ?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -385,6 +411,39 @@ public class RevenuesPeriodsController {
                             stmt.setDouble(7, item.getTotalAmount());
                             stmt.addBatch(); // Thêm vào nhóm câu lệnh
                         }
+
+                        // Từ file Excel
+                        List<CollectionItems> excelItems = new ArrayList<>();
+                        File electricityFile = selectedFiles.get("electricity");
+                        File waterFile = selectedFiles.get("water");
+                        File internetFile = selectedFiles.get("internet");
+
+                        if (electricityFile != null) {
+                            excelItems.addAll(ExcelReader.readElectricityData(electricityFile.getAbsolutePath(), ELECTRICITY_REVENUE_ID));
+                        }
+                        if (waterFile != null) {
+                            excelItems.addAll(ExcelReader.readWaterData(waterFile.getAbsolutePath(), WATER_REVENUE_ID));
+                        }
+                        if (internetFile != null) {
+                            excelItems.addAll(ExcelReader.readInternetData(internetFile.getAbsolutePath(), INTERNET_REVENUE_ID));
+                        }
+
+                        List<String> selectedRooms = applyAllRoomsCheckBox.isSelected()
+                                ? allRooms.stream().map(ComboBoxOption::getValue).toList()
+                                : roomBox.getValue() != null ? List.of(roomBox.getValue().getValue()) : List.of();
+                        for (CollectionItems item : excelItems) {
+                            if (selectedRooms.contains(item.getRoomNumber())) {
+                                stmt.setInt(1, collectionPeriodId);
+                                stmt.setString(2, item.getRoomNumber());
+                                stmt.setInt(3, item.getRevenueId());
+                                stmt.setDouble(4, item.getQuantity());
+                                stmt.setString(5, item.getQuantityUnit());
+                                stmt.setDouble(6, item.getUnitPrice());
+                                stmt.setDouble(7, item.getTotalAmount());
+                                stmt.addBatch();
+                            }
+                        }
+
                         stmt.executeBatch(); // Chạy nhóm câu lệnh SQL
                     }
 
@@ -405,6 +464,175 @@ public class RevenuesPeriodsController {
                 showErrorAlert("Lỗi: " + ex.getMessage());
             }
         });
+    }
+
+    // File --------------------------------------------------------------------
+    @FXML
+    private void handleOpenFolder() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Chọn thư mục chứa file Excel");
+        File selectedDirectory = directoryChooser.showDialog(openFolderButton.getScene().getWindow());
+        if (selectedDirectory != null) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Chọn file Excel");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Excel Files", "*.xlsx", "*.XLSX")
+            );
+            if (!selectedDirectory.canRead()) {
+                showErrorAlert("Không có quyền đọc thư mục: " + selectedDirectory.getAbsolutePath());
+                return;
+            }
+            fileChooser.setInitialDirectory(selectedDirectory);
+            File file = fileChooser.showOpenDialog(openFolderButton.getScene().getWindow());
+            if (file != null) {
+                try {
+                    String fileName = file.getName().toLowerCase();
+                    List<CollectionItems> excelItems = new ArrayList<>();
+                    String fileKey = null;
+                    int revenueId;
+                    String revenueName = "";
+                    if (fileName.contains("dien")) {
+                        fileKey = "electricity";
+                        revenueId = ELECTRICITY_REVENUE_ID;
+                        excelItems.addAll(ExcelReader.readElectricityData(file.getAbsolutePath(), revenueId));
+                        revenueName = revenueItems.stream()
+                                .filter(r -> r.getId() == revenueId)
+                                .map(Revenues::getName)
+                                .findFirst()
+                                .orElse("Tiền điện");
+                    } else if (fileName.contains("nuoc")) {
+                        fileKey = "water";
+                        revenueId = WATER_REVENUE_ID;
+                        excelItems.addAll(ExcelReader.readWaterData(file.getAbsolutePath(), revenueId));
+                        revenueName = revenueItems.stream()
+                                .filter(r -> r.getId() == revenueId)
+                                .map(Revenues::getName)
+                                .findFirst()
+                                .orElse("Tiền nước");
+                    } else if (fileName.contains("internet")) {
+                        fileKey = "internet";
+                        revenueId = INTERNET_REVENUE_ID;
+                        excelItems.addAll(ExcelReader.readInternetData(file.getAbsolutePath(), revenueId));
+                        revenueName = revenueItems.stream()
+                                .filter(r -> r.getId() == revenueId)
+                                .map(Revenues::getName)
+                                .findFirst()
+                                .orElse("Tiền internet");
+                    } else {
+                        revenueId = 0;
+                        showErrorAlert("File không hợp lệ. Vui lòng chọn file có tên chứa 'dien', 'nuoc', hoặc 'internet'.");
+                        return;
+                    }
+
+                    // Log dữ liệu từ excelItems
+                    System.out.println("Dữ liệu từ file Excel (" + excelItems.size() + " dòng):");
+                    for (CollectionItems item : excelItems) {
+                        System.out.println("Room=" + item.getRoomNumber() + ", Quantity=" + item.getQuantity() +
+                                ", TotalAmount=" + item.getTotalAmount());
+                    }
+
+                    if (excelItems.isEmpty()) {
+                        showErrorAlert("Không tìm thấy dữ liệu hợp lệ trong file: " + fileName + ". Kiểm tra cấu trúc: Căn hộ (chuỗi), Số lượng (số), Đơn giá (số), Thành tiền (số).");
+                        System.err.println("Dữ liệu Excel rỗng: " + fileName);
+                        return;
+                    }
+
+                    selectedFiles.put(fileKey, file);
+
+                    // Tự động chọn phòng từ file Excel
+                    Set<String> excelRooms = excelItems.stream()
+                            .map(CollectionItems::getRoomNumber)
+                            .collect(Collectors.toSet());
+
+                    // Kiểm tra phòng trong CSDL
+                    Set<String> dbRooms = allRooms.stream().map(ComboBoxOption::getValue).collect(Collectors.toSet());
+
+                    Set<String> invalidRooms = excelRooms.stream()
+                            .filter(room -> !dbRooms.contains(room))
+                            .collect(Collectors.toSet());
+                    if (!invalidRooms.isEmpty()) {
+                        showErrorAlert("Các phòng sau trong file Excel không tồn tại trong CSDL: " + invalidRooms);
+                        System.err.println("Phòng không tồn tại trong CSDL: " + invalidRooms);
+                        return;
+                    }
+
+                    // Không tự động chọn applyAllRoomsCheckBox, chỉ chọn phòng trong file
+                    applyAllRoomsCheckBox.setSelected(false);
+                    roomBox.getSelectionModel().clearSelection();
+
+                    // Chọn khoản thu trong revenueListView
+                    if (!revenueListView.getItems().contains(revenueName)) {
+                        showErrorAlert("Khoản thu '" + revenueName + "' không tồn tại trong danh sách. Kiểm tra revenue_items trong CSDL.");
+                        System.err.println("Khoản thu không tồn tại: " + revenueName);
+                        return;
+                    }
+                    revenueListView.getSelectionModel().clearSelection();
+                    revenueListView.getSelectionModel().select(revenueName);
+                    System.out.println("Chọn khoản thu: " + revenueName);
+
+                    // Cập nhật setRevenuesTable, chỉ thêm phòng từ file Excel
+                    setRevenuesTableList.clear(); // Xóa dữ liệu cũ
+                    for (CollectionItems excelItem : excelItems) {
+                        // Kiểm tra trùng lặp
+                        boolean exists = setRevenuesTableList.stream()
+                                .anyMatch(item -> item.getRoomNumber().equals(excelItem.getRoomNumber()) &&
+                                        item.getRevenueId() == excelItem.getRevenueId());
+                        if (!exists) {
+                            excelItem.setName(revenueName); // Đảm bảo tên khoản thu đúng
+                            setRevenuesTableList.add(excelItem);
+                            System.out.println("Thêm vào setRevenuesTable: room=" + excelItem.getRoomNumber() +
+                                    ", revenueId=" + excelItem.getRevenueId() + ", name=" + excelItem.getName() +
+                                    ", quantity=" + excelItem.getQuantity() + ", totalAmount=" + excelItem.getTotalAmount());
+                        }
+                    }
+                    setRevenuesTable.refresh();
+                    System.out.println("Đã chọn file " + fileKey + ": " + file.getAbsolutePath());
+                    System.out.println("Tổng số mục trong setRevenuesTable: " + setRevenuesTableList.size());
+
+                    //                    if (excelRooms.containsAll(allRooms.stream().map(ComboBoxOption::getValue).collect(Collectors.toSet()))) {
+                    //                        applyAllRoomsCheckBox.setSelected(true);
+                    //                        roomBox.getSelectionModel().clearSelection();
+                    //                    } else {
+                    //                        applyAllRoomsCheckBox.setSelected(false);
+                    //                        ComboBoxOption selectedRoom = allRooms.stream()
+                    //                                .filter(room -> excelRooms.contains(room.getValue()))
+                    //                                .findFirst()
+                    //                                .orElse(null);
+                    //                        if (selectedRoom != null) {
+                    //                            roomBox.setValue(selectedRoom);
+                    //                        } else {
+                    //                            roomBox.getSelectionModel().clearSelection();
+                    //                        }
+                    //                    }
+
+                    // Chọn khoản thu trong revenueListView
+                    //                    if (!revenueListView.getSelectionModel().getSelectedItems().contains(revenueName)) {
+                    //                        revenueListView.getSelectionModel().select(revenueName);
+                    //                    }
+                    //
+                    //                    // Cập nhật setRevenuesTable, tránh trùng lặp
+                    //                    List<String> selectedRooms = applyAllRoomsCheckBox.isSelected()
+                    //                            ? allRooms.stream().map(ComboBoxOption::getValue).toList()
+                    //                            : roomBox.getValue() != null ? List.of(roomBox.getValue().getValue()) : List.of();
+                    //                    for (CollectionItems excelItem : excelItems) {
+                    //                        if (selectedRooms.contains(excelItem.getRoomNumber())) {
+                    //                            // Kiểm tra trùng lặp
+                    //                            boolean exists = setRevenuesTableList.stream()
+                    //                                    .anyMatch(item -> item.getRoomNumber().equals(excelItem.getRoomNumber()) &&
+                    //                                            item.getRevenueId() == excelItem.getRevenueId());
+                    //                            if (!exists) {
+                    //                                setRevenuesTableList.add(excelItem);
+                    //                            }
+                    //                        }
+                    //                    }
+                    //                    setRevenuesTable.refresh();
+                    //                    System.out.println("Đã chọn file " + fileKey + ": " + file.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showErrorAlert("Lỗi khi đọc file: " + e.getMessage());
+                }
+            }
+        }
     }
 
     // Utils -------------------------------------------------------------------

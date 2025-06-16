@@ -19,6 +19,18 @@ public class CollectionItems {
         this.totalAmount = totalAmount;
     }
 
+    // ExcelReader
+    public CollectionItems(int revenueId, String name, String roomNumber, String quantityUnit, double unitPrice, double quantity, double totalAmount, String category) {
+        this.revenueId = revenueId;
+        this.name = name;
+        this.roomNumber = roomNumber;
+        this.quantityUnit = quantityUnit == null ? "" : quantityUnit;
+        this.unitPrice = unitPrice;
+        this.quantity = quantity;
+        this.totalAmount = totalAmount;
+        this.category = category;
+    }
+
     // Revenues Periods
     public CollectionItems(Revenues item, String roomNumber) {
         this.revenueId = item.getId();

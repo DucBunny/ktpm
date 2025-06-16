@@ -172,7 +172,7 @@ public class RevenuesController {
                     case "car" -> "Ô tô";
                     case "motorbike" -> "Xe máy";
                     case "package" -> "Gói";
-                    case "totalResident" -> "Nhân khẩu";
+                    case "totalResidents" -> "Nhân khẩu";
                     case "kWh" -> "kWh";
                     case "m2" -> "m2";
                     case "m3" -> "m3";

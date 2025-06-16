@@ -77,6 +77,11 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button id="btnListView" fx:id="openFolderButton" mnemonicParsing="false" onAction="#handleOpenFolder" prefHeight="30.0" prefWidth="100.0" text="Chọn file" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="114.0" layoutY="183.0" prefWidth="800.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="483.0">
